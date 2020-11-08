@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
@@ -18,9 +19,15 @@
 
     <ItemGroup>
         <PackageReference Include="Grpc.AspNetCore" Version="2.28.0" />
+        <PackageReference Include="Minio" Version="3.1.13" />
+        <PackageReference Include="NodaTime" Version="3.0.2" />
+        <PackageReference Include="NodaTime.Serialization.JsonNet" Version="3.0.0" />
+        <PackageReference Include="StackExchange.Redis" Version="2.1.58" />
+        <PackageReference Include="StackExchange.Redis.Extensions.Newtonsoft" Version="6.3.5" />
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="Fetchers" />
         <Folder Include="Generated" />
     </ItemGroup>
 

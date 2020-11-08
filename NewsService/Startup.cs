@@ -1,42 +1,65 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NewsService.Services;
+using StackExchange.Redis.Extensions.Core;
+using StackExchange.Redis.Extensions.Core.Abstractions;
+using StackExchange.Redis.Extensions.Core.Configuration;
+using StackExchange.Redis.Extensions.Core.Implementations;
+using StackExchange.Redis.Extensions.Newtonsoft;
 
 namespace NewsService
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
+        public Startup(IConfiguration _configuration)
+        {
+            Configuration = _configuration;
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection _services)
         {
-            services.AddGrpc();
+            var redisConfiguration = Configuration.GetSection("Redis").Get<RedisConfiguration>();
+
+            _services.AddGrpc();
+
+            _services.AddSingleton<IRedisCacheClient, RedisCacheClient>();
+            _services.AddSingleton<IRedisCacheConnectionPoolManager, RedisCacheConnectionPoolManager>();
+            _services.AddSingleton<ISerializer, NewtonsoftSerializer>();
+            _services.AddSingleton(redisConfiguration);
+
+            _services.AddSingleton((_provider) => _provider.GetRequiredService<IRedisCacheClient>().GetDbFromConfiguration());
+
+            _services.AddSingleton<RedisCacheService>();
+            _services.AddSingleton<NewsHandlerService>();
+            _services.AddSingleton<NewsFetchService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder _app, IWebHostEnvironment _env)
         {
-            if (env.IsDevelopment())
+            if (_env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                _app.UseDeveloperExceptionPage();
             }
 
-            app.UseRouting();
+            _app.UseRouting();
 
-            app.UseEndpoints(endpoints =>
+            _app.UseEndpoints(_endpoints =>
             {
-                endpoints.MapGrpcService<NewsService>();
-                
-                endpoints.MapGet("/",
-                    async context =>
+                _endpoints.MapGrpcService<NewsGrpcService>();
+
+                _endpoints.MapGet("/",
+                    async _context =>
                     {
-                        await context.Response.WriteAsync(
+                        await _context.Response.WriteAsync(
                             "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
                     });
             });

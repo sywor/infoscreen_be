@@ -7,15 +7,15 @@ import "google/protobuf/empty.proto";
 package news;
 
 service NewsFetcher {
-    rpc GetAllArticles (google.protobuf.Empty) returns (stream Article);
-    rpc GetNextArticle (google.protobuf.Empty) returns (Article);
+    rpc GetAllArticles (google.protobuf.Empty) returns (stream ArticleResponse);
+    rpc GetNextArticle (google.protobuf.Empty) returns (ArticleResponse);
     rpc GetStatus (google.protobuf.Empty) returns (Status);
 }
 
 enum StatusCode {
     Failure = 0;
     Fetching = 1;
-    Ready = 2;
+    Ok = 2;
 }
 
 message Status {
@@ -29,4 +29,12 @@ message Article {
     int64 published_unix = 3;
     bytes image = 4;
     string body = 5;
+    string source = 6;
+}
+
+message ArticleResponse {
+    oneof response {
+        Article article = 1;
+        Status status = 2;
+    }
 }

@@ -26,20 +26,24 @@ namespace NewsService {
           string.Concat(
             "ChFQcm90b3MvbmV3cy5wcm90bxIEbmV3cxobZ29vZ2xlL3Byb3RvYnVmL2Vt",
             "cHR5LnByb3RvIjkKBlN0YXR1cxIPCgdNZXNzYWdlGAEgASgJEh4KBENvZGUY",
-            "AiABKA4yEC5uZXdzLlN0YXR1c0NvZGUiYwoHQXJ0aWNsZRINCgV0aXRsZRgB",
+            "AiABKA4yEC5uZXdzLlN0YXR1c0NvZGUicwoHQXJ0aWNsZRINCgV0aXRsZRgB",
             "IAEoCRIUCgxmZXRjaGVkX3VuaXgYAiABKAMSFgoOcHVibGlzaGVkX3VuaXgY",
-            "AyABKAMSDQoFaW1hZ2UYBCABKAwSDAoEYm9keRgFIAEoCSoyCgpTdGF0dXND",
-            "b2RlEgsKB0ZhaWx1cmUQABIMCghGZXRjaGluZxABEgkKBVJlYWR5EAIytAEK",
-            "C05ld3NGZXRjaGVyEjkKDkdldEFsbEFydGljbGVzEhYuZ29vZ2xlLnByb3Rv",
-            "YnVmLkVtcHR5Gg0ubmV3cy5BcnRpY2xlMAESNwoOR2V0TmV4dEFydGljbGUS",
-            "Fi5nb29nbGUucHJvdG9idWYuRW1wdHkaDS5uZXdzLkFydGljbGUSMQoJR2V0",
-            "U3RhdHVzEhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5GgwubmV3cy5TdGF0dXNC",
-            "DqoCC05ld3NTZXJ2aWNlYgZwcm90bzM="));
+            "AyABKAMSDQoFaW1hZ2UYBCABKAwSDAoEYm9keRgFIAEoCRIOCgZzb3VyY2UY",
+            "BiABKAkiXwoPQXJ0aWNsZVJlc3BvbnNlEiAKB2FydGljbGUYASABKAsyDS5u",
+            "ZXdzLkFydGljbGVIABIeCgZzdGF0dXMYAiABKAsyDC5uZXdzLlN0YXR1c0gA",
+            "QgoKCHJlc3BvbnNlKi8KClN0YXR1c0NvZGUSCwoHRmFpbHVyZRAAEgwKCEZl",
+            "dGNoaW5nEAESBgoCT2sQAjLEAQoLTmV3c0ZldGNoZXISQQoOR2V0QWxsQXJ0",
+            "aWNsZXMSFi5nb29nbGUucHJvdG9idWYuRW1wdHkaFS5uZXdzLkFydGljbGVS",
+            "ZXNwb25zZTABEj8KDkdldE5leHRBcnRpY2xlEhYuZ29vZ2xlLnByb3RvYnVm",
+            "LkVtcHR5GhUubmV3cy5BcnRpY2xlUmVzcG9uc2USMQoJR2V0U3RhdHVzEhYu",
+            "Z29vZ2xlLnByb3RvYnVmLkVtcHR5GgwubmV3cy5TdGF0dXNCDqoCC05ld3NT",
+            "ZXJ2aWNlYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::NewsService.StatusCode), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::NewsService.Status), global::NewsService.Status.Parser, new[]{ "Message", "Code" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::NewsService.Article), global::NewsService.Article.Parser, new[]{ "Title", "FetchedUnix", "PublishedUnix", "Image", "Body" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::NewsService.Article), global::NewsService.Article.Parser, new[]{ "Title", "FetchedUnix", "PublishedUnix", "Image", "Body", "Source" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::NewsService.ArticleResponse), global::NewsService.ArticleResponse.Parser, new[]{ "Article", "Status" }, new[]{ "Response" }, null, null, null)
           }));
     }
     #endregion
@@ -49,7 +53,7 @@ namespace NewsService {
   public enum StatusCode {
     [pbr::OriginalName("Failure")] Failure = 0,
     [pbr::OriginalName("Fetching")] Fetching = 1,
-    [pbr::OriginalName("Ready")] Ready = 2,
+    [pbr::OriginalName("Ok")] Ok = 2,
   }
 
   #endregion
@@ -242,6 +246,7 @@ namespace NewsService {
       publishedUnix_ = other.publishedUnix_;
       image_ = other.image_;
       body_ = other.body_;
+      source_ = other.source_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -305,6 +310,17 @@ namespace NewsService {
       }
     }
 
+    /// <summary>Field number for the "source" field.</summary>
+    public const int SourceFieldNumber = 6;
+    private string source_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Source {
+      get { return source_; }
+      set {
+        source_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Article);
@@ -323,6 +339,7 @@ namespace NewsService {
       if (PublishedUnix != other.PublishedUnix) return false;
       if (Image != other.Image) return false;
       if (Body != other.Body) return false;
+      if (Source != other.Source) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -334,6 +351,7 @@ namespace NewsService {
       if (PublishedUnix != 0L) hash ^= PublishedUnix.GetHashCode();
       if (Image.Length != 0) hash ^= Image.GetHashCode();
       if (Body.Length != 0) hash ^= Body.GetHashCode();
+      if (Source.Length != 0) hash ^= Source.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -367,6 +385,10 @@ namespace NewsService {
         output.WriteRawTag(42);
         output.WriteString(Body);
       }
+      if (Source.Length != 0) {
+        output.WriteRawTag(50);
+        output.WriteString(Source);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -389,6 +411,9 @@ namespace NewsService {
       }
       if (Body.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Body);
+      }
+      if (Source.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Source);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -415,6 +440,9 @@ namespace NewsService {
       }
       if (other.Body.Length != 0) {
         Body = other.Body;
+      }
+      if (other.Source.Length != 0) {
+        Source = other.Source;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -445,6 +473,214 @@ namespace NewsService {
           }
           case 42: {
             Body = input.ReadString();
+            break;
+          }
+          case 50: {
+            Source = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class ArticleResponse : pb::IMessage<ArticleResponse> {
+    private static readonly pb::MessageParser<ArticleResponse> _parser = new pb::MessageParser<ArticleResponse>(() => new ArticleResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<ArticleResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::NewsService.NewsReflection.Descriptor.MessageTypes[2]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ArticleResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ArticleResponse(ArticleResponse other) : this() {
+      switch (other.ResponseCase) {
+        case ResponseOneofCase.Article:
+          Article = other.Article.Clone();
+          break;
+        case ResponseOneofCase.Status:
+          Status = other.Status.Clone();
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ArticleResponse Clone() {
+      return new ArticleResponse(this);
+    }
+
+    /// <summary>Field number for the "article" field.</summary>
+    public const int ArticleFieldNumber = 1;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::NewsService.Article Article {
+      get { return responseCase_ == ResponseOneofCase.Article ? (global::NewsService.Article) response_ : null; }
+      set {
+        response_ = value;
+        responseCase_ = value == null ? ResponseOneofCase.None : ResponseOneofCase.Article;
+      }
+    }
+
+    /// <summary>Field number for the "status" field.</summary>
+    public const int StatusFieldNumber = 2;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::NewsService.Status Status {
+      get { return responseCase_ == ResponseOneofCase.Status ? (global::NewsService.Status) response_ : null; }
+      set {
+        response_ = value;
+        responseCase_ = value == null ? ResponseOneofCase.None : ResponseOneofCase.Status;
+      }
+    }
+
+    private object response_;
+    /// <summary>Enum of possible cases for the "response" oneof.</summary>
+    public enum ResponseOneofCase {
+      None = 0,
+      Article = 1,
+      Status = 2,
+    }
+    private ResponseOneofCase responseCase_ = ResponseOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ResponseOneofCase ResponseCase {
+      get { return responseCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void ClearResponse() {
+      responseCase_ = ResponseOneofCase.None;
+      response_ = null;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as ArticleResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(ArticleResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(Article, other.Article)) return false;
+      if (!object.Equals(Status, other.Status)) return false;
+      if (ResponseCase != other.ResponseCase) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (responseCase_ == ResponseOneofCase.Article) hash ^= Article.GetHashCode();
+      if (responseCase_ == ResponseOneofCase.Status) hash ^= Status.GetHashCode();
+      hash ^= (int) responseCase_;
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (responseCase_ == ResponseOneofCase.Article) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Article);
+      }
+      if (responseCase_ == ResponseOneofCase.Status) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Status);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (responseCase_ == ResponseOneofCase.Article) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Article);
+      }
+      if (responseCase_ == ResponseOneofCase.Status) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Status);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(ArticleResponse other) {
+      if (other == null) {
+        return;
+      }
+      switch (other.ResponseCase) {
+        case ResponseOneofCase.Article:
+          if (Article == null) {
+            Article = new global::NewsService.Article();
+          }
+          Article.MergeFrom(other.Article);
+          break;
+        case ResponseOneofCase.Status:
+          if (Status == null) {
+            Status = new global::NewsService.Status();
+          }
+          Status.MergeFrom(other.Status);
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            global::NewsService.Article subBuilder = new global::NewsService.Article();
+            if (responseCase_ == ResponseOneofCase.Article) {
+              subBuilder.MergeFrom(Article);
+            }
+            input.ReadMessage(subBuilder);
+            Article = subBuilder;
+            break;
+          }
+          case 18: {
+            global::NewsService.Status subBuilder = new global::NewsService.Status();
+            if (responseCase_ == ResponseOneofCase.Status) {
+              subBuilder.MergeFrom(Status);
+            }
+            input.ReadMessage(subBuilder);
+            Status = subBuilder;
             break;
           }
         }
