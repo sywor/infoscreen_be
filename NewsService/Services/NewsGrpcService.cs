@@ -21,7 +21,7 @@ namespace NewsService.Services
         {
             logger.LogInformation("All articles fetch request received");
 
-            await foreach (var newsArticleResponse in newsHandler.NewsArticles())
+            foreach (var newsArticleResponse in await newsHandler.NewsArticles())
             {
                 if (!newsArticleResponse.Success)
                 {
@@ -36,11 +36,11 @@ namespace NewsService.Services
                 var article = new Article
                 {
                     Title = newsArticle.Title,
-                    Image = ByteString.CopyFrom(newsArticle.Image),
+                    ImagePath = newsArticle.ImagePath,
                     Body = newsArticle.Content,
                     Source = newsArticle.Source,
-                    FetchedUnix = newsArticle.FetchedAt.ToUnixTimeMilliseconds(),
-                    PublishedUnix = newsArticle.PublishedAt.ToUnixTimeMilliseconds()
+                    FetchedUnix = newsArticle.FetchedAt.ToInstant().ToUnixTimeMilliseconds(),
+                    PublishedUnix = newsArticle.PublishedAt.ToInstant().ToUnixTimeMilliseconds()
                 };
 
                 logger.LogInformation("Streaming article: {Title}", article.Title);
@@ -49,11 +49,11 @@ namespace NewsService.Services
             }
         }
 
-        public override async Task<ArticleResponse> GetNextArticle(Empty _request, ServerCallContext _context)
+        public override async Task<ArticleResponse> GetArticle(ArticleRequest request, ServerCallContext context)
         {
             logger.LogInformation("Get next article request received");
 
-            var newsResponse = await newsHandler.GetNextArticle();
+            var newsResponse = await newsHandler.GetArticle(request.ArticleKey);
 
             if (newsResponse.Success)
             {
@@ -65,29 +65,18 @@ namespace NewsService.Services
                     Article = new Article
                     {
                         Title = newsArticle.Title,
-                        Image = ByteString.CopyFrom(newsArticle.Image),
+                        ImagePath = newsArticle.ImagePath,
                         Body = newsArticle.Content,
                         Source = newsArticle.Source,
-                        FetchedUnix = newsArticle.FetchedAt.ToUnixTimeMilliseconds(),
-                        PublishedUnix = newsArticle.PublishedAt.ToUnixTimeMilliseconds()
+                        FetchedUnix = newsArticle.FetchedAt.ToInstant().ToUnixTimeMilliseconds(),
+                        PublishedUnix = newsArticle.PublishedAt.ToInstant().ToUnixTimeMilliseconds()
                     }
                 };
             }
 
-
             var statusMessage = CreateStatusMessage(newsResponse.Message);
             logger.LogInformation("Could not serv article, reason: {StatusMessage}", newsResponse.Message);
             return statusMessage;
-        }
-
-        public override Task<Status> GetStatus(Empty _request, ServerCallContext _context)
-        {
-            logger.LogInformation("Get status request received, status: {Status)}", newsHandler.Status);
-
-            return Task.FromResult(new Status
-            {
-                Code = newsHandler.Status == NewsHandlerService.State.READY ? StatusCode.Ok : StatusCode.Fetching
-            });
         }
 
         private static ArticleResponse CreateStatusMessage(string _message)

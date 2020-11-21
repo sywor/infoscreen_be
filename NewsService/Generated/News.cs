@@ -25,24 +25,24 @@ namespace NewsService {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChFQcm90b3MvbmV3cy5wcm90bxIEbmV3cxobZ29vZ2xlL3Byb3RvYnVmL2Vt",
-            "cHR5LnByb3RvIjkKBlN0YXR1cxIPCgdNZXNzYWdlGAEgASgJEh4KBENvZGUY",
-            "AiABKA4yEC5uZXdzLlN0YXR1c0NvZGUicwoHQXJ0aWNsZRINCgV0aXRsZRgB",
-            "IAEoCRIUCgxmZXRjaGVkX3VuaXgYAiABKAMSFgoOcHVibGlzaGVkX3VuaXgY",
-            "AyABKAMSDQoFaW1hZ2UYBCABKAwSDAoEYm9keRgFIAEoCRIOCgZzb3VyY2UY",
-            "BiABKAkiXwoPQXJ0aWNsZVJlc3BvbnNlEiAKB2FydGljbGUYASABKAsyDS5u",
-            "ZXdzLkFydGljbGVIABIeCgZzdGF0dXMYAiABKAsyDC5uZXdzLlN0YXR1c0gA",
-            "QgoKCHJlc3BvbnNlKi8KClN0YXR1c0NvZGUSCwoHRmFpbHVyZRAAEgwKCEZl",
-            "dGNoaW5nEAESBgoCT2sQAjLEAQoLTmV3c0ZldGNoZXISQQoOR2V0QWxsQXJ0",
-            "aWNsZXMSFi5nb29nbGUucHJvdG9idWYuRW1wdHkaFS5uZXdzLkFydGljbGVS",
-            "ZXNwb25zZTABEj8KDkdldE5leHRBcnRpY2xlEhYuZ29vZ2xlLnByb3RvYnVm",
-            "LkVtcHR5GhUubmV3cy5BcnRpY2xlUmVzcG9uc2USMQoJR2V0U3RhdHVzEhYu",
-            "Z29vZ2xlLnByb3RvYnVmLkVtcHR5GgwubmV3cy5TdGF0dXNCDqoCC05ld3NT",
-            "ZXJ2aWNlYgZwcm90bzM="));
+            "cHR5LnByb3RvIiQKDkFydGljbGVSZXF1ZXN0EhIKCmFydGljbGVLZXkYASAB",
+            "KAkiOQoGU3RhdHVzEg8KB01lc3NhZ2UYASABKAkSHgoEQ29kZRgCIAEoDjIQ",
+            "Lm5ld3MuU3RhdHVzQ29kZSJ3CgdBcnRpY2xlEg0KBXRpdGxlGAEgASgJEhQK",
+            "DGZldGNoZWRfdW5peBgCIAEoAxIWCg5wdWJsaXNoZWRfdW5peBgDIAEoAxIR",
+            "CglpbWFnZVBhdGgYBCABKAkSDAoEYm9keRgFIAEoCRIOCgZzb3VyY2UYBiAB",
+            "KAkiXwoPQXJ0aWNsZVJlc3BvbnNlEiAKB2FydGljbGUYASABKAsyDS5uZXdz",
+            "LkFydGljbGVIABIeCgZzdGF0dXMYAiABKAsyDC5uZXdzLlN0YXR1c0gAQgoK",
+            "CHJlc3BvbnNlKi8KClN0YXR1c0NvZGUSCwoHRmFpbHVyZRAAEgwKCEZldGNo",
+            "aW5nEAESBgoCT2sQAjKLAQoLTmV3c0ZldGNoZXISQQoOR2V0QWxsQXJ0aWNs",
+            "ZXMSFi5nb29nbGUucHJvdG9idWYuRW1wdHkaFS5uZXdzLkFydGljbGVSZXNw",
+            "b25zZTABEjkKCkdldEFydGljbGUSFC5uZXdzLkFydGljbGVSZXF1ZXN0GhUu",
+            "bmV3cy5BcnRpY2xlUmVzcG9uc2VCDqoCC05ld3NTZXJ2aWNlYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::NewsService.StatusCode), }, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::NewsService.ArticleRequest), global::NewsService.ArticleRequest.Parser, new[]{ "ArticleKey" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::NewsService.Status), global::NewsService.Status.Parser, new[]{ "Message", "Code" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::NewsService.Article), global::NewsService.Article.Parser, new[]{ "Title", "FetchedUnix", "PublishedUnix", "Image", "Body", "Source" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::NewsService.Article), global::NewsService.Article.Parser, new[]{ "Title", "FetchedUnix", "PublishedUnix", "ImagePath", "Body", "Source" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::NewsService.ArticleResponse), global::NewsService.ArticleResponse.Parser, new[]{ "Article", "Status" }, new[]{ "Response" }, null, null, null)
           }));
     }
@@ -59,6 +59,135 @@ namespace NewsService {
   #endregion
 
   #region Messages
+  public sealed partial class ArticleRequest : pb::IMessage<ArticleRequest> {
+    private static readonly pb::MessageParser<ArticleRequest> _parser = new pb::MessageParser<ArticleRequest>(() => new ArticleRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<ArticleRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::NewsService.NewsReflection.Descriptor.MessageTypes[0]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ArticleRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ArticleRequest(ArticleRequest other) : this() {
+      articleKey_ = other.articleKey_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ArticleRequest Clone() {
+      return new ArticleRequest(this);
+    }
+
+    /// <summary>Field number for the "articleKey" field.</summary>
+    public const int ArticleKeyFieldNumber = 1;
+    private string articleKey_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string ArticleKey {
+      get { return articleKey_; }
+      set {
+        articleKey_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as ArticleRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(ArticleRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (ArticleKey != other.ArticleKey) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (ArticleKey.Length != 0) hash ^= ArticleKey.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (ArticleKey.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(ArticleKey);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (ArticleKey.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ArticleKey);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(ArticleRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.ArticleKey.Length != 0) {
+        ArticleKey = other.ArticleKey;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            ArticleKey = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
   public sealed partial class Status : pb::IMessage<Status> {
     private static readonly pb::MessageParser<Status> _parser = new pb::MessageParser<Status>(() => new Status());
     private pb::UnknownFieldSet _unknownFields;
@@ -67,7 +196,7 @@ namespace NewsService {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::NewsService.NewsReflection.Descriptor.MessageTypes[0]; }
+      get { return global::NewsService.NewsReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -224,7 +353,7 @@ namespace NewsService {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::NewsService.NewsReflection.Descriptor.MessageTypes[1]; }
+      get { return global::NewsService.NewsReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -244,7 +373,7 @@ namespace NewsService {
       title_ = other.title_;
       fetchedUnix_ = other.fetchedUnix_;
       publishedUnix_ = other.publishedUnix_;
-      image_ = other.image_;
+      imagePath_ = other.imagePath_;
       body_ = other.body_;
       source_ = other.source_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -288,14 +417,14 @@ namespace NewsService {
       }
     }
 
-    /// <summary>Field number for the "image" field.</summary>
-    public const int ImageFieldNumber = 4;
-    private pb::ByteString image_ = pb::ByteString.Empty;
+    /// <summary>Field number for the "imagePath" field.</summary>
+    public const int ImagePathFieldNumber = 4;
+    private string imagePath_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pb::ByteString Image {
-      get { return image_; }
+    public string ImagePath {
+      get { return imagePath_; }
       set {
-        image_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        imagePath_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -337,7 +466,7 @@ namespace NewsService {
       if (Title != other.Title) return false;
       if (FetchedUnix != other.FetchedUnix) return false;
       if (PublishedUnix != other.PublishedUnix) return false;
-      if (Image != other.Image) return false;
+      if (ImagePath != other.ImagePath) return false;
       if (Body != other.Body) return false;
       if (Source != other.Source) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -349,7 +478,7 @@ namespace NewsService {
       if (Title.Length != 0) hash ^= Title.GetHashCode();
       if (FetchedUnix != 0L) hash ^= FetchedUnix.GetHashCode();
       if (PublishedUnix != 0L) hash ^= PublishedUnix.GetHashCode();
-      if (Image.Length != 0) hash ^= Image.GetHashCode();
+      if (ImagePath.Length != 0) hash ^= ImagePath.GetHashCode();
       if (Body.Length != 0) hash ^= Body.GetHashCode();
       if (Source.Length != 0) hash ^= Source.GetHashCode();
       if (_unknownFields != null) {
@@ -377,9 +506,9 @@ namespace NewsService {
         output.WriteRawTag(24);
         output.WriteInt64(PublishedUnix);
       }
-      if (Image.Length != 0) {
+      if (ImagePath.Length != 0) {
         output.WriteRawTag(34);
-        output.WriteBytes(Image);
+        output.WriteString(ImagePath);
       }
       if (Body.Length != 0) {
         output.WriteRawTag(42);
@@ -406,8 +535,8 @@ namespace NewsService {
       if (PublishedUnix != 0L) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(PublishedUnix);
       }
-      if (Image.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeBytesSize(Image);
+      if (ImagePath.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ImagePath);
       }
       if (Body.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Body);
@@ -435,8 +564,8 @@ namespace NewsService {
       if (other.PublishedUnix != 0L) {
         PublishedUnix = other.PublishedUnix;
       }
-      if (other.Image.Length != 0) {
-        Image = other.Image;
+      if (other.ImagePath.Length != 0) {
+        ImagePath = other.ImagePath;
       }
       if (other.Body.Length != 0) {
         Body = other.Body;
@@ -468,7 +597,7 @@ namespace NewsService {
             break;
           }
           case 34: {
-            Image = input.ReadBytes();
+            ImagePath = input.ReadString();
             break;
           }
           case 42: {
@@ -493,7 +622,7 @@ namespace NewsService {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::NewsService.NewsReflection.Descriptor.MessageTypes[2]; }
+      get { return global::NewsService.NewsReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

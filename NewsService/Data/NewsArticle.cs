@@ -7,10 +7,11 @@ namespace NewsService.Data
         public static NewsArticle EMPTY => new NewsArticle();
         public string Title { get; set; }
         public string Source { get; set; }
-        public Instant PublishedAt { get; set; }
+        public ZonedDateTime PublishedAt { get; set; }
         public string Content { get; set; }
-        public byte[] Image { get; set; }
-        public Instant FetchedAt { get; set; }
+        public string ImagePath { get; set; }
+        public ZonedDateTime FetchedAt { get; set; }
+        public string Url { get; set; }
 
         public override string ToString()
         {

@@ -14,7 +14,7 @@ namespace NewsService {
 
     static readonly grpc::Marshaller<global::Google.Protobuf.WellKnownTypes.Empty> __Marshaller_google_protobuf_Empty = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Google.Protobuf.WellKnownTypes.Empty.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::NewsService.ArticleResponse> __Marshaller_news_ArticleResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::NewsService.ArticleResponse.Parser.ParseFrom);
-    static readonly grpc::Marshaller<global::NewsService.Status> __Marshaller_news_Status = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::NewsService.Status.Parser.ParseFrom);
+    static readonly grpc::Marshaller<global::NewsService.ArticleRequest> __Marshaller_news_ArticleRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::NewsService.ArticleRequest.Parser.ParseFrom);
 
     static readonly grpc::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::NewsService.ArticleResponse> __Method_GetAllArticles = new grpc::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::NewsService.ArticleResponse>(
         grpc::MethodType.ServerStreaming,
@@ -23,19 +23,12 @@ namespace NewsService {
         __Marshaller_google_protobuf_Empty,
         __Marshaller_news_ArticleResponse);
 
-    static readonly grpc::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::NewsService.ArticleResponse> __Method_GetNextArticle = new grpc::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::NewsService.ArticleResponse>(
+    static readonly grpc::Method<global::NewsService.ArticleRequest, global::NewsService.ArticleResponse> __Method_GetArticle = new grpc::Method<global::NewsService.ArticleRequest, global::NewsService.ArticleResponse>(
         grpc::MethodType.Unary,
         __ServiceName,
-        "GetNextArticle",
-        __Marshaller_google_protobuf_Empty,
+        "GetArticle",
+        __Marshaller_news_ArticleRequest,
         __Marshaller_news_ArticleResponse);
-
-    static readonly grpc::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::NewsService.Status> __Method_GetStatus = new grpc::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::NewsService.Status>(
-        grpc::MethodType.Unary,
-        __ServiceName,
-        "GetStatus",
-        __Marshaller_google_protobuf_Empty,
-        __Marshaller_news_Status);
 
     /// <summary>Service descriptor</summary>
     public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
@@ -52,12 +45,7 @@ namespace NewsService {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
 
-      public virtual global::System.Threading.Tasks.Task<global::NewsService.ArticleResponse> GetNextArticle(global::Google.Protobuf.WellKnownTypes.Empty request, grpc::ServerCallContext context)
-      {
-        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
-      }
-
-      public virtual global::System.Threading.Tasks.Task<global::NewsService.Status> GetStatus(global::Google.Protobuf.WellKnownTypes.Empty request, grpc::ServerCallContext context)
+      public virtual global::System.Threading.Tasks.Task<global::NewsService.ArticleResponse> GetArticle(global::NewsService.ArticleRequest request, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
@@ -70,8 +58,7 @@ namespace NewsService {
     {
       return grpc::ServerServiceDefinition.CreateBuilder()
           .AddMethod(__Method_GetAllArticles, serviceImpl.GetAllArticles)
-          .AddMethod(__Method_GetNextArticle, serviceImpl.GetNextArticle)
-          .AddMethod(__Method_GetStatus, serviceImpl.GetStatus).Build();
+          .AddMethod(__Method_GetArticle, serviceImpl.GetArticle).Build();
     }
 
     /// <summary>Register service method with a service binder with or without implementation. Useful when customizing the  service binding logic.
@@ -81,8 +68,7 @@ namespace NewsService {
     public static void BindService(grpc::ServiceBinderBase serviceBinder, NewsFetcherBase serviceImpl)
     {
       serviceBinder.AddMethod(__Method_GetAllArticles, serviceImpl == null ? null : new grpc::ServerStreamingServerMethod<global::Google.Protobuf.WellKnownTypes.Empty, global::NewsService.ArticleResponse>(serviceImpl.GetAllArticles));
-      serviceBinder.AddMethod(__Method_GetNextArticle, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Google.Protobuf.WellKnownTypes.Empty, global::NewsService.ArticleResponse>(serviceImpl.GetNextArticle));
-      serviceBinder.AddMethod(__Method_GetStatus, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Google.Protobuf.WellKnownTypes.Empty, global::NewsService.Status>(serviceImpl.GetStatus));
+      serviceBinder.AddMethod(__Method_GetArticle, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::NewsService.ArticleRequest, global::NewsService.ArticleResponse>(serviceImpl.GetArticle));
     }
 
   }

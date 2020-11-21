@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -13,11 +12,6 @@ namespace NewsService.Fetchers
 
         public ArsTechnicaFetcher(IConfiguration _configuration, ILoggerFactory _loggerFactory) : base(_configuration, NAME, _loggerFactory)
         {
-        }
-
-        public Task<IEnumerable<string>> Fetch(RedisCacheService _redisCacheService)
-        {
-            throw new NotImplementedException();
         }
     }
 }

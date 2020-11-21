@@ -1,5 +1,10 @@
+using System;
+using InfoScreenServerV3.Server;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Serilog;
+using Serilog.Events;
+using Serilog.Exceptions;
 
 namespace NewsService
 {
@@ -7,11 +12,38 @@ namespace NewsService
     {
         public static void Main(string[] _args)
         {
-            CreateHostBuilder(_args).Build().Run();
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3} {SourceContext:l}] {Message:lj} {NewLine}{Exception}")
+                .Enrich.With(new SimpleClassEnricher())
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .Enrich.WithExceptionDetails()
+                .CreateLogger();
+
+            try
+            {
+                Log.Information("Starting web host");
+                CreateHostBuilder(_args).Build().Run();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Host terminated unexpectedly");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] _args) =>
             Host.CreateDefaultBuilder(_args)
-                .ConfigureWebHostDefaults(_webBuilder => { _webBuilder.UseStartup<Startup>(); });
+                .UseSerilog() 
+                .ConfigureWebHostDefaults(_webBuilder =>
+                {
+                    _webBuilder.UseStartup<Startup>()
+                        .UseSerilog();
+                });
     }
 }

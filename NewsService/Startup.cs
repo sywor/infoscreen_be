@@ -37,9 +37,9 @@ namespace NewsService
 
             _services.AddSingleton((_provider) => _provider.GetRequiredService<IRedisCacheClient>().GetDbFromConfiguration());
 
-            _services.AddSingleton<RedisCacheService>();
             _services.AddSingleton<NewsHandlerService>();
-            _services.AddSingleton<NewsFetchService>();
+            _services.AddSingleton<RedisCacheService>();
+            _services.AddHostedService<NewsFetchService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
