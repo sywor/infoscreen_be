@@ -9,7 +9,7 @@ using NewsService.Data.Parsers;
 
 namespace NewsService.Fetchers
 {
-    public class RESTRequestHandler
+    public class RestRequestHandler
     {
         public static async Task<IResponse> SendGetRequestAsync(string _url, IResponseParser _responseParser, ILogger _logger)
         {
@@ -46,9 +46,9 @@ namespace NewsService.Fetchers
 
                 _logger.LogWarning("Failed to send request to: {URL}. Response code back was: {StatusCode}", _url, responseMessage.StatusCode);
             }
-            catch (Exception _ex)
+            catch (Exception ex)
             {
-                _logger.LogError(_ex, "Exception when sending request");
+                _logger.LogError(ex, "Exception when sending request");
             }
 
             return FailureResponse.Instance;
@@ -69,9 +69,9 @@ namespace NewsService.Fetchers
 
                 _logger.LogWarning("Failed to send request to: {URL}. Response code back was: {StatusCode}", _url, message.StatusCode);
             }
-            catch (Exception _ex)
+            catch (Exception ex)
             {
-                _logger.LogError(_ex, "Exception when sending request");
+                _logger.LogError(ex, "Exception when sending request");
             }
 
             return FailureResponse.Instance;

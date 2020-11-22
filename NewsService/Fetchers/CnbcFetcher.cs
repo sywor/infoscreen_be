@@ -1,22 +1,14 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using NewsService.Services;
 
 namespace NewsService.Fetchers
 {
-    public class CnbcFetcher : AbstractFetcher<CnbcFetcher>, IFetcher
+    public class CnbcFetcher : AbstractRssFetcher<CnbcFetcher>
     {
         private const string NAME = "cnbc";
 
         public CnbcFetcher(IConfiguration _configuration, ILoggerFactory _loggerFactory) : base(_configuration, NAME, _loggerFactory)
         {
-        }
-
-        public Task<IEnumerable<string>> Fetch(RedisCacheService _redisCacheService)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

@@ -1,23 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using NewsService.Services;
 
 namespace NewsService.Fetchers
 {
-    public class NyTimesFetcher : AbstractFetcher<NyTimesFetcher>, IFetcher
+    public class NyTimesFetcher : AbstractRssFetcher<NyTimesFetcher>
     {
         private const string NAME = "ny_times";
 
         public NyTimesFetcher(IConfiguration _configuration, ILoggerFactory _loggerFactory) : base(_configuration, NAME, _loggerFactory)
         {
-        }
-
-        public Task<IEnumerable<string>> Fetch(RedisCacheService _redisCacheService)
-        {
-            throw new NotImplementedException();
         }
     }
 }

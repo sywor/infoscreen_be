@@ -1,23 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using NewsService.Services;
 
 namespace NewsService.Fetchers
 {
-    public class WashingtonPostFetcher : AbstractFetcher<WashingtonPostFetcher>, IFetcher
+    public class WashingtonPostFetcher : AbstractRssFetcher<WashingtonPostFetcher>
     {
         private const string NAME = "washington_post";
 
         public WashingtonPostFetcher(IConfiguration _configuration, ILoggerFactory _loggerFactory) : base(_configuration, NAME, _loggerFactory)
         {
-        }
-
-        public Task<IEnumerable<string>> Fetch(RedisCacheService _redisCacheService)
-        {
-            throw new NotImplementedException();
         }
     }
 }

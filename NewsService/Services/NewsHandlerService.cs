@@ -24,7 +24,7 @@ namespace NewsService.Services
 
             if (!keys.Any())
             {
-                return SingleEnumerable<NewsResponse>.Of(NewsResponse.FAILED("No keys found"));
+                return SingleEnumerable<NewsResponse>.Of(NewsResponse.Failed("No keys found"));
             }
             
             return await redis.GetValues(keys);

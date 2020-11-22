@@ -14,13 +14,14 @@ namespace NewsService.Data.Parsers
         private readonly string bucketName;
         private readonly string filePrefix;
         private readonly string bucketDirectory;
+        private readonly string staticEndpoint;
         private readonly MinioClient minioClient;
 
         public FileDownloadParser(IConfiguration _configuration, ILoggerFactory _loggerFactory)
         {
             logger = _loggerFactory.CreateLogger<FileDownloadParser>();
 
-            string? endpoint = null;
+            string? minioEndpoint = null;
             string? accessKey = null;
             string? secretKey = null;
 
@@ -28,8 +29,11 @@ namespace NewsService.Data.Parsers
             {
                 switch (xpath.Key)
                 {
-                    case "Endpoint":
-                        endpoint = xpath.Get<string>();
+                    case "MinioEndpoint":
+                        minioEndpoint = xpath.Get<string>();
+                        break;
+                    case "StaticHostEndpoint":
+                        staticEndpoint = xpath.Get<string>();
                         break;
                     case "AccessKey":
                         accessKey = xpath.Get<string>();
@@ -49,7 +53,7 @@ namespace NewsService.Data.Parsers
                 }
             }
 
-            if (string.IsNullOrEmpty(endpoint) ||
+            if (string.IsNullOrEmpty(minioEndpoint) ||
                 string.IsNullOrEmpty(accessKey) ||
                 string.IsNullOrEmpty(secretKey) ||
                 string.IsNullOrEmpty(bucketName) ||
@@ -60,7 +64,7 @@ namespace NewsService.Data.Parsers
                 throw new ArgumentException("Invalid configuration for minio, some value is missing or empty");
             }
 
-            minioClient = new MinioClient(endpoint, accessKey, secretKey);
+            minioClient = new MinioClient(minioEndpoint, accessKey, secretKey);
         }
 
         public async Task<IResponse> ParseAsync(HttpContent _responseContent)
@@ -85,7 +89,7 @@ namespace NewsService.Data.Parsers
 
                     return new FileDownloadResponse
                     {
-                        FileUri = $"{bucketName}/{fullFileName}"
+                        FileUri = $"http://{staticEndpoint}/{fullFileName}"
                     };
                 }
                 catch (Exception e)

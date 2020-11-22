@@ -24,7 +24,7 @@ namespace NewsService.Services
             if (!await redis.Db0.ExistsAsync(_key))
             {
                 logger.LogWarning("Could not find news article in Redis with key: {Key}", _key);
-                return NewsResponse.FAILED("No article with key: " + _key);
+                return NewsResponse.Failed("No article with key: " + _key);
             }
 
             var newsArticleResponse = await redis.Db0.GetAsync<NewsArticle>(_key);
@@ -45,7 +45,7 @@ namespace NewsService.Services
         {
             logger.LogInformation("Added news article to Redis with key: {Key}", _key);
 
-            return redis.Db0.AddAsync(_key, _value);
+            return redis.Db0.AddAsync(_key, _value, TimeSpan.FromDays(2));
         }
 
         public async Task<List<string>> GetKeys()

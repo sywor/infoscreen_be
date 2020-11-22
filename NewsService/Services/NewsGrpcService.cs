@@ -37,7 +37,7 @@ namespace NewsService.Services
                 {
                     Title = newsArticle.Title,
                     ImagePath = newsArticle.ImagePath,
-                    Body = newsArticle.Content,
+                    Body = newsArticle.Body,
                     Source = newsArticle.Source,
                     FetchedUnix = newsArticle.FetchedAt.ToInstant().ToUnixTimeMilliseconds(),
                     PublishedUnix = newsArticle.PublishedAt.ToInstant().ToUnixTimeMilliseconds()
@@ -49,11 +49,11 @@ namespace NewsService.Services
             }
         }
 
-        public override async Task<ArticleResponse> GetArticle(ArticleRequest request, ServerCallContext context)
+        public override async Task<ArticleResponse> GetArticle(ArticleRequest _request, ServerCallContext _context)
         {
             logger.LogInformation("Get next article request received");
 
-            var newsResponse = await newsHandler.GetArticle(request.ArticleKey);
+            var newsResponse = await newsHandler.GetArticle(_request.ArticleKey);
 
             if (newsResponse.Success)
             {
@@ -66,7 +66,7 @@ namespace NewsService.Services
                     {
                         Title = newsArticle.Title,
                         ImagePath = newsArticle.ImagePath,
-                        Body = newsArticle.Content,
+                        Body = newsArticle.Body,
                         Source = newsArticle.Source,
                         FetchedUnix = newsArticle.FetchedAt.ToInstant().ToUnixTimeMilliseconds(),
                         PublishedUnix = newsArticle.PublishedAt.ToInstant().ToUnixTimeMilliseconds()

@@ -26,7 +26,7 @@ namespace NewsService.Services
             redis = _redis;
 
             fetchers.Add(new ArsTechnicaFetcher(_configuration, _loggerFactory));
-            // fetchers.Add(new AssociatedPressFetcher(_configuration, _loggerFactory));
+            fetchers.Add(new AssociatedPressFetcher(_configuration, _loggerFactory));
             // fetchers.Add(new BbcFetcher(_configuration, _loggerFactory));
             // fetchers.Add(new CnbcFetcher(_configuration, _loggerFactory));
             // fetchers.Add(new CnnFetcher(_configuration, _loggerFactory));
@@ -45,13 +45,13 @@ namespace NewsService.Services
             // fetchers.Add(new WiredFetcher(_configuration, _loggerFactory));
         }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        public Task StartAsync(CancellationToken _cancellationToken)
         {
             timer = new Timer(TimerCallback, null, TimeSpan.Zero, TimeSpan.FromHours(1));
             return Task.CompletedTask;
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
+        public Task StopAsync(CancellationToken _cancellationToken)
         {
             timer?.Change(Timeout.Infinite, 0);
             return Task.CompletedTask;
@@ -62,7 +62,7 @@ namespace NewsService.Services
             var time = Stopwatch.StartNew();
             logger.LogInformation("Fetching news");
 
-            var tasks = fetchers.Select(_fetcher => _fetcher.Fetch(redis)).ToList();
+            var tasks = fetchers.Select(_fetcher => _fetcher.Fetch(redis));
             var list = (await Task.WhenAll(tasks.ToArray())).SelectMany(_x => _x).ToList();
 
             time.Stop();

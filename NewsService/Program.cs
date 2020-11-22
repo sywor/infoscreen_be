@@ -13,15 +13,14 @@ namespace NewsService
         public static void Main(string[] _args)
         {
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .MinimumLevel.Information()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
                 .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3} {SourceContext:l}] {Message:lj} {NewLine}{Exception}")
                 .Enrich.With(new SimpleClassEnricher())
                 .Enrich.FromLogContext()
-                .WriteTo.Console()
+                // .WriteTo.Console()
                 .Enrich.WithExceptionDetails()
                 .CreateLogger();
-
             try
             {
                 Log.Information("Starting web host");

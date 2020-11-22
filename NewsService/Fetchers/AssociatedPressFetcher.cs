@@ -1,13 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
+using HtmlAgilityPack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using NewsService.Services;
+using NodaTime;
 
 namespace NewsService.Fetchers
 {
-    public class AssociatedPressFetcher : AbstractFetcher<AssociatedPressFetcher>, IFetcher
+    public class AssociatedPressFetcher : AbstractWebPageFetcher<AssociatedPressFetcher>
     {
         private const string NAME = "associated_press";
 
@@ -15,9 +14,29 @@ namespace NewsService.Fetchers
         {
         }
 
-        public Task<IEnumerable<string>> Fetch(RedisCacheService _redisCacheService)
+        protected override bool ExtractPublishedAt(HtmlNodeCollection? _node, string _url, out ZonedDateTime? _value)
         {
-            throw new NotImplementedException();
+            if (_node == null)
+            {
+                Logger.LogWarning($"Published at could be found for article: {{URL}}", _url);
+                _value = null;
+                return false;
+            }
+
+            var srcValue = _node.First().GetAttributeValue("data-source", null);
+
+            if (srcValue == null)
+            {
+                Logger.LogWarning($"Published at tag was empty for article: {{URL}}", _url);
+                _value = null;
+                return false;
+            }
+
+            _value = PublishedAtPattern
+                .Parse(srcValue)
+                .Value.InUtc();
+
+            return true;
         }
     }
 }
