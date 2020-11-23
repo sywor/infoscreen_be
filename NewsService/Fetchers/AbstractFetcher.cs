@@ -106,50 +106,68 @@ namespace NewsService.Fetchers
             }
         }
 
-        protected async Task<List<PageResult>> FetchAndParseArticle(ZonedDateTime _fetchTime, IEnumerable<string> _urls, RedisCacheService _redis)
+        protected async Task<List<PageResult>> FetchAndParseArticle(ZonedDateTime _fetchTime, IEnumerable<RssResponse> _rssResponses, RedisCacheService _redis)
         {
             var result = new List<PageResult>();
-            var urls = _urls as string[] ?? _urls.ToArray();
+            var rssResponses = _rssResponses as RssResponse[] ?? _rssResponses.ToArray();
 
-            if (!urls.Any())
+            if (!rssResponses.Any())
             {
-                Logger.LogWarning("No urls found, skipping fetching for {Name}", Name);
+                Logger.LogWarning("No responses received, skipping fetching for {Name}", Name);
                 return result;
             }
 
-            foreach (var url in urls)
+            foreach (var rssResponse in rssResponses)
             {
-                if (!ShouldFetchArticle(url))
+                var rssResponseUri = rssResponse.Uri;
+
+                if (!ShouldFetchArticle(rssResponse))
                 {
-                    Logger.LogInformation("{Url} for {Source} did not pass filter, skipping", url, Name);
+                    Logger.LogInformation("{Url} for {Source} did not pass filter, skipping", rssResponseUri, Name);
                     continue;
                 }
 
-                Logger.LogInformation("Fetching: {URL}", url);
+                Logger.LogInformation("Fetching: {URL}", rssResponseUri);
 
-                var document = await FetchPage(url);
+                var document = await FetchPage(rssResponseUri);
+                string? title;
+                ZonedDateTime publishedAt;
 
-                var titleNodes = GetNodes(document, TitleXPaths);
-                if (!ExtractTitle(titleNodes, url, out var title))
-                    continue;
+                if (rssResponse.Title != null)
+                {
+                    title = rssResponse.Title;
+                }
+                else
+                {
+                    var titleNodes = GetNodes(document, TitleXPaths);
+                    if (!ExtractTitle(titleNodes, rssResponseUri, out title))
+                        continue;
+                }
 
-                var publishedAtNodes = GetNodes(document, PublishedAtXPaths);
-                if (!ExtractPublishedAt(publishedAtNodes, url, out var publishedAt))
-                    continue;
+                if (rssResponse.PublishedAt != default)
+                {
+                    publishedAt = rssResponse.PublishedAt;
+                }
+                else
+                {
+                    var publishedAtNodes = GetNodes(document, PublishedAtXPaths);
+                    if (!ExtractPublishedAt(publishedAtNodes, rssResponseUri, out publishedAt))
+                        continue;
+                }
 
                 var bodyNodes = GetNodes(document, BodyXPaths);
-                if (!ExtractBody(bodyNodes, url, out var body))
+                if (!ExtractBody(bodyNodes, rssResponseUri, out var body))
                     continue;
 
                 var imageNodes = GetNodes(document, ImageXPaths);
-                if (!ExtractImage(imageNodes, url, out var imageUrl))
+                if (!ExtractImage(imageNodes, rssResponseUri, out var imageUrl))
                     continue;
 
                 var imageResult = await RestRequestHandler.SendGetRequestAsync(imageUrl!, fileDownloadParser, Logger);
 
                 if (!imageResult.Success)
                 {
-                    Logger.LogWarning("No image could be downloaded for article: {URL}", url);
+                    Logger.LogWarning("No image could be downloaded for article: {URL}", rssResponseUri);
                     continue;
                 }
 
@@ -159,11 +177,11 @@ namespace NewsService.Fetchers
                 {
                     Title = title!,
                     Source = Name,
-                    PublishedAt = publishedAt!.Value,
+                    PublishedAt = publishedAt,
                     Body = body!,
                     ImagePath = imagePath,
                     FetchedAt = _fetchTime,
-                    Url = url
+                    Url = rssResponseUri
                 };
 
                 var keyTitle = Regex.Replace(title!.Trim(), @"\s+", "_");
@@ -175,7 +193,7 @@ namespace NewsService.Fetchers
                     result.Add(new PageResult
                     {
                         ArticleKey = key,
-                        PublishedAt = publishedAt.Value,
+                        PublishedAt = publishedAt,
                         FetchedAt = _fetchTime,
                         Source = Name
                     });
@@ -236,12 +254,12 @@ namespace NewsService.Fetchers
             return true;
         }
 
-        protected virtual bool ExtractPublishedAt(HtmlNodeCollection? _node, string _url, out ZonedDateTime? _value)
+        protected virtual bool ExtractPublishedAt(HtmlNodeCollection? _node, string _url, out ZonedDateTime _value)
         {
             if (string.IsNullOrEmpty(_node?.First().InnerText))
             {
                 Logger.LogWarning($"Published at was empty for article: {{URL}}", _url);
-                _value = null;
+                _value = default;
                 return false;
             }
 
@@ -280,7 +298,7 @@ namespace NewsService.Fetchers
             return true;
         }
 
-        protected virtual bool ShouldFetchArticle(string _url)
+        protected virtual bool ShouldFetchArticle(RssResponse _url)
         {
             return true;
         }

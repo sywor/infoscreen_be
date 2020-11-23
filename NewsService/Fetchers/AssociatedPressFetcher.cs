@@ -14,12 +14,12 @@ namespace NewsService.Fetchers
         {
         }
 
-        protected override bool ExtractPublishedAt(HtmlNodeCollection? _node, string _url, out ZonedDateTime? _value)
+        protected override bool ExtractPublishedAt(HtmlNodeCollection? _node, string _url, out ZonedDateTime _value)
         {
             if (_node == null)
             {
                 Logger.LogWarning($"Published at could be found for article: {{URL}}", _url);
-                _value = null;
+                _value = default;
                 return false;
             }
 
@@ -28,7 +28,7 @@ namespace NewsService.Fetchers
             if (srcValue == null)
             {
                 Logger.LogWarning($"Published at tag was empty for article: {{URL}}", _url);
-                _value = null;
+                _value = default;
                 return false;
             }
 

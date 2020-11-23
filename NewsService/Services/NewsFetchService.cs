@@ -25,9 +25,9 @@ namespace NewsService.Services
             logger = _loggerFactory.CreateLogger<NewsFetchService>();
             redis = _redis;
 
-            fetchers.Add(new ArsTechnicaFetcher(_configuration, _loggerFactory));
-            fetchers.Add(new AssociatedPressFetcher(_configuration, _loggerFactory));
-            // fetchers.Add(new BbcFetcher(_configuration, _loggerFactory));
+            // fetchers.Add(new ArsTechnicaFetcher(_configuration, _loggerFactory));
+            // fetchers.Add(new AssociatedPressFetcher(_configuration, _loggerFactory));
+            fetchers.Add(new BbcFetcher(_configuration, _loggerFactory));
             // fetchers.Add(new CnbcFetcher(_configuration, _loggerFactory));
             // fetchers.Add(new CnnFetcher(_configuration, _loggerFactory));
             // fetchers.Add(new EngadgetFetcher(_configuration, _loggerFactory));
@@ -66,7 +66,7 @@ namespace NewsService.Services
             var list = (await Task.WhenAll(tasks.ToArray())).SelectMany(_x => _x).ToList();
 
             time.Stop();
-            logger.LogInformation("Done fetching news. Took: {Took} and fetched {Count} articles", time.Elapsed, 0);
+            logger.LogInformation("Done fetching news. Took: {Took} and fetched {Count} articles", time.Elapsed, list.Count);
             LastUpdate = DateTime.UtcNow;
         }
 

@@ -31,11 +31,11 @@ namespace NewsService.Fetchers
             var rootNodeChildren = GetNodes(document, RootPageXPaths);
 
             var urls = (GetArticleLinksFromRootPage(rootNodeChildren) ?? Array.Empty<string>())
-                .Select(_x => BaseUrl + _x);
+                .Select(_x => new RssResponse {Uri = BaseUrl + _x});
 
             return await FetchAndParseArticle(fetchTime, urls, _redis);
         }
-        
+
         protected virtual IEnumerable<string>? GetArticleLinksFromRootPage(HtmlNodeCollection? _rootNodeChildren)
         {
             var urls = _rootNodeChildren?
