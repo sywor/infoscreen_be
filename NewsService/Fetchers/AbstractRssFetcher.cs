@@ -23,14 +23,15 @@ namespace NewsService.Fetchers
 
             var reader = new FeedReader();
             var items = reader.RetrieveFeed(BaseUrl + LinkPage);
-            var rssResponse = items?
-                .Where(_item => _item.Uri != null)
-                .Select(_item => new RssResponse
-            {
-                Uri = _item.Uri.AbsoluteUri,
-                Title = _item.Title,
-                PublishedAt = OffsetDateTime.FromDateTimeOffset(_item.PublishDate).InFixedZone()
-            }).ToList();
+
+            var rssResponse = items != null ? items
+                                              .Where(_item => _item.Uri != null)
+                                              .Select(_item => new ArticleLinkResponse
+                                              {
+                                                  Uri = _item.Uri.AbsoluteUri,
+                                                  Title = _item.Title,
+                                                  PublishedAt = OffsetDateTime.FromDateTimeOffset(_item.PublishDate).InFixedZone()
+                                              }).ToList() : new List<ArticleLinkResponse>();
 
             return await FetchAndParseArticle(fetchTime, rssResponse, _redis);
         }

@@ -31,7 +31,8 @@ namespace NewsService.Fetchers
             var rootNodeChildren = GetNodes(document, RootPageXPaths);
 
             var urls = (GetArticleLinksFromRootPage(rootNodeChildren) ?? Array.Empty<string>())
-                .Select(_x => new RssResponse {Uri = BaseUrl + _x});
+                .Select(_x => new ArticleLinkResponse {Uri = BaseUrl + _x})
+                .ToList();
 
             return await FetchAndParseArticle(fetchTime, urls, _redis);
         }

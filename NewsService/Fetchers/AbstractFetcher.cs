@@ -106,22 +106,21 @@ namespace NewsService.Fetchers
             }
         }
 
-        protected async Task<List<PageResult>> FetchAndParseArticle(ZonedDateTime _fetchTime, IEnumerable<RssResponse>? _rssResponses, RedisCacheService _redis)
+        protected async Task<List<PageResult>> FetchAndParseArticle(ZonedDateTime _fetchTime, List<ArticleLinkResponse> _articleLinkResponses, RedisCacheService _redis)
         {
             var result = new List<PageResult>();
-            var rssResponses = _rssResponses as RssResponse[] ?? (_rssResponses ?? Array.Empty<RssResponse>()).ToArray();
 
-            if (!rssResponses.Any())
+            if (!_articleLinkResponses.Any())
             {
                 Logger.LogWarning("No responses received, skipping fetching for {Name}", Name);
                 return result;
             }
 
-            foreach (var rssResponse in rssResponses)
+            foreach (var articleLinkResponse in _articleLinkResponses)
             {
-                var rssResponseUri = rssResponse.Uri;
+                var rssResponseUri = articleLinkResponse.Uri;
 
-                if (!ShouldFetchArticle(rssResponse))
+                if (!ShouldFetchArticle(articleLinkResponse))
                 {
                     Logger.LogInformation("{Url} for {Source} did not pass filter, skipping", rssResponseUri, Name);
                     continue;
@@ -130,23 +129,12 @@ namespace NewsService.Fetchers
                 Logger.LogInformation("Fetching: {URL}", rssResponseUri);
 
                 var document = await FetchPage(rssResponseUri);
-                string? title;
                 ZonedDateTime publishedAt;
+                var title = articleLinkResponse.Title;
 
-                if (rssResponse.Title != null)
+                if (articleLinkResponse.PublishedAt != default)
                 {
-                    title = rssResponse.Title;
-                }
-                else
-                {
-                    var titleNodes = GetNodes(document, TitleXPaths);
-                    if (!ExtractTitle(titleNodes, rssResponseUri, out title))
-                        continue;
-                }
-
-                if (rssResponse.PublishedAt != default)
-                {
-                    publishedAt = rssResponse.PublishedAt;
+                    publishedAt = articleLinkResponse.PublishedAt;
                 }
                 else
                 {
@@ -298,7 +286,7 @@ namespace NewsService.Fetchers
             return true;
         }
 
-        protected virtual bool ShouldFetchArticle(RssResponse _url)
+        protected virtual bool ShouldFetchArticle(ArticleLinkResponse _url)
         {
             return true;
         }

@@ -77,5 +77,15 @@ namespace NewsService.Fetchers
             _value = sb.ToString();
             return true;
         }
+
+        protected override bool ExtractImage(HtmlNodeCollection? _node, string _url, out string? _value)
+        {
+            if (base.ExtractImage(_node, _url, out _value)) 
+                return true;
+
+            Logger.LogWarning($"Image couldn't be found (possibly a video article?) for article: {{URL}}", _url);
+            _value = null;
+            return false;
+        }
     }
 }

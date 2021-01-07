@@ -3,7 +3,7 @@ using NodaTime;
 
 namespace NewsService.Data
 {
-    public struct RssResponse
+    public struct ArticleLinkResponse
     {
         public string Uri { get; set; }
         public string Title { get; set; }
