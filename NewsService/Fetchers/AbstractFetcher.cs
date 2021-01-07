@@ -106,10 +106,10 @@ namespace NewsService.Fetchers
             }
         }
 
-        protected async Task<List<PageResult>> FetchAndParseArticle(ZonedDateTime _fetchTime, IEnumerable<RssResponse> _rssResponses, RedisCacheService _redis)
+        protected async Task<List<PageResult>> FetchAndParseArticle(ZonedDateTime _fetchTime, IEnumerable<RssResponse>? _rssResponses, RedisCacheService _redis)
         {
             var result = new List<PageResult>();
-            var rssResponses = _rssResponses as RssResponse[] ?? _rssResponses.ToArray();
+            var rssResponses = _rssResponses as RssResponse[] ?? (_rssResponses ?? Array.Empty<RssResponse>()).ToArray();
 
             if (!rssResponses.Any())
             {
@@ -211,7 +211,7 @@ namespace NewsService.Fetchers
                 await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions {Headless = true});
 
                 var page = await browser.NewPageAsync();
-                var response = await page.GoToAsync(_url);
+                var response = await page.GoToAsync(_url, WaitUntilNavigation.Networkidle0);
 
                 if (response.Status == HttpStatusCode.OK)
                 {

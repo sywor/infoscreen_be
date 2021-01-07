@@ -27,8 +27,8 @@ namespace NewsService.Services
 
             // fetchers.Add(new ArsTechnicaFetcher(_configuration, _loggerFactory));
             // fetchers.Add(new AssociatedPressFetcher(_configuration, _loggerFactory));
-            fetchers.Add(new BbcFetcher(_configuration, _loggerFactory));
-            // fetchers.Add(new CnbcFetcher(_configuration, _loggerFactory));
+            // fetchers.Add(new BbcFetcher(_configuration, _loggerFactory));
+             fetchers.Add(new CnbcFetcher(_configuration, _loggerFactory));
             // fetchers.Add(new CnnFetcher(_configuration, _loggerFactory));
             // fetchers.Add(new EngadgetFetcher(_configuration, _loggerFactory));
             // fetchers.Add(new IgnFetcher(_configuration, _loggerFactory));

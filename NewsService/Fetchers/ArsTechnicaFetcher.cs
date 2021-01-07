@@ -9,6 +9,7 @@ namespace NewsService.Fetchers
     public class ArsTechnicaFetcher : AbstractRssFetcher<ArsTechnicaFetcher>
     {
         private const string NAME = "arstechnica";
+        private readonly Regex regex = new Regex(@".*'(http.+)'.*", RegexOptions.Compiled);
 
         public ArsTechnicaFetcher(IConfiguration _configuration, ILoggerFactory _loggerFactory) : base(_configuration, NAME, _loggerFactory)
         {
@@ -31,7 +32,6 @@ namespace NewsService.Fetchers
                 return false;
             }
 
-            Regex regex = new Regex(@".*'(http.+)'.*", RegexOptions.IgnoreCase);
             Match match = regex.Match(srcValue);
 
             if (!match.Success)
