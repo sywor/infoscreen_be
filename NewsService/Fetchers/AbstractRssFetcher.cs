@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 
 using NewsService.Config;
 using NewsService.Data;
+using NewsService.Fetchers.page;
 using NewsService.Services;
 
 using NodaTime;
@@ -15,10 +16,10 @@ using SimpleFeedReader;
 
 namespace NewsService.Fetchers
 {
-    public abstract class AbstractRssFetcher<T> : AbstractFetcher<T>, IFetcher where T : IFetcher
+    public abstract class AbstractRssFetcher<T> : AbstractFetcher<T>, IFetcher
     {
         protected AbstractRssFetcher(NewsSourceConfigurations _configuration, MinioConfiguration _minioConfiguration, string _name, RedisCacheService _redis, ILoggerFactory _loggerFactory) :
-            base(_configuration, _minioConfiguration, _name, _redis, _loggerFactory)
+            base(_configuration, _minioConfiguration, _name, _redis, _loggerFactory, new DefaultPageFetcher(_loggerFactory))
         {
         }
 

@@ -33,7 +33,7 @@ namespace NewsService.Fetchers
                 return false;
             }
 
-            _value = ParseDateTime(_node.First().InnerText);
+            _value = ParseZonedDateTimeUTC(_node.First().InnerText);
 
             return true;
         }

@@ -29,16 +29,16 @@ namespace NewsService.Fetchers
         {
             if (_node == null)
             {
-                SetFailure(_url, out _value);
+                LogAndSetFailure(_url, out _value);
 
                 return false;
             }
 
-            var srcValue = _node?.First().InnerText;
+            var srcValue = _node.First().InnerText;
 
             if (srcValue == null)
             {
-                SetFailure(_url, out _value);
+                LogAndSetFailure(_url, out _value);
 
                 return false;
             }
@@ -56,7 +56,7 @@ namespace NewsService.Fetchers
 
                 if (!match.Success)
                 {
-                    SetFailure(_url, out _value);
+                    LogAndSetFailure(_url, out _value);
 
                     return false;
                 }
@@ -66,20 +66,14 @@ namespace NewsService.Fetchers
 
             if (string.IsNullOrEmpty(dateTime))
             {
-                SetFailure(_url, out _value);
+                LogAndSetFailure(_url, out _value);
 
                 return false;
             }
 
-            _value = ParseDateTime(dateTime);
+            _value = ParseZonedDateTimeUTC(dateTime);
 
             return true;
-        }
-
-        private void SetFailure(string _url, out ZonedDateTime _value)
-        {
-            Logger.LogWarning($"Could not parse published at for article: {{URL}}", _url);
-            _value = default;
         }
 
         protected override bool ExtractBody(HtmlNodeCollection? _node, string _url, out string? _value)

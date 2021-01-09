@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-
-using Hangfire;
 
 using HtmlAgilityPack;
 
@@ -14,20 +11,15 @@ using Microsoft.Extensions.Logging;
 using NewsService.Config;
 using NewsService.Data;
 using NewsService.Data.Parsers;
+using NewsService.Fetchers.page;
 using NewsService.Services;
 
 using NodaTime;
 using NodaTime.Text;
 
-using PuppeteerSharp;
-
-using Serilog;
-
-using ILogger = Microsoft.Extensions.Logging.ILogger;
-
 namespace NewsService.Fetchers
 {
-    public abstract class AbstractFetcher<T> where T : IFetcher
+    public abstract class AbstractFetcher<T>
     {
         public string Name { get; }
 
@@ -43,10 +35,17 @@ namespace NewsService.Fetchers
         protected readonly string[] BodyXPaths;
         protected readonly string[] PublishedAtXPaths;
         protected readonly List<InstantPattern> PublishedAtPatterns;
+        protected readonly IPageFetcher PageFetcher;
 
-        protected AbstractFetcher(NewsSourceConfigurations _newsSourceConfigurations, MinioConfiguration _minioConfiguration, string _name, RedisCacheService _redis, ILoggerFactory _loggerFactory)
+        protected AbstractFetcher(NewsSourceConfigurations _newsSourceConfigurations,
+                                  MinioConfiguration _minioConfiguration,
+                                  string _name,
+                                  RedisCacheService _redis,
+                                  ILoggerFactory _loggerFactory,
+                                  IPageFetcher _pageFetcher)
         {
             redis = _redis;
+            PageFetcher = _pageFetcher;
             Name = _name;
             Logger = _loggerFactory.CreateLogger<T>();
 
@@ -57,9 +56,11 @@ namespace NewsService.Fetchers
             BaseUrl = configuration.BaseUrl;
             LinkPage = configuration.LinkPage;
 
-            PublishedAtPatterns = configuration.PublishedAtPattern
-                                               .Select(InstantPattern.CreateWithInvariantCulture)
-                                               .ToList();
+            PublishedAtPatterns = configuration.PublishedAtPattern != null
+                ? configuration.PublishedAtPattern
+                               .Select(InstantPattern.CreateWithInvariantCulture)
+                               .ToList()
+                : new List<InstantPattern>();
 
             PublishedAtPatterns.Add(InstantPattern.General);
 
@@ -97,7 +98,7 @@ namespace NewsService.Fetchers
 
                     Logger.LogInformation("Fetching: {URL}", responseUri);
 
-                    var document = await FetchPage(responseUri);
+                    var document = await PageFetcher.FetchPage(responseUri);
 
                     if (document == null)
                     {
@@ -203,41 +204,6 @@ namespace NewsService.Fetchers
             return key;
         }
 
-        protected async Task<HtmlDocument?> FetchPage(string _url)
-        {
-            try
-            {
-                await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultRevision);
-                await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions { Headless = true });
-                var context = await browser.CreateIncognitoBrowserContextAsync();
-
-                var page = await context.NewPageAsync();
-                page.Client.LoggerFactory.AddSerilog();
-
-                var response = await page.GoToAsync(_url, WaitUntilNavigation.Networkidle2);
-
-                if (response.Status == HttpStatusCode.OK)
-                {
-                    await ActRootOnPage(page);
-                    var pageContent = await page.GetContentAsync();
-                    var doc = new HtmlDocument();
-                    doc.LoadHtml(pageContent);
-
-                    return doc;
-                }
-
-                Logger.LogWarning("Failed to send request to: {URL}. Response code back was: {StatusCode}", _url, response.Status);
-
-                return null;
-            }
-            catch (Exception e)
-            {
-                Logger.LogError(e, "Exception when requesting page from {URL}", _url);
-            }
-
-            return null;
-        }
-
         protected static HtmlNodeCollection? GetNodes(HtmlDocument _page, string[] _xPaths)
         {
             return _xPaths
@@ -270,12 +236,12 @@ namespace NewsService.Fetchers
                 return false;
             }
 
-            _value = ParseDateTime(_node.First().InnerText);
+            _value = ParseZonedDateTimeUTC(_node.First().InnerText);
 
             return true;
         }
 
-        protected virtual ZonedDateTime ParseDateTime(string _dateTimeText)
+        protected virtual ZonedDateTime ParseZonedDateTimeUTC(string _dateTimeText)
         {
             return PublishedAtPatterns
                    .Select(_pattern => _pattern.Parse(_dateTimeText))
@@ -320,9 +286,10 @@ namespace NewsService.Fetchers
             return true;
         }
 
-        protected virtual Task ActRootOnPage(Page _page)
+        protected void LogAndSetFailure<Type>(string _url, out Type _value)
         {
-            return Task.CompletedTask;
+            Logger.LogWarning("Could not parse {Type} for article: {URL}", nameof(Type), _url);
+            _value = default!;
         }
     }
 }

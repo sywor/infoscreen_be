@@ -10,28 +10,38 @@ using Microsoft.Extensions.Logging;
 
 using NewsService.Config;
 using NewsService.Data;
+using NewsService.Fetchers.page;
 using NewsService.Services;
 
 using NodaTime;
 
 namespace NewsService.Fetchers
 {
-    public class AbstractWebPageFetcher<T> : AbstractFetcher<T>, IFetcher where T : IFetcher
+    public class AbstractWebPageFetcher<T> : AbstractFetcher<T>, IFetcher
     {
-        public AbstractWebPageFetcher(NewsSourceConfigurations _configuration, MinioConfiguration _minioConfiguration, string _name, RedisCacheService _redis, ILoggerFactory _loggerFactory) :
-            base(_configuration, _minioConfiguration, _name, _redis, _loggerFactory)
+        public AbstractWebPageFetcher(NewsSourceConfigurations _configuration,
+                                      MinioConfiguration _minioConfiguration,
+                                      string _name,
+                                      RedisCacheService _redis,
+                                      ILoggerFactory _loggerFactory,
+                                      IPageFetcher _pageFetcher) : base(_configuration,
+                                                                        _minioConfiguration,
+                                                                        _name,
+                                                                        _redis,
+                                                                        _loggerFactory,
+                                                                        _pageFetcher)
         {
         }
 
         public async Task<IEnumerable<PageResult>> Fetch()
         {
             var time = Stopwatch.StartNew();
-            Logger.LogInformation("{Page} Fetching", Name);
+            Logger.LogInformation("Fetching {Page}", Name);
 
             var now = SystemClock.Instance.GetCurrentInstant();
             var fetchTime = now.InUtc();
 
-            var document = await FetchPage(BaseUrl + LinkPage);
+            var document = await PageFetcher.FetchRootPage(BaseUrl + LinkPage);
 
             if (document == null)
             {

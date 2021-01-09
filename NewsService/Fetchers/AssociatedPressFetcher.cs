@@ -5,6 +5,7 @@ using HtmlAgilityPack;
 using Microsoft.Extensions.Logging;
 
 using NewsService.Config;
+using NewsService.Fetchers.page;
 using NewsService.Services;
 
 using NodaTime;
@@ -16,7 +17,7 @@ namespace NewsService.Fetchers
         public const string NAME = "associated_press";
 
         public AssociatedPressFetcher(NewsSourceConfigurations _newsSourceConfigurations, MinioConfiguration _minioConfiguration, RedisCacheService _redis, ILoggerFactory _loggerFactory) :
-            base(_newsSourceConfigurations, _minioConfiguration, NAME, _redis, _loggerFactory)
+            base(_newsSourceConfigurations, _minioConfiguration, NAME, _redis, _loggerFactory, new DefaultPageFetcher(_loggerFactory))
         {
         }
 
@@ -40,7 +41,7 @@ namespace NewsService.Fetchers
                 return false;
             }
 
-            _value = ParseDateTime(_node.First().InnerText);
+            _value = ParseZonedDateTimeUTC(_node.First().InnerText);
 
             return true;
         }
