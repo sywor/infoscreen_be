@@ -1,7 +1,10 @@
 using System;
+
 using InfoScreenServerV3.Server;
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+
 using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
@@ -13,14 +16,13 @@ namespace NewsService
         public static void Main(string[] _args)
         {
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Information()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3} {SourceContext:l}] {Message:lj} {NewLine}{Exception}")
-                .Enrich.With(new SimpleClassEnricher())
-                .Enrich.FromLogContext()
-                // .WriteTo.Console()
-                .Enrich.WithExceptionDetails()
-                .CreateLogger();
+                         .MinimumLevel.Information()
+                         .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                         .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3} {SourceContext:l}] {Message:lj} {NewLine}{Exception}")
+                         .Enrich.With(new SimpleClassEnricher())
+                         .Enrich.FromLogContext()
+                         .Enrich.WithExceptionDetails()
+                         .CreateLogger();
             try
             {
                 Log.Information("Starting web host");
@@ -38,11 +40,11 @@ namespace NewsService
 
         public static IHostBuilder CreateHostBuilder(string[] _args) =>
             Host.CreateDefaultBuilder(_args)
-                .UseSerilog() 
+                .UseSerilog()
                 .ConfigureWebHostDefaults(_webBuilder =>
                 {
                     _webBuilder.UseStartup<Startup>()
-                        .UseSerilog();
+                               .UseSerilog();
                 });
     }
 }

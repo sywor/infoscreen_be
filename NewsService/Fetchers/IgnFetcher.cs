@@ -1,15 +1,16 @@
 using Microsoft.Extensions.Logging;
 
 using NewsService.Config;
+using NewsService.Services;
 
 namespace NewsService.Fetchers
 {
     public class IgnFetcher : AbstractRssFetcher<IgnFetcher>
     {
-        private const string NAME = "ign";
+        public const string NAME = "ign";
 
-        public IgnFetcher(NewsSourceConfigurations _newsSourceConfigurations, MinioConfiguration _minioConfiguration, ILoggerFactory _loggerFactory) :
-            base(_newsSourceConfigurations, _minioConfiguration, NAME, _loggerFactory)
+        public IgnFetcher(NewsSourceConfigurations _newsSourceConfigurations, MinioConfiguration _minioConfiguration, RedisCacheService _redis, ILoggerFactory _loggerFactory) :
+            base(_newsSourceConfigurations, _minioConfiguration, NAME, _redis, _loggerFactory)
         {
         }
     }

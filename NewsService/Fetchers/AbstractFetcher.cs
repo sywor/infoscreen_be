@@ -5,6 +5,8 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
+using Hangfire;
+
 using HtmlAgilityPack;
 
 using Microsoft.Extensions.Logging;
@@ -25,9 +27,11 @@ using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace NewsService.Fetchers
 {
-    public abstract class AbstractFetcher<T>
+    public abstract class AbstractFetcher<T> where T : IFetcher
     {
-        protected string Name { get; }
+        public string Name { get; }
+
+        private readonly RedisCacheService redis;
 
         private readonly FileDownloadParser fileDownloadParser;
         protected readonly ILogger Logger;
@@ -40,8 +44,9 @@ namespace NewsService.Fetchers
         protected readonly string[] PublishedAtXPaths;
         protected readonly List<InstantPattern> PublishedAtPatterns;
 
-        protected AbstractFetcher(NewsSourceConfigurations _newsSourceConfigurations, MinioConfiguration _minioConfiguration, string _name, ILoggerFactory _loggerFactory)
+        protected AbstractFetcher(NewsSourceConfigurations _newsSourceConfigurations, MinioConfiguration _minioConfiguration, string _name, RedisCacheService _redis, ILoggerFactory _loggerFactory)
         {
+            redis = _redis;
             Name = _name;
             Logger = _loggerFactory.CreateLogger<T>();
 
@@ -66,7 +71,7 @@ namespace NewsService.Fetchers
             PublishedAtXPaths = configurationXPaths.PublishedAt;
         }
 
-        protected async Task<List<PageResult>> FetchAndParseArticle(ZonedDateTime _fetchTime, List<ArticleLinkResponse> _articleLinkResponses, RedisCacheService _redis)
+        protected async Task<List<PageResult>> FetchAndParseArticle(ZonedDateTime _fetchTime, List<ArticleLinkResponse> _articleLinkResponses)
         {
             var result = new List<PageResult>();
 
@@ -115,7 +120,7 @@ namespace NewsService.Fetchers
 
                     var key = CreateRedisKey(title);
 
-                    if (await _redis.KeyExist(key))
+                    if (await redis.KeyExist(key))
                     {
                         Logger.LogInformation("Article with key: {Key} already exists, skipping", key);
 
@@ -168,7 +173,7 @@ namespace NewsService.Fetchers
                         Url = responseUri
                     };
 
-                    if (await _redis.AddValue(key, newsArticle))
+                    if (await redis.AddValue(key, newsArticle))
                     {
                         result.Add(new PageResult
                         {
@@ -188,9 +193,9 @@ namespace NewsService.Fetchers
             return result;
         }
 
-        private string CreateRedisKey(string title)
+        private string CreateRedisKey(string _title)
         {
-            var keyTitle = Regex.Replace(title!.Trim(), @"\s+", "_");
+            var keyTitle = Regex.Replace(_title!.Trim(), @"\s+", "_");
             keyTitle = Regex.Replace(keyTitle, @"[^\w\*]", "");
 
             var key = $"news_article:{Name}:{keyTitle}";

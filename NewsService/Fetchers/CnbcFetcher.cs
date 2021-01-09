@@ -7,6 +7,7 @@ using HtmlAgilityPack;
 using Microsoft.Extensions.Logging;
 
 using NewsService.Config;
+using NewsService.Services;
 
 using NodaTime;
 using NodaTime.Text;
@@ -16,12 +17,12 @@ namespace NewsService.Fetchers
 {
     public class CnbcFetcher : AbstractRssFetcher<CnbcFetcher>
     {
-        private const string NAME = "cnbc";
+        public const string NAME = "cnbc";
         private readonly Regex publishedAtPattern = new Regex(@"Published [a-zA-Z]{3}, ([a-zA-Z]{3} \d{1,2} \d{4}).+(\d{1,2}:\d{1,2} [PA][M] EST)", RegexOptions.Compiled);
         private readonly DateTimeZoneCache dateTimeZoneProvider = new DateTimeZoneCache(TzdbDateTimeZoneSource.Default);
 
-        public CnbcFetcher(NewsSourceConfigurations _newsSourceConfigurations, MinioConfiguration _minioConfiguration, ILoggerFactory _loggerFactory) :
-            base(_newsSourceConfigurations, _minioConfiguration, NAME, _loggerFactory)
+        public CnbcFetcher(NewsSourceConfigurations _newsSourceConfigurations, MinioConfiguration _minioConfiguration, RedisCacheService _redis, ILoggerFactory _loggerFactory) :
+            base(_newsSourceConfigurations, _minioConfiguration, NAME, _redis, _loggerFactory)
         {
         }
 

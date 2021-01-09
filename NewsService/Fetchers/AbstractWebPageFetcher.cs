@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,14 +16,18 @@ using NodaTime;
 
 namespace NewsService.Fetchers
 {
-    public class AbstractWebPageFetcher<T> : AbstractFetcher<T>, IFetcher
+    public class AbstractWebPageFetcher<T> : AbstractFetcher<T>, IFetcher where T : IFetcher
     {
-        public AbstractWebPageFetcher(NewsSourceConfigurations _configuration, MinioConfiguration _minioConfiguration, string _name, ILoggerFactory _loggerFactory) : base(_configuration, _minioConfiguration, _name, _loggerFactory)
+        public AbstractWebPageFetcher(NewsSourceConfigurations _configuration, MinioConfiguration _minioConfiguration, string _name, RedisCacheService _redis, ILoggerFactory _loggerFactory) :
+            base(_configuration, _minioConfiguration, _name, _redis, _loggerFactory)
         {
         }
 
-        public async Task<IEnumerable<PageResult>> Fetch(RedisCacheService _redis)
+        public async Task<IEnumerable<PageResult>> Fetch()
         {
+            var time = Stopwatch.StartNew();
+            Logger.LogInformation("{Page} Fetching", Name);
+
             var now = SystemClock.Instance.GetCurrentInstant();
             var fetchTime = now.InUtc();
 
@@ -41,7 +46,10 @@ namespace NewsService.Fetchers
                        .Select(_x => new ArticleLinkResponse { Uri = BaseUrl + _x })
                        .ToList();
 
-            return await FetchAndParseArticle(fetchTime, urls, _redis);
+            var result = await FetchAndParseArticle(fetchTime, urls);
+            Logger.LogInformation("{Page} Done fetching. Took: {Took} and fetched {Count} articles", Name, time.Elapsed, result.Count);
+
+            return result;
         }
 
         protected virtual IEnumerable<string>? GetArticleLinksFromRootPage(HtmlNodeCollection? _rootNodeChildren)

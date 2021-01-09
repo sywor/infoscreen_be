@@ -1,15 +1,16 @@
 using Microsoft.Extensions.Logging;
 
 using NewsService.Config;
+using NewsService.Services;
 
 namespace NewsService.Fetchers
 {
     public class WashingtonPostFetcher : AbstractRssFetcher<WashingtonPostFetcher>
     {
-        private const string NAME = "washington_post";
+        public const string NAME = "washington_post";
 
-        public WashingtonPostFetcher(NewsSourceConfigurations _newsSourceConfigurations, MinioConfiguration _minioConfiguration, ILoggerFactory _loggerFactory) :
-            base(_newsSourceConfigurations, _minioConfiguration, NAME, _loggerFactory)
+        public WashingtonPostFetcher(NewsSourceConfigurations _newsSourceConfigurations, MinioConfiguration _minioConfiguration, RedisCacheService _redis, ILoggerFactory _loggerFactory) :
+            base(_newsSourceConfigurations, _minioConfiguration, NAME, _redis, _loggerFactory)
         {
         }
     }

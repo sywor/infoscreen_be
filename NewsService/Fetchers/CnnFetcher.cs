@@ -7,6 +7,7 @@ using HtmlAgilityPack;
 using Microsoft.Extensions.Logging;
 
 using NewsService.Config;
+using NewsService.Services;
 
 using NodaTime;
 
@@ -14,13 +15,13 @@ namespace NewsService.Fetchers
 {
     public class CnnFetcher : AbstractRssFetcher<CnnFetcher>
     {
-        private const string NAME = "cnn";
+        public const string NAME = "cnn";
 
         private readonly Regex regex1 = new Regex(@".* (\d{1,2}[thst]{2} [A-Za-z]{3,8} \d{4})", RegexOptions.Compiled);
         private readonly Regex regex2 = new Regex(@".* (\d{4}).*\) (.*)", RegexOptions.Compiled);
 
-        public CnnFetcher(NewsSourceConfigurations _newsSourceConfigurations, MinioConfiguration _minioConfiguration, ILoggerFactory _loggerFactory) :
-            base(_newsSourceConfigurations, _minioConfiguration, NAME, _loggerFactory)
+        public CnnFetcher(NewsSourceConfigurations _newsSourceConfigurations, MinioConfiguration _minioConfiguration, RedisCacheService _redis, ILoggerFactory _loggerFactory) :
+            base(_newsSourceConfigurations, _minioConfiguration, NAME, _redis, _loggerFactory)
         {
         }
 

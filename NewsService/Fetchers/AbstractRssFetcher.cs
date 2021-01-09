@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,14 +15,18 @@ using SimpleFeedReader;
 
 namespace NewsService.Fetchers
 {
-    public abstract class AbstractRssFetcher<T> : AbstractFetcher<T>, IFetcher
+    public abstract class AbstractRssFetcher<T> : AbstractFetcher<T>, IFetcher where T : IFetcher
     {
-        protected AbstractRssFetcher(NewsSourceConfigurations _configuration, MinioConfiguration _minioConfiguration, string _name, ILoggerFactory _loggerFactory) : base(_configuration, _minioConfiguration, _name, _loggerFactory)
+        protected AbstractRssFetcher(NewsSourceConfigurations _configuration, MinioConfiguration _minioConfiguration, string _name, RedisCacheService _redis, ILoggerFactory _loggerFactory) :
+            base(_configuration, _minioConfiguration, _name, _redis, _loggerFactory)
         {
         }
 
-        public async Task<IEnumerable<PageResult>> Fetch(RedisCacheService _redis)
+        public async Task<IEnumerable<PageResult>> Fetch()
         {
+            var time = Stopwatch.StartNew();
+            Logger.LogInformation("Fetching: {Page}", Name);
+
             var now = SystemClock.Instance.GetCurrentInstant();
             var fetchTime = now.InUtc();
 
@@ -39,7 +44,10 @@ namespace NewsService.Fetchers
                   }).ToList()
                 : new List<ArticleLinkResponse>();
 
-            return await FetchAndParseArticle(fetchTime, rssResponse, _redis);
+            var result = await FetchAndParseArticle(fetchTime, rssResponse);
+            Logger.LogInformation("{Page} Done fetching. Took: {Took} and fetched {Count} articles", Name, time.Elapsed, result.Count);
+
+            return result;
         }
     }
 }

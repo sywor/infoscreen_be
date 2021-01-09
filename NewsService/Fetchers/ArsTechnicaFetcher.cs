@@ -1,20 +1,22 @@
 using System.Linq;
 using System.Text.RegularExpressions;
+
 using HtmlAgilityPack;
-using Microsoft.Extensions.Configuration;
+
 using Microsoft.Extensions.Logging;
 
 using NewsService.Config;
+using NewsService.Services;
 
 namespace NewsService.Fetchers
 {
     public class ArsTechnicaFetcher : AbstractRssFetcher<ArsTechnicaFetcher>
     {
-        private const string NAME = "arstechnica";
+        public const string NAME = "arstechnica";
         private readonly Regex regex = new Regex(@".*'(http.+)'.*", RegexOptions.Compiled);
 
-        public ArsTechnicaFetcher(NewsSourceConfigurations _newsSourceConfigurations, MinioConfiguration _minioConfiguration, ILoggerFactory _loggerFactory) :
-            base(_newsSourceConfigurations, _minioConfiguration, NAME, _loggerFactory)
+        public ArsTechnicaFetcher(NewsSourceConfigurations _newsSourceConfigurations, MinioConfiguration _minioConfiguration, RedisCacheService _redis, ILoggerFactory _loggerFactory) :
+            base(_newsSourceConfigurations, _minioConfiguration, NAME, _redis, _loggerFactory)
         {
         }
 
@@ -32,6 +34,7 @@ namespace NewsService.Fetchers
             {
                 Logger.LogWarning($"Image style tag couldn't be found for article: {{URL}}", _url);
                 _value = null;
+
                 return false;
             }
 
@@ -41,10 +44,12 @@ namespace NewsService.Fetchers
             {
                 Logger.LogWarning($"Image style tag didn't match pattern for article: {{URL}}", _url);
                 _value = null;
+
                 return false;
             }
 
             _value = match.Groups[1].Value;
+
             return true;
         }
 
@@ -54,6 +59,7 @@ namespace NewsService.Fetchers
             {
                 Logger.LogWarning($"Body could be found for article: {{URL}}", _url);
                 _value = null;
+
                 return false;
             }
 
@@ -63,10 +69,12 @@ namespace NewsService.Fetchers
             {
                 Logger.LogWarning($"Body was empty for article: {{URL}}", _url);
                 _value = null;
+
                 return false;
             }
 
             _value = result;
+
             return true;
         }
     }

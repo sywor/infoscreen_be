@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Hangfire;
+using Hangfire.Redis;
+
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -6,7 +9,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using NewsService.Config;
+using NewsService.Fetchers;
 using NewsService.Services;
+
+using StackExchange.Redis;
 using StackExchange.Redis.Extensions.Core;
 using StackExchange.Redis.Extensions.Core.Abstractions;
 using StackExchange.Redis.Extensions.Core.Configuration;
@@ -17,38 +23,53 @@ namespace NewsService
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
+        private readonly IConfiguration configuration;
 
         public Startup(IConfiguration _configuration)
         {
-            Configuration = _configuration;
+            configuration = _configuration;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection _services)
         {
-            var redisConfiguration = Configuration.GetSection("Redis").Get<RedisConfiguration>();
-            var minioConfiguration = Configuration.GetSection("Minio").Get<MinioConfiguration>();
-            var newsSourceConfigurations = Configuration.GetSection("NewsSources").Get<NewsSourceConfiguration[]>();
+            var redisConfiguration = configuration.GetSection("Redis").Get<RedisConfiguration>();
+            var newsSourceConfigurations = new NewsSourceConfigurations(configuration.GetSection("NewsSources").Get<NewsSourceConfiguration[]>());
+            var minioConfiguration = configuration.GetSection("Minio").Get<MinioConfiguration>();
 
             _services.AddGrpc();
+            _services.AddAuthorization();
+
+            var redisCacheConnectionPoolManager = new RedisCacheConnectionPoolManager(redisConfiguration);
 
             _services.AddSingleton<IRedisCacheClient, RedisCacheClient>();
-            _services.AddSingleton<IRedisCacheConnectionPoolManager, RedisCacheConnectionPoolManager>();
+            _services.AddSingleton<IRedisCacheConnectionPoolManager>(redisCacheConnectionPoolManager);
             _services.AddSingleton<ISerializer, NewtonsoftSerializer>();
-            _services.AddSingleton(redisConfiguration);
 
             _services.AddSingleton((_provider) => _provider.GetRequiredService<IRedisCacheClient>().GetDbFromConfiguration());
 
             _services.AddSingleton<NewsHandlerService>();
             _services.AddSingleton<RedisCacheService>();
-            _services.AddHostedService<NewsFetchService>();
+            _services.AddSingleton(redisConfiguration);
+            _services.AddSingleton(newsSourceConfigurations);
             _services.AddSingleton(minioConfiguration);
-            _services.AddSingleton(new NewsSourceConfigurations(newsSourceConfigurations));
+
+            _services.AddHangfire(_configuration =>
+            {
+                var connectionMultiplexer = (ConnectionMultiplexer) redisCacheConnectionPoolManager.GetConnection();
+                var redisStorageOptions = new RedisStorageOptions
+                {
+                    Prefix = "hangfire:"
+                };
+
+                _configuration
+                    .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                    .UseSimpleAssemblyNameTypeSerializer()
+                    .UseRecommendedSerializerSettings()
+                    .UseSerilogLogProvider()
+                    .UseRedisStorage(connectionMultiplexer, redisStorageOptions);
+            });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder _app, IWebHostEnvironment _env)
         {
             if (_env.IsDevelopment())
@@ -57,17 +78,45 @@ namespace NewsService
             }
 
             _app.UseRouting();
+            _app.UseAuthorization();
+            _app.UseHangfireServer();
+            _app.UseHangfireDashboard();
 
             _app.UseEndpoints(_endpoints =>
             {
                 _endpoints.MapGrpcService<NewsGrpcService>();
 
                 _endpoints.MapGet("/",
-                    async _context =>
-                    {
-                        await _context.Response.WriteAsync(
-                            "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
-                    });
+                                  async _context =>
+                                  {
+                                      await _context.Response.WriteAsync(
+                                          "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+                                  });
+
+                _endpoints.MapHangfireDashboard();
+
+#if DEBUG
+                BackgroundJob.Enqueue<CnnFetcher>(_fetcher => _fetcher.Fetch());
+#else
+                RecurringJob.AddOrUpdate<CnnFetcher>(CnnFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
+                RecurringJob.AddOrUpdate<ArsTechnicaFetcher>(ArsTechnicaFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
+                RecurringJob.AddOrUpdate<AssociatedPressFetcher>(AssociatedPressFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
+                RecurringJob.AddOrUpdate<BbcFetcher>(BbcFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
+                RecurringJob.AddOrUpdate<CnbcFetcher>(CnbcFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
+                RecurringJob.AddOrUpdate<EngadgetFetcher>(EngadgetFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
+                RecurringJob.AddOrUpdate<IgnFetcher>(IgnFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
+                RecurringJob.AddOrUpdate<MashableFetcher>(MashableFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
+                RecurringJob.AddOrUpdate<NationalGeographicFetcher>(NationalGeographicFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
+                RecurringJob.AddOrUpdate<NyTimesFetcher>(NyTimesFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
+                RecurringJob.AddOrUpdate<PolygonFetcher>(PolygonFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
+                RecurringJob.AddOrUpdate<RecodeFetcher>(RecodeFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
+                RecurringJob.AddOrUpdate<ReutersFetcher>(ReutersFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
+                RecurringJob.AddOrUpdate<TechradarFetcher>(TechradarFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
+                RecurringJob.AddOrUpdate<TheVergeFetcher>(TheVergeFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
+                RecurringJob.AddOrUpdate<ViceFetcher>(ViceFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
+                RecurringJob.AddOrUpdate<WashingtonPostFetcher>(WashingtonPostFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
+                RecurringJob.AddOrUpdate<WiredFetcher>(WiredFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
+#endif
             });
         }
     }
