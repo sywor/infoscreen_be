@@ -2,8 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.Extensions.Logging;
+
 using NewsService.Data;
+
 using StackExchange.Redis.Extensions.Core.Abstractions;
 
 namespace NewsService.Services
@@ -24,11 +27,13 @@ namespace NewsService.Services
             if (!await redis.Db0.ExistsAsync(_key))
             {
                 logger.LogWarning("Could not find news article in Redis with key: {Key}", _key);
+
                 return NewsResponse.Failed("No article with key: " + _key);
             }
 
             var newsArticleResponse = await redis.Db0.GetAsync<NewsArticle>(_key);
             logger.LogInformation("Returned news article from Redis with key: {Key}", _key);
+
             return NewsResponse.SUCCESS(newsArticleResponse);
         }
 
@@ -51,9 +56,17 @@ namespace NewsService.Services
         public async Task<List<string>> GetKeys()
         {
             var keys = await redis.Db0.SearchKeysAsync("*");
-            logger.LogInformation("Returned news article from Redis with keys: {Key}", keys);
+            var result = keys.ToList();
+            logger.LogDebug("Returned news article keys from Redis {Count}", result.Count());
 
-            return keys.ToList();
+            return result;
+        }
+
+        public async Task<bool> KeyExist(string _key)
+        {
+            var keys = await GetKeys();
+
+            return keys.Contains(_key);
         }
     }
 }

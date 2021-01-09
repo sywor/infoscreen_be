@@ -1,5 +1,6 @@
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+
+using NewsService.Config;
 
 namespace NewsService.Fetchers
 {
@@ -7,7 +8,8 @@ namespace NewsService.Fetchers
     {
         private const string NAME = "vice";
 
-        public ViceFetcher(IConfiguration _configuration, ILoggerFactory _loggerFactory) : base(_configuration, NAME, _loggerFactory)
+        public ViceFetcher(NewsSourceConfigurations _newsSourceConfigurations, MinioConfiguration _minioConfiguration, ILoggerFactory _loggerFactory) :
+            base(_newsSourceConfigurations, _minioConfiguration, NAME, _loggerFactory)
         {
         }
     }

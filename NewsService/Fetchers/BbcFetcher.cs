@@ -1,8 +1,12 @@
 using System.Linq;
 using System.Text;
+
 using HtmlAgilityPack;
-using Microsoft.Extensions.Configuration;
+
 using Microsoft.Extensions.Logging;
+
+using NewsService.Config;
+
 using NodaTime;
 
 namespace NewsService.Fetchers
@@ -11,7 +15,8 @@ namespace NewsService.Fetchers
     {
         private const string NAME = "bbc";
 
-        public BbcFetcher(IConfiguration _configuration, ILoggerFactory _loggerFactory) : base(_configuration, NAME, _loggerFactory)
+        public BbcFetcher(NewsSourceConfigurations _newsSourceConfigurations, MinioConfiguration _minioConfiguration, ILoggerFactory _loggerFactory) :
+            base(_newsSourceConfigurations, _minioConfiguration, NAME, _loggerFactory)
         {
         }
 
@@ -21,14 +26,13 @@ namespace NewsService.Fetchers
 
             if (publishedAt == null)
             {
-                Logger.LogWarning($"Published at was empty for article: {{URL}}", _url);
+                Logger.LogWarning($"Could not parse published at for article:: {{URL}}", _url);
                 _value = default;
+
                 return false;
             }
 
-            _value = PublishedAtPattern
-                .Parse(publishedAt)
-                .Value.InUtc();
+            _value = ParseDateTime(_node.First().InnerText);
 
             return true;
         }
@@ -44,6 +48,7 @@ namespace NewsService.Fetchers
             {
                 Logger.LogWarning($"Image couldn't be found (possibly a video article?) for article: {{URL}}", _url);
                 _value = null;
+
                 return false;
             }
 
@@ -53,31 +58,35 @@ namespace NewsService.Fetchers
             {
                 Logger.LogWarning($"Image srcset tag couldn't be found for article: {{URL}}", _url);
                 _value = null;
+
                 return false;
             }
 
             var source = srcsetValue.Split(',')
-                .Select(_str =>
-                {
-                    var tmp = _str.Split(' ');
-                    return new
-                    {
-                        Key = int.Parse(tmp[1].TrimEnd('w')),
-                        Value = tmp[0]
-                    };
-                })
-                .OrderByDescending(_key => _key.Key)
-                .Select(_obj => _obj.Value)
-                .FirstOrDefault();
+                                    .Select(_str =>
+                                    {
+                                        var tmp = _str.Split(' ');
+
+                                        return new
+                                        {
+                                            Key = int.Parse(tmp[1].TrimEnd('w')),
+                                            Value = tmp[0]
+                                        };
+                                    })
+                                    .OrderByDescending(_key => _key.Key)
+                                    .Select(_obj => _obj.Value)
+                                    .FirstOrDefault();
 
             if (source == null)
             {
                 Logger.LogWarning($"Image srcset value couldn't be found for article: {{URL}}", _url);
                 _value = null;
+
                 return false;
             }
 
             _value = source;
+
             return true;
         }
 
@@ -87,6 +96,7 @@ namespace NewsService.Fetchers
             {
                 Logger.LogWarning($"Body was empty for article: {{URL}}", _url);
                 _value = null;
+
                 return false;
             }
 
@@ -95,11 +105,13 @@ namespace NewsService.Fetchers
             foreach (var node in _node)
             {
                 sb.Append(node.InnerText);
+
                 if (sb.Length >= 500)
                     break;
             }
 
             _value = sb.ToString();
+
             return true;
         }
     }

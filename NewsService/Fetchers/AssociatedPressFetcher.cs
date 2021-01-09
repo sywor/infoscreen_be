@@ -1,7 +1,11 @@
 using System.Linq;
+
 using HtmlAgilityPack;
-using Microsoft.Extensions.Configuration;
+
 using Microsoft.Extensions.Logging;
+
+using NewsService.Config;
+
 using NodaTime;
 
 namespace NewsService.Fetchers
@@ -10,7 +14,8 @@ namespace NewsService.Fetchers
     {
         private const string NAME = "associated_press";
 
-        public AssociatedPressFetcher(IConfiguration _configuration, ILoggerFactory _loggerFactory) : base(_configuration, NAME, _loggerFactory)
+        public AssociatedPressFetcher(NewsSourceConfigurations _newsSourceConfigurations, MinioConfiguration _minioConfiguration, ILoggerFactory _loggerFactory) :
+            base(_newsSourceConfigurations, _minioConfiguration, NAME, _loggerFactory)
         {
         }
 
@@ -18,8 +23,9 @@ namespace NewsService.Fetchers
         {
             if (_node == null)
             {
-                Logger.LogWarning($"Published at could be found for article: {{URL}}", _url);
+                Logger.LogWarning($"Could not parse published at for article: {{URL}}", _url);
                 _value = default;
+
                 return false;
             }
 
@@ -27,14 +33,13 @@ namespace NewsService.Fetchers
 
             if (srcValue == null)
             {
-                Logger.LogWarning($"Published at tag was empty for article: {{URL}}", _url);
+                Logger.LogWarning($"Could not parse published at for article: {{URL}}", _url);
                 _value = default;
+
                 return false;
             }
 
-            _value = PublishedAtPattern
-                .Parse(srcValue)
-                .Value.InUtc();
+            _value = ParseDateTime(_node.First().InnerText);
 
             return true;
         }

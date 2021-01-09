@@ -4,15 +4,24 @@ using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+
 using HtmlAgilityPack;
-using Microsoft.Extensions.Configuration;
+
 using Microsoft.Extensions.Logging;
+
+using NewsService.Config;
 using NewsService.Data;
 using NewsService.Data.Parsers;
 using NewsService.Services;
+
 using NodaTime;
 using NodaTime.Text;
+
 using PuppeteerSharp;
+
+using Serilog;
+
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace NewsService.Fetchers
 {
@@ -29,81 +38,32 @@ namespace NewsService.Fetchers
         protected readonly string[] ImageXPaths;
         protected readonly string[] BodyXPaths;
         protected readonly string[] PublishedAtXPaths;
-        protected readonly InstantPattern PublishedAtPattern;
+        protected readonly List<InstantPattern> PublishedAtPatterns;
 
-        protected AbstractFetcher(IConfiguration _configuration, string _name, ILoggerFactory _loggerFactory)
+        protected AbstractFetcher(NewsSourceConfigurations _newsSourceConfigurations, MinioConfiguration _minioConfiguration, string _name, ILoggerFactory _loggerFactory)
         {
             Name = _name;
             Logger = _loggerFactory.CreateLogger<T>();
-            fileDownloadParser = new FileDownloadParser(_configuration, _loggerFactory);
 
-            var configuration = _configuration.GetSection("NewsSources")
-                .GetChildren()
-                .SingleOrDefault(_x => _x["Name"].Equals(_name));
+            fileDownloadParser = new FileDownloadParser(_minioConfiguration, _loggerFactory);
 
-            if (configuration == null)
-            {
-                Logger.LogError("Configuration cannot be null: {Page}", _name);
-                throw new ArgumentException();
-            }
+            var configuration = _newsSourceConfigurations[_name];
 
-            if (configuration["BaseUrl"] == null)
-            {
-                Logger.LogError("Base url cannot be null: {Page}", _name);
-                throw new ArgumentException($"Base url cannot be null: {_name}");
-            }
+            BaseUrl = configuration.BaseUrl;
+            LinkPage = configuration.LinkPage;
 
-            BaseUrl = configuration["BaseUrl"];
+            PublishedAtPatterns = configuration.PublishedAtPattern
+                                               .Select(InstantPattern.CreateWithInvariantCulture)
+                                               .ToList();
 
-            if (configuration["LinkPage"] == null)
-            {
-                Logger.LogError("Url cannot be null: {Page}", _name);
-                throw new ArgumentException($"Url cannot be null: {_name}");
-            }
+            PublishedAtPatterns.Add(InstantPattern.General);
 
-            LinkPage = configuration["LinkPage"];
-
-            var publishedAtConfig = configuration["PublishedAtPattern"];
-
-            if (publishedAtConfig == null)
-            {
-                Logger.LogError("Published at cannot be null: {Page}", _name);
-                throw new ArgumentException($"Published at cannot be null: {_name}");
-            }
-
-            PublishedAtPattern = publishedAtConfig == "ISO_8601"
-                ? InstantPattern.General
-                : InstantPattern.CreateWithInvariantCulture(publishedAtConfig);
-
-            foreach (var xpath in configuration.GetSection("XPaths").GetChildren())
-            {
-                switch (xpath.Key)
-                {
-                    case "RootPage":
-                        RootPageXPaths = xpath.Get<string[]>();
-                        break;
-                    case "Title":
-                        TitleXPaths = xpath.Get<string[]>();
-                        break;
-                    case "Image":
-                        ImageXPaths = xpath.Get<string[]>();
-                        break;
-                    case "Body":
-                        BodyXPaths = xpath.Get<string[]>();
-                        break;
-                    case "PublishedAt":
-                        PublishedAtXPaths = xpath.Get<string[]>();
-                        break;
-                    default:
-                        throw new ArgumentException($"XPaths cannot be null: {_name}");
-                }
-            }
-
-            if (TitleXPaths == null || ImageXPaths == null || BodyXPaths == null)
-            {
-                Logger.LogError("Invalid xpaths for page: {Page}", _name);
-                throw new ArgumentException($"Invalid xpaths for page: {_name}");
-            }
+            var configurationXPaths = configuration.XPaths;
+            RootPageXPaths = configurationXPaths.RootPage;
+            TitleXPaths = configurationXPaths.Title;
+            ImageXPaths = configurationXPaths.Image;
+            BodyXPaths = configurationXPaths.Body;
+            PublishedAtXPaths = configurationXPaths.PublishedAt;
         }
 
         protected async Task<List<PageResult>> FetchAndParseArticle(ZonedDateTime _fetchTime, List<ArticleLinkResponse> _articleLinkResponses, RedisCacheService _redis)
@@ -113,82 +73,129 @@ namespace NewsService.Fetchers
             if (!_articleLinkResponses.Any())
             {
                 Logger.LogWarning("No responses received, skipping fetching for {Name}", Name);
+
                 return result;
             }
 
             foreach (var articleLinkResponse in _articleLinkResponses)
             {
-                var rssResponseUri = articleLinkResponse.Uri;
+                var responseUri = articleLinkResponse.Uri;
 
-                if (!ShouldFetchArticle(articleLinkResponse))
+                try
                 {
-                    Logger.LogInformation("{Url} for {Source} did not pass filter, skipping", rssResponseUri, Name);
-                    continue;
-                }
-
-                Logger.LogInformation("Fetching: {URL}", rssResponseUri);
-
-                var document = await FetchPage(rssResponseUri);
-                ZonedDateTime publishedAt;
-                var title = articleLinkResponse.Title;
-
-                if (articleLinkResponse.PublishedAt != default)
-                {
-                    publishedAt = articleLinkResponse.PublishedAt;
-                }
-                else
-                {
-                    var publishedAtNodes = GetNodes(document, PublishedAtXPaths);
-                    if (!ExtractPublishedAt(publishedAtNodes, rssResponseUri, out publishedAt))
-                        continue;
-                }
-
-                var bodyNodes = GetNodes(document, BodyXPaths);
-                if (!ExtractBody(bodyNodes, rssResponseUri, out var body))
-                    continue;
-
-                var imageNodes = GetNodes(document, ImageXPaths);
-                if (!ExtractImage(imageNodes, rssResponseUri, out var imageUrl))
-                    continue;
-
-                var imageResult = await RestRequestHandler.SendGetRequestAsync(imageUrl!, fileDownloadParser, Logger);
-
-                if (!imageResult.Success)
-                {
-                    Logger.LogWarning("No image could be downloaded for article: {URL}", rssResponseUri);
-                    continue;
-                }
-
-                var imagePath = ((FileDownloadResponse) imageResult).FileUri;
-
-                var newsArticle = new NewsArticle
-                {
-                    Title = title!,
-                    Source = Name,
-                    PublishedAt = publishedAt,
-                    Body = body!,
-                    ImagePath = imagePath,
-                    FetchedAt = _fetchTime,
-                    Url = rssResponseUri
-                };
-
-                var keyTitle = Regex.Replace(title!.Trim(), @"\s+", "_");
-                keyTitle = Regex.Replace(keyTitle, @"[^\w\*]", "");
-
-                var key = $"news_article:{Name}:{keyTitle}";
-                if (await _redis.AddValue(key, newsArticle))
-                {
-                    result.Add(new PageResult
+                    if (!ShouldFetchArticle(articleLinkResponse))
                     {
-                        ArticleKey = key,
+                        Logger.LogInformation("{Url} for {Source} did not pass filter, skipping", responseUri, Name);
+
+                        continue;
+                    }
+
+                    Logger.LogInformation("Fetching: {URL}", responseUri);
+
+                    var document = await FetchPage(responseUri);
+
+                    if (document == null)
+                    {
+                        continue;
+                    }
+
+                    string? title;
+
+                    if (!string.IsNullOrEmpty(articleLinkResponse.Title))
+                    {
+                        title = articleLinkResponse.Title;
+                    }
+                    else
+                    {
+                        var titleNodes = GetNodes(document, TitleXPaths);
+
+                        if (!ExtractTitle(titleNodes, responseUri, out title))
+                            continue;
+                    }
+
+                    var key = CreateRedisKey(title);
+
+                    if (await _redis.KeyExist(key))
+                    {
+                        Logger.LogInformation("Article with key: {Key} already exists, skipping", key);
+
+                        continue;
+                    }
+
+                    ZonedDateTime publishedAt;
+
+                    if (articleLinkResponse.PublishedAt != default)
+                    {
+                        publishedAt = articleLinkResponse.PublishedAt;
+                    }
+                    else
+                    {
+                        var publishedAtNodes = GetNodes(document, PublishedAtXPaths);
+
+                        if (!ExtractPublishedAt(publishedAtNodes, responseUri, out publishedAt))
+                            continue;
+                    }
+
+                    var bodyNodes = GetNodes(document, BodyXPaths);
+
+                    if (!ExtractBody(bodyNodes, responseUri, out var body))
+                        continue;
+
+                    var imageNodes = GetNodes(document, ImageXPaths);
+
+                    if (!ExtractImage(imageNodes, responseUri, out var imageUrl))
+                        continue;
+
+                    var imageResult = await RestRequestHandler.SendGetRequestAsync(imageUrl!, fileDownloadParser, Logger);
+
+                    if (!imageResult.Success)
+                    {
+                        Logger.LogWarning("No image could be downloaded for article: {URL}", responseUri);
+
+                        continue;
+                    }
+
+                    var imagePath = ((FileDownloadResponse) imageResult).FileUri;
+
+                    var newsArticle = new NewsArticle
+                    {
+                        Title = title!,
+                        Source = Name,
                         PublishedAt = publishedAt,
+                        Body = body!,
+                        ImagePath = imagePath,
                         FetchedAt = _fetchTime,
-                        Source = Name
-                    });
+                        Url = responseUri
+                    };
+
+                    if (await _redis.AddValue(key, newsArticle))
+                    {
+                        result.Add(new PageResult
+                        {
+                            ArticleKey = key,
+                            PublishedAt = publishedAt,
+                            FetchedAt = _fetchTime,
+                            Source = Name
+                        });
+                    }
+                }
+                catch (Exception e)
+                {
+                    Logger.LogError(e, "Failed to fetch article for {Url}", responseUri);
                 }
             }
 
             return result;
+        }
+
+        private string CreateRedisKey(string title)
+        {
+            var keyTitle = Regex.Replace(title!.Trim(), @"\s+", "_");
+            keyTitle = Regex.Replace(keyTitle, @"[^\w\*]", "");
+
+            var key = $"news_article:{Name}:{keyTitle}";
+
+            return key;
         }
 
         protected async Task<HtmlDocument?> FetchPage(string _url)
@@ -196,10 +203,13 @@ namespace NewsService.Fetchers
             try
             {
                 await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultRevision);
-                await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions {Headless = true});
+                await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions { Headless = true });
+                var context = await browser.CreateIncognitoBrowserContextAsync();
 
-                var page = await browser.NewPageAsync();
-                var response = await page.GoToAsync(_url, WaitUntilNavigation.Networkidle0);
+                var page = await context.NewPageAsync();
+                page.Client.LoggerFactory.AddSerilog();
+
+                var response = await page.GoToAsync(_url, WaitUntilNavigation.Networkidle2);
 
                 if (response.Status == HttpStatusCode.OK)
                 {
@@ -212,6 +222,7 @@ namespace NewsService.Fetchers
                 }
 
                 Logger.LogWarning("Failed to send request to: {URL}. Response code back was: {StatusCode}", _url, response.Status);
+
                 return null;
             }
             catch (Exception e)
@@ -222,11 +233,11 @@ namespace NewsService.Fetchers
             return null;
         }
 
-        protected static HtmlNodeCollection? GetNodes(HtmlDocument? _page, string[] _xPaths)
+        protected static HtmlNodeCollection? GetNodes(HtmlDocument _page, string[] _xPaths)
         {
             return _xPaths
-                .Select(_xPath => _page?.DocumentNode.SelectNodes(_xPath))
-                .FirstOrDefault(_tag => _tag != null);
+                   .Select(_xPath => _page.DocumentNode.SelectNodes(_xPath))
+                   .FirstOrDefault(_tag => _tag != null);
         }
 
         protected virtual bool ExtractTitle(HtmlNodeCollection? _node, string _url, out string? _value)
@@ -235,10 +246,12 @@ namespace NewsService.Fetchers
             {
                 Logger.LogWarning($"Title was empty for article: {{URL}}", _url);
                 _value = null;
+
                 return false;
             }
 
             _value = _node.First().InnerText;
+
             return true;
         }
 
@@ -246,16 +259,23 @@ namespace NewsService.Fetchers
         {
             if (string.IsNullOrEmpty(_node?.First().InnerText))
             {
-                Logger.LogWarning($"Published at was empty for article: {{URL}}", _url);
+                Logger.LogWarning($"Could not parse published at for article: {{URL}}", _url);
                 _value = default;
+
                 return false;
             }
 
-            _value = PublishedAtPattern
-                .Parse(_node.First().InnerText)
-                .Value.InUtc();
+            _value = ParseDateTime(_node.First().InnerText);
 
             return true;
+        }
+
+        protected virtual ZonedDateTime ParseDateTime(string _dateTimeText)
+        {
+            return PublishedAtPatterns
+                   .Select(_pattern => _pattern.Parse(_dateTimeText))
+                   .First(_parseResult => _parseResult.Success)
+                   .Value.InUtc();
         }
 
         protected virtual bool ExtractBody(HtmlNodeCollection? _node, string _url, out string? _value)
@@ -264,10 +284,12 @@ namespace NewsService.Fetchers
             {
                 Logger.LogWarning($"Body was empty for article: {{URL}}", _url);
                 _value = null;
+
                 return false;
             }
 
             _value = _node.First().InnerText;
+
             return true;
         }
 
@@ -279,10 +301,12 @@ namespace NewsService.Fetchers
             {
                 Logger.LogWarning($"Image src tag couldn't be found for article: {{URL}}", _url);
                 _value = null;
+
                 return false;
             }
 
             _value = srcValue;
+
             return true;
         }
 

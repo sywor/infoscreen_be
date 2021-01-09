@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
+using NewsService.Config;
 using NewsService.Services;
 using StackExchange.Redis.Extensions.Core;
 using StackExchange.Redis.Extensions.Core.Abstractions;
@@ -27,6 +29,8 @@ namespace NewsService
         public void ConfigureServices(IServiceCollection _services)
         {
             var redisConfiguration = Configuration.GetSection("Redis").Get<RedisConfiguration>();
+            var minioConfiguration = Configuration.GetSection("Minio").Get<MinioConfiguration>();
+            var newsSourceConfigurations = Configuration.GetSection("NewsSources").Get<NewsSourceConfiguration[]>();
 
             _services.AddGrpc();
 
@@ -40,6 +44,8 @@ namespace NewsService
             _services.AddSingleton<NewsHandlerService>();
             _services.AddSingleton<RedisCacheService>();
             _services.AddHostedService<NewsFetchService>();
+            _services.AddSingleton(minioConfiguration);
+            _services.AddSingleton(new NewsSourceConfigurations(newsSourceConfigurations));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

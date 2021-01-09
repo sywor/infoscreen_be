@@ -4,6 +4,8 @@ using HtmlAgilityPack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
+using NewsService.Config;
+
 namespace NewsService.Fetchers
 {
     public class ArsTechnicaFetcher : AbstractRssFetcher<ArsTechnicaFetcher>
@@ -11,7 +13,8 @@ namespace NewsService.Fetchers
         private const string NAME = "arstechnica";
         private readonly Regex regex = new Regex(@".*'(http.+)'.*", RegexOptions.Compiled);
 
-        public ArsTechnicaFetcher(IConfiguration _configuration, ILoggerFactory _loggerFactory) : base(_configuration, NAME, _loggerFactory)
+        public ArsTechnicaFetcher(NewsSourceConfigurations _newsSourceConfigurations, MinioConfiguration _minioConfiguration, ILoggerFactory _loggerFactory) :
+            base(_newsSourceConfigurations, _minioConfiguration, NAME, _loggerFactory)
         {
         }
 

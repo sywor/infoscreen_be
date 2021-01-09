@@ -4,9 +4,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+
+using NewsService.Config;
 using NewsService.Fetchers;
 
 namespace NewsService.Services
@@ -16,11 +18,11 @@ namespace NewsService.Services
         private readonly ILogger logger;
         private readonly RedisCacheService redis;
         private readonly List<IFetcher> fetchers = new List<IFetcher>();
-        private Timer timer;
+        private Timer? timer;
 
         public DateTime LastUpdate { get; private set; } = DateTime.MinValue;
 
-        public NewsFetchService(ILoggerFactory _loggerFactory, IConfiguration _configuration, RedisCacheService _redis)
+        public NewsFetchService(ILoggerFactory _loggerFactory, NewsSourceConfigurations _newsSourceConfigurations, MinioConfiguration _minioConfiguration, RedisCacheService _redis)
         {
             logger = _loggerFactory.CreateLogger<NewsFetchService>();
             redis = _redis;
@@ -28,8 +30,9 @@ namespace NewsService.Services
             // fetchers.Add(new ArsTechnicaFetcher(_configuration, _loggerFactory));
             // fetchers.Add(new AssociatedPressFetcher(_configuration, _loggerFactory));
             // fetchers.Add(new BbcFetcher(_configuration, _loggerFactory));
-             fetchers.Add(new CnbcFetcher(_configuration, _loggerFactory));
-            // fetchers.Add(new CnnFetcher(_configuration, _loggerFactory));
+            // fetchers.Add(new CnbcFetcher(_configuration, _loggerFactory));
+            fetchers.Add(new CnnFetcher(_newsSourceConfigurations, _minioConfiguration, _loggerFactory));
+
             // fetchers.Add(new EngadgetFetcher(_configuration, _loggerFactory));
             // fetchers.Add(new IgnFetcher(_configuration, _loggerFactory));
             // fetchers.Add(new MashableFetcher(_configuration, _loggerFactory));
@@ -48,12 +51,14 @@ namespace NewsService.Services
         public Task StartAsync(CancellationToken _cancellationToken)
         {
             timer = new Timer(TimerCallback, null, TimeSpan.Zero, TimeSpan.FromHours(1));
+
             return Task.CompletedTask;
         }
 
         public Task StopAsync(CancellationToken _cancellationToken)
         {
             timer?.Change(Timeout.Infinite, 0);
+
             return Task.CompletedTask;
         }
 

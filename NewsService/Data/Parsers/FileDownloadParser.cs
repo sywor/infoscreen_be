@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Minio;
 
+using NewsService.Config;
+
 namespace NewsService.Data.Parsers
 {
     public class FileDownloadParser : IResponseParser
@@ -17,54 +19,16 @@ namespace NewsService.Data.Parsers
         private readonly string staticEndpoint;
         private readonly MinioClient minioClient;
 
-        public FileDownloadParser(IConfiguration _configuration, ILoggerFactory _loggerFactory)
+        public FileDownloadParser(MinioConfiguration _configuration, ILoggerFactory _loggerFactory)
         {
             logger = _loggerFactory.CreateLogger<FileDownloadParser>();
 
-            string? minioEndpoint = null;
-            string? accessKey = null;
-            string? secretKey = null;
+            bucketName = _configuration.BucketName;
+            filePrefix = _configuration.FilePrefix;
+            bucketDirectory = _configuration.BucketDirectory;
+            staticEndpoint = _configuration.StaticHostEndpoint;
 
-            foreach (var xpath in _configuration.GetSection("Minio").GetChildren())
-            {
-                switch (xpath.Key)
-                {
-                    case "MinioEndpoint":
-                        minioEndpoint = xpath.Get<string>();
-                        break;
-                    case "StaticHostEndpoint":
-                        staticEndpoint = xpath.Get<string>();
-                        break;
-                    case "AccessKey":
-                        accessKey = xpath.Get<string>();
-                        break;
-                    case "SecretKey":
-                        secretKey = xpath.Get<string>();
-                        break;
-                    case "BucketName":
-                        bucketName = xpath.Get<string>();
-                        break;
-                    case "FilePrefix":
-                        filePrefix = xpath.Get<string>();
-                        break;
-                    case "BucketDirectory":
-                        bucketDirectory = xpath.Get<string>();
-                        break;
-                }
-            }
-
-            if (string.IsNullOrEmpty(minioEndpoint) ||
-                string.IsNullOrEmpty(accessKey) ||
-                string.IsNullOrEmpty(secretKey) ||
-                string.IsNullOrEmpty(bucketName) ||
-                string.IsNullOrEmpty(filePrefix) ||
-                string.IsNullOrEmpty(bucketDirectory))
-            {
-                logger.LogError("Invalid configuration for minio, some value is missing or empty");
-                throw new ArgumentException("Invalid configuration for minio, some value is missing or empty");
-            }
-
-            minioClient = new MinioClient(minioEndpoint, accessKey, secretKey);
+            minioClient = new MinioClient(_configuration.MinioEndpoint, _configuration.AccessKey, _configuration.SecretKey);
         }
 
         public async Task<IResponse> ParseAsync(HttpContent _responseContent)
