@@ -2,11 +2,11 @@ namespace NewsService.Config
 {
     public class NewsSourceConfiguration
     {
-        public string Name { get; set; }
-        public string BaseUrl { get; set; }
-        public string LinkPage { get; set; }
-        public string Type { get; set; }
-        public XPaths XPaths { get; set; }
-        public string[] PublishedAtPattern { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string BaseUrl { get; set; } = string.Empty;
+        public string LinkPage { get; set; } = string.Empty;
+        public string Type { get; set; } = string.Empty;
+        public XPaths XPaths { get; set; } = new XPaths();
+        public string[] PublishedAtPattern { get; set; } = new string[0];
     }
 }

@@ -95,7 +95,7 @@ namespace NewsService
                 _endpoints.MapHangfireDashboard();
 
 #if DEBUG
-                BackgroundJob.Enqueue<ArsTechnicaFetcher>(_fetcher => _fetcher.Fetch());
+                BackgroundJob.Enqueue<IgnFetcher>(_fetcher => _fetcher.Fetch());
 #else
                 RecurringJob.AddOrUpdate<ArsTechnicaFetcher>(ArsTechnicaFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
                 RecurringJob.AddOrUpdate<AssociatedPressFetcher>(AssociatedPressFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
@@ -103,8 +103,8 @@ namespace NewsService
                 RecurringJob.AddOrUpdate<CnbcFetcher>(CnbcFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
                 RecurringJob.AddOrUpdate<CnnFetcher>(CnnFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
                 RecurringJob.AddOrUpdate<EngadgetFetcher>(EngadgetFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
-
                 RecurringJob.AddOrUpdate<IgnFetcher>(IgnFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
+
                 RecurringJob.AddOrUpdate<MashableFetcher>(MashableFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
                 RecurringJob.AddOrUpdate<NationalGeographicFetcher>(NationalGeographicFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
                 RecurringJob.AddOrUpdate<NyTimesFetcher>(NyTimesFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);

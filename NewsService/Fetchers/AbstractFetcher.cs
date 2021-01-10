@@ -54,11 +54,9 @@ namespace NewsService.Fetchers
             BaseUrl = configuration.BaseUrl;
             LinkPage = configuration.LinkPage;
 
-            PublishedAtPatterns = configuration.PublishedAtPattern != null
-                ? configuration.PublishedAtPattern
-                               .Select(InstantPattern.CreateWithInvariantCulture)
-                               .ToList()
-                : new List<InstantPattern>();
+            PublishedAtPatterns = configuration.PublishedAtPattern
+                                               .Select(InstantPattern.CreateWithInvariantCulture)
+                                               .ToList();
 
             PublishedAtPatterns.Add(InstantPattern.General);
 
@@ -213,7 +211,7 @@ namespace NewsService.Fetchers
         {
             if (string.IsNullOrEmpty(_node?.First().InnerText))
             {
-                Logger.LogWarning($"Title was empty for article: {{URL}}", _url);
+                Logger.LogWarning("Title was empty for article: {URL}", _url);
                 _value = null;
 
                 return false;
@@ -228,7 +226,7 @@ namespace NewsService.Fetchers
         {
             if (string.IsNullOrEmpty(_node?.First().InnerText))
             {
-                Logger.LogWarning($"Could not parse published at for article: {{URL}}", _url);
+                Logger.LogWarning("Could not parse published at for article: {URL}", _url);
                 _value = default;
 
                 return false;
@@ -251,7 +249,7 @@ namespace NewsService.Fetchers
         {
             if (string.IsNullOrEmpty(_node?.First().InnerText))
             {
-                Logger.LogWarning($"Body was empty for article: {{URL}}", _url);
+                Logger.LogWarning("Body was empty for article: {URL}", _url);
                 _value = null;
 
                 return false;
@@ -268,7 +266,7 @@ namespace NewsService.Fetchers
 
             if (srcValue == null)
             {
-                Logger.LogWarning($"Image src tag couldn't be found for article: {{URL}}", _url);
+                Logger.LogWarning("Image src tag couldn't be found for article: {URL}", _url);
                 _value = null;
 
                 return false;
