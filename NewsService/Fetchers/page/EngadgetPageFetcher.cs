@@ -8,66 +8,50 @@ using Microsoft.Extensions.Logging;
 
 using PuppeteerSharp;
 
-using Serilog;
-
 namespace NewsService.Fetchers.page
 {
     public class EngadgetPageFetcher : AbstractPageFetcher<EngadgetFetcher>
     {
-        public EngadgetPageFetcher(ILoggerFactory _loggerFactory) : base(_loggerFactory)
+        private EngadgetPageFetcher(ILoggerFactory _loggerFactory) : base(_loggerFactory, WaitUntilNavigation.Networkidle0)
         {
+        }
+
+        public static async Task<IPageFetcher> Create(ILoggerFactory _loggerFactory)
+        {
+            var instance = new EngadgetPageFetcher(_loggerFactory);
+            await instance.Init();
+
+            return instance;
         }
 
         public override async Task<HtmlDocument?> FetchPage(string _url)
         {
-            try
-            {
-                await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultRevision);
-                await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions { Headless = true });
-                var context = await browser.CreateIncognitoBrowserContextAsync();
-
-                var page = await context.NewPageAsync();
-
-                var response = await page.GoToAsync(_url, WaitUntilNavigation.Networkidle2);
-
-                if (response.Status == HttpStatusCode.OK)
-                {
-                    await ActOnPage(page);
-
-                    var pageContent = await page.GetContentAsync();
-                    var doc = new HtmlDocument();
-                    doc.LoadHtml(pageContent);
-
-                    return doc;
-                }
-
-                Logger.LogWarning("Failed to send request to: {URL}. Response code back was: {StatusCode}", _url, response.Status);
-
-                return null;
-            }
-            catch (Exception e)
-            {
-                Logger.LogError(e, "Exception when requesting page from {URL}", _url);
-            }
-
-            return null;
+            return await Fetch(_url, false);
         }
 
         public override async Task<HtmlDocument?> FetchRootPage(string _url)
         {
+            return await Fetch(_url, true);
+        }
+
+        private async Task<HtmlDocument?> Fetch(string _url, bool _rootPage)
+        {
             try
             {
-                await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultRevision);
-                await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions { Headless = true });
-                var context = await browser.CreateIncognitoBrowserContextAsync();
-
-                var page = await context.NewPageAsync();
-
-                var response = await page.GoToAsync(_url, WaitUntilNavigation.Networkidle2);
+                var browserContext = await Browser.CreateIncognitoBrowserContextAsync();
+                var page = await browserContext.NewPageAsync();
+                var response = await page.GoToAsync(_url, WaitUntilNavigation);
 
                 if (response.Status == HttpStatusCode.OK)
                 {
-                    await ActOnRootPage(page);
+                    await page.ClickAsync("button.btn.primary");
+
+                    if (_rootPage)
+                        await page.WaitForXPathAsync("//div[contains(@id, 'Page')]//div[contains(@id, 'module-latest')]");
+                    else
+                        await page.WaitForXPathAsync("//nav[@id='engadget-global-nav']");
+
+                    await page.WaitForTimeoutAsync(1000);
 
                     var pageContent = await page.GetContentAsync();
                     var doc = new HtmlDocument();
@@ -86,20 +70,6 @@ namespace NewsService.Fetchers.page
             }
 
             return null;
-        }
-
-        private static async Task ActOnRootPage(Page _page)
-        {
-            await _page.ClickAsync("button.btn.primary");
-            await _page.WaitForXPathAsync("//div[contains(@id, 'Page')]//div[contains(@id, 'module-latest')]");
-            await _page.WaitForTimeoutAsync(1000);
-        }
-
-        private static async Task ActOnPage(Page _page)
-        {
-            await _page.ClickAsync("button.btn.primary");
-            await _page.WaitForXPathAsync("//nav[@id='engadget-global-nav']");
-            await _page.WaitForTimeoutAsync(1000);
         }
     }
 }

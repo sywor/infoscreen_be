@@ -17,8 +17,9 @@ namespace NewsService.Fetchers
         public const string NAME = "associated_press";
 
         public AssociatedPressFetcher(NewsSourceConfigurations _newsSourceConfigurations, MinioConfiguration _minioConfiguration, RedisCacheService _redis, ILoggerFactory _loggerFactory) :
-            base(_newsSourceConfigurations, _minioConfiguration, NAME, _redis, _loggerFactory, new DefaultPageFetcher(_loggerFactory))
+            base(_newsSourceConfigurations, _minioConfiguration, NAME, _redis, _loggerFactory)
         {
+            PageFetcher = DefaultPageFetcher.Create(_loggerFactory).Result;
         }
 
         protected override bool ExtractPublishedAt(HtmlNodeCollection? _node, string _url, out ZonedDateTime _value)
@@ -41,7 +42,7 @@ namespace NewsService.Fetchers
                 return false;
             }
 
-            _value = ParseZonedDateTimeUTC(_node.First().InnerText);
+            _value = ParseZonedDateTimeUTC(srcValue);
 
             return true;
         }

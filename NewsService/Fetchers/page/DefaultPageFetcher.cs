@@ -8,27 +8,29 @@ using Microsoft.Extensions.Logging;
 
 using PuppeteerSharp;
 
-using Serilog;
-
 namespace NewsService.Fetchers.page
 {
     public class DefaultPageFetcher : AbstractPageFetcher<DefaultPageFetcher>
     {
-        public DefaultPageFetcher(ILoggerFactory _loggerFactory) : base(_loggerFactory)
+        private DefaultPageFetcher(ILoggerFactory _loggerFactory, WaitUntilNavigation _waitUntilNavigation = WaitUntilNavigation.Networkidle0) : base(_loggerFactory, _waitUntilNavigation)
         {
+        }
+
+        public static async Task<IPageFetcher> Create(ILoggerFactory _loggerFactory, WaitUntilNavigation _waitUntilNavigation = WaitUntilNavigation.Networkidle0)
+        {
+            var instance = new DefaultPageFetcher(_loggerFactory, _waitUntilNavigation);
+            await instance.Init();
+
+            return instance;
         }
 
         public override async Task<HtmlDocument?> FetchPage(string _url)
         {
             try
             {
-                await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultRevision);
-                await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions { Headless = true });
-                var context = await browser.CreateIncognitoBrowserContextAsync();
-
-                var page = await context.NewPageAsync();
-
-                var response = await page.GoToAsync(_url, WaitUntilNavigation.Networkidle2);
+                var browserContext = await Browser.CreateIncognitoBrowserContextAsync();
+                var page = await browserContext.NewPageAsync();
+                var response = await page.GoToAsync(_url, WaitUntilNavigation);
 
                 if (response.Status == HttpStatusCode.OK)
                 {

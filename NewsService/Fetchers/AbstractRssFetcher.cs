@@ -19,7 +19,7 @@ namespace NewsService.Fetchers
     public abstract class AbstractRssFetcher<T> : AbstractFetcher<T>, IFetcher
     {
         protected AbstractRssFetcher(NewsSourceConfigurations _configuration, MinioConfiguration _minioConfiguration, string _name, RedisCacheService _redis, ILoggerFactory _loggerFactory) :
-            base(_configuration, _minioConfiguration, _name, _redis, _loggerFactory, new DefaultPageFetcher(_loggerFactory))
+            base(_configuration, _minioConfiguration, _name, _redis, _loggerFactory)
         {
         }
 

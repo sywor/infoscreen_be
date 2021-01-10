@@ -35,17 +35,15 @@ namespace NewsService.Fetchers
         protected readonly string[] BodyXPaths;
         protected readonly string[] PublishedAtXPaths;
         protected readonly List<InstantPattern> PublishedAtPatterns;
-        protected readonly IPageFetcher PageFetcher;
+        protected IPageFetcher PageFetcher { get; set; }
 
         protected AbstractFetcher(NewsSourceConfigurations _newsSourceConfigurations,
                                   MinioConfiguration _minioConfiguration,
                                   string _name,
                                   RedisCacheService _redis,
-                                  ILoggerFactory _loggerFactory,
-                                  IPageFetcher _pageFetcher)
+                                  ILoggerFactory _loggerFactory)
         {
             redis = _redis;
-            PageFetcher = _pageFetcher;
             Name = _name;
             Logger = _loggerFactory.CreateLogger<T>();
 

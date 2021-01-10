@@ -7,9 +7,12 @@ using HtmlAgilityPack;
 using Microsoft.Extensions.Logging;
 
 using NewsService.Config;
+using NewsService.Fetchers.page;
 using NewsService.Services;
 
 using NodaTime;
+
+using PuppeteerSharp;
 
 namespace NewsService.Fetchers
 {
@@ -23,6 +26,7 @@ namespace NewsService.Fetchers
         public CnnFetcher(NewsSourceConfigurations _newsSourceConfigurations, MinioConfiguration _minioConfiguration, RedisCacheService _redis, ILoggerFactory _loggerFactory) :
             base(_newsSourceConfigurations, _minioConfiguration, NAME, _redis, _loggerFactory)
         {
+            PageFetcher = DefaultPageFetcher.Create(_loggerFactory, WaitUntilNavigation.Networkidle2).Result;
         }
 
         protected override bool ExtractPublishedAt(HtmlNodeCollection? _node, string _url, out ZonedDateTime _value)

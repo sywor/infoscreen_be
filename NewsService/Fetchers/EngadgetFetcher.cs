@@ -23,8 +23,9 @@ namespace NewsService.Fetchers
         private static readonly LocalDatePattern LocalDatePattern = LocalDatePattern.Create("MMMM d, yyyy", CultureInfo.InvariantCulture);
 
         public EngadgetFetcher(NewsSourceConfigurations _newsSourceConfigurations, MinioConfiguration _minioConfiguration, RedisCacheService _redis, ILoggerFactory _loggerFactory) :
-            base(_newsSourceConfigurations, _minioConfiguration, NAME, _redis, _loggerFactory, new EngadgetPageFetcher(_loggerFactory))
+            base(_newsSourceConfigurations, _minioConfiguration, NAME, _redis, _loggerFactory)
         {
+            PageFetcher = EngadgetPageFetcher.Create(_loggerFactory).Result;
         }
 
         protected override bool ExtractPublishedAt(HtmlNodeCollection? _node, string _url, out ZonedDateTime _value)

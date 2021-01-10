@@ -6,6 +6,7 @@ using HtmlAgilityPack;
 using Microsoft.Extensions.Logging;
 
 using NewsService.Config;
+using NewsService.Fetchers.page;
 using NewsService.Services;
 
 namespace NewsService.Fetchers
@@ -18,6 +19,7 @@ namespace NewsService.Fetchers
         public ArsTechnicaFetcher(NewsSourceConfigurations _newsSourceConfigurations, MinioConfiguration _minioConfiguration, RedisCacheService _redis, ILoggerFactory _loggerFactory) :
             base(_newsSourceConfigurations, _minioConfiguration, NAME, _redis, _loggerFactory)
         {
+            PageFetcher = DefaultPageFetcher.Create(_loggerFactory).Result;
         }
 
         protected override bool ExtractImage(HtmlNodeCollection? _node, string _url, out string? _value)

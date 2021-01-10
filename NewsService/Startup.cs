@@ -95,7 +95,7 @@ namespace NewsService
                 _endpoints.MapHangfireDashboard();
 
 #if DEBUG
-                BackgroundJob.Enqueue<EngadgetFetcher>(_fetcher => _fetcher.Fetch());
+                BackgroundJob.Enqueue<ArsTechnicaFetcher>(_fetcher => _fetcher.Fetch());
 #else
                 RecurringJob.AddOrUpdate<ArsTechnicaFetcher>(ArsTechnicaFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
                 RecurringJob.AddOrUpdate<AssociatedPressFetcher>(AssociatedPressFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);

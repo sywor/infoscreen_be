@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 
 using NewsService.Config;
 using NewsService.Data;
-using NewsService.Fetchers.page;
 using NewsService.Services;
 
 using NodaTime;
@@ -23,13 +22,11 @@ namespace NewsService.Fetchers
                                       MinioConfiguration _minioConfiguration,
                                       string _name,
                                       RedisCacheService _redis,
-                                      ILoggerFactory _loggerFactory,
-                                      IPageFetcher _pageFetcher) : base(_configuration,
-                                                                        _minioConfiguration,
-                                                                        _name,
-                                                                        _redis,
-                                                                        _loggerFactory,
-                                                                        _pageFetcher)
+                                      ILoggerFactory _loggerFactory) : base(_configuration,
+                                                                            _minioConfiguration,
+                                                                            _name,
+                                                                            _redis,
+                                                                            _loggerFactory)
         {
         }
 
