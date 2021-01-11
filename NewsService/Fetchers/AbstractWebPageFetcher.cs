@@ -50,7 +50,7 @@ namespace NewsService.Fetchers
             var rootNodeChildren = GetNodes(document, RootPageXPaths);
 
             var urls = (GetArticleLinksFromRootPage(rootNodeChildren) ?? Array.Empty<string>())
-                       .Select(_x => new ArticleLinkResponse { Uri = BaseUrl + _x })
+                       .Select(_x => new ArticleLinkResponse { Uri = _x.StartsWith("http") ? _x : BaseUrl + _x })
                        .ToList();
 
             var result = await FetchAndParseArticle(fetchTime, urls);

@@ -10,15 +10,15 @@ using PuppeteerSharp;
 
 namespace NewsService.Fetchers.page
 {
-    public class DefaultPageFetcher : AbstractPageFetcher<DefaultPageFetcher>
+    public class MashablePageFetcher : AbstractPageFetcher<MashablePageFetcher>
     {
-        private DefaultPageFetcher(ILoggerFactory _loggerFactory, WaitUntilNavigation _waitUntilNavigation = WaitUntilNavigation.Networkidle0) : base(_loggerFactory, _waitUntilNavigation)
+        private MashablePageFetcher(ILoggerFactory _loggerFactory, WaitUntilNavigation _waitUntilNavigation = WaitUntilNavigation.Networkidle0) : base(_loggerFactory, _waitUntilNavigation)
         {
         }
 
         public static async Task<IPageFetcher> Create(ILoggerFactory _loggerFactory, WaitUntilNavigation _waitUntilNavigation = WaitUntilNavigation.Networkidle0)
         {
-            var instance = new DefaultPageFetcher(_loggerFactory, _waitUntilNavigation);
+            var instance = new MashablePageFetcher(_loggerFactory, _waitUntilNavigation);
             await instance.Init();
 
             return instance;
@@ -34,6 +34,10 @@ namespace NewsService.Fetchers.page
 
                 if (response.Status == HttpStatusCode.OK)
                 {
+                    await page.ClickAsync("button#_evidon-banner-acceptbutton.evidon-barrier-acceptbutton");
+                    await page.EvaluateExpressionAsync("window.scrollBy(0, document.body.scrollHeight * 6)");
+                    await page.WaitForTimeoutAsync(2000);
+
                     var pageContent = await page.GetContentAsync();
                     var doc = new HtmlDocument();
                     doc.LoadHtml(pageContent);

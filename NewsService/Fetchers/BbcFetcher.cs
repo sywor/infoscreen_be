@@ -23,36 +23,31 @@ namespace NewsService.Fetchers
             PageFetcher = DefaultPageFetcher.Create(_loggerFactory).Result;
         }
 
-        protected override bool ExtractPublishedAt(HtmlNodeCollection? _node, string _url, out ZonedDateTime _value)
+        protected override (bool success, ZonedDateTime value) ExtractPublishedAt(HtmlNodeCollection? _node, string _url)
         {
             var publishedAt = _node?.First().GetAttributeValue("datetime", null);
 
-            if (publishedAt == null)
-            {
-                Logger.LogWarning($"Could not parse published at for article:: {{URL}}", _url);
-                _value = default;
+            if (publishedAt != null)
+                return (true, ParseZonedDateTimeUTC(_node.First().InnerText));
 
-                return false;
-            }
+            Logger.LogWarning($"Could not parse published at for article:: {{URL}}", _url);
 
-            _value = ParseZonedDateTimeUTC(_node.First().InnerText);
-
-            return true;
+            return (false, default);
         }
 
-        protected override bool ExtractImage(HtmlNodeCollection? _node, string _url, out string? _value)
+        protected override (bool success, string value) ExtractImage(HtmlNodeCollection? _node, string _url)
         {
-            if (base.ExtractImage(_node, _url, out _value))
+            var result = base.ExtractImage(_node, _url);
+            if (result.success)
             {
-                return true;
+                return result;
             }
 
             if (_node == null)
             {
                 Logger.LogWarning($"Image couldn't be found (possibly a video article?) for article: {{URL}}", _url);
-                _value = null;
 
-                return false;
+                return (false, null)!;
             }
 
             var srcsetValue = _node?.First().GetAttributeValue("srcset", null);
@@ -60,9 +55,8 @@ namespace NewsService.Fetchers
             if (srcsetValue == null)
             {
                 Logger.LogWarning($"Image srcset tag couldn't be found for article: {{URL}}", _url);
-                _value = null;
 
-                return false;
+                return (false, null)!;
             }
 
             var source = srcsetValue.Split(',')
@@ -80,27 +74,21 @@ namespace NewsService.Fetchers
                                     .Select(_obj => _obj.Value)
                                     .FirstOrDefault();
 
-            if (source == null)
-            {
-                Logger.LogWarning($"Image srcset value couldn't be found for article: {{URL}}", _url);
-                _value = null;
+            if (source != null)
+                return (true, source);
 
-                return false;
-            }
+            Logger.LogWarning($"Image srcset value couldn't be found for article: {{URL}}", _url);
 
-            _value = source;
-
-            return true;
+            return (false, null)!;
         }
 
-        protected override bool ExtractBody(HtmlNodeCollection? _node, string _url, out string? _value)
+        protected override (bool success, string value) ExtractBody(HtmlNodeCollection? _node, string _url)
         {
             if (_node == null)
             {
                 Logger.LogWarning($"Body was empty for article: {{URL}}", _url);
-                _value = null;
 
-                return false;
+                return (false, null)!;
             }
 
             var sb = new StringBuilder();
@@ -113,9 +101,7 @@ namespace NewsService.Fetchers
                     break;
             }
 
-            _value = sb.ToString();
-
-            return true;
+            return (true, sb.ToString());
         }
     }
 }

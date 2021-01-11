@@ -30,18 +30,9 @@ namespace NewsService.Fetchers.page
         public abstract Task<HtmlDocument?> FetchPage(string _url);
         public abstract Task<HtmlDocument?> FetchRootPage(string _url);
 
-        protected virtual void Dispose(bool _disposing)
-        {
-            if (_disposing)
-            {
-                Browser.Dispose();
-            }
-        }
-
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            Browser.Dispose();
         }
     }
 }

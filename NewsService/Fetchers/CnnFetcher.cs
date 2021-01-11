@@ -29,22 +29,22 @@ namespace NewsService.Fetchers
             PageFetcher = DefaultPageFetcher.Create(_loggerFactory, WaitUntilNavigation.Networkidle2).Result;
         }
 
-        protected override bool ExtractPublishedAt(HtmlNodeCollection? _node, string _url, out ZonedDateTime _value)
+        protected override (bool success, ZonedDateTime value) ExtractPublishedAt(HtmlNodeCollection? _node, string _url)
         {
             if (_node == null)
             {
-                LogAndSetFailure(_url, out _value);
+                Logger.LogWarning("Could not parse published at for article: {URL}", _url);
 
-                return false;
+                return (false, default);
             }
 
             var srcValue = _node.First().InnerText;
 
             if (srcValue == null)
             {
-                LogAndSetFailure(_url, out _value);
+                Logger.LogWarning("Could not parse published at for article: {URL}", _url);
 
-                return false;
+                return (false, default);
             }
 
             Match match = regex1.Match(srcValue);
@@ -60,34 +60,29 @@ namespace NewsService.Fetchers
 
                 if (!match.Success)
                 {
-                    LogAndSetFailure(_url, out _value);
+                    Logger.LogWarning("Could not parse published at for article: {URL}", _url);
 
-                    return false;
+                    return (false, default);
                 }
 
                 dateTime = $"{match.Groups[1].Value} {match.Groups[2].Value}";
             }
 
-            if (string.IsNullOrEmpty(dateTime))
-            {
-                LogAndSetFailure(_url, out _value);
+            if (!string.IsNullOrEmpty(dateTime))
+                return (true, ParseZonedDateTimeUTC(dateTime));
 
-                return false;
-            }
+            Logger.LogWarning("Could not parse published at for article: {URL}", _url);
 
-            _value = ParseZonedDateTimeUTC(dateTime);
-
-            return true;
+            return (false, default);
         }
 
-        protected override bool ExtractBody(HtmlNodeCollection? _node, string _url, out string? _value)
+        protected override (bool success, string value) ExtractBody(HtmlNodeCollection? _node, string _url)
         {
             if (_node == null)
             {
                 Logger.LogWarning($"Body was null for article: {{URL}}", _url);
-                _value = null;
 
-                return false;
+                return (false, null)!;
             }
 
             var sb = new StringBuilder();
@@ -104,39 +99,37 @@ namespace NewsService.Fetchers
                 }
             }
 
-            _value = sb.ToString();
-
-            return true;
+            return (true, sb.ToString());
         }
 
-        protected override bool ExtractImage(HtmlNodeCollection? _node, string _url, out string? _value)
+        protected override (bool success, string value) ExtractImage(HtmlNodeCollection? _node, string _url)
         {
-            if (!base.ExtractImage(_node, _url, out _value))
+            var result = base.ExtractImage(_node, _url);
+            if (result.success)
             {
-                return false;
+                return result;
             }
 
-            if (_value.StartsWith("data:image/gif"))
+            if (result.value.StartsWith("data:image/gif"))
             {
                 var value = _node?.First().Attributes["data-src"].Value;
 
                 if (value == null)
                 {
                     Logger.LogWarning($"Image src tag couldn't be found for article: {{URL}}", _url);
-                    _value = null;
 
-                    return false;
+                    return (false, null)!;
                 }
 
-                _value = value;
+                result.value = value;
             }
 
-            if (_value.StartsWith("//"))
+            if (result.value.StartsWith("//"))
             {
-                _value = "https:" + _value;
+                result.value = "https:" + result.value;
             }
 
-            return true;
+            return result;
         }
     }
 }

@@ -28,22 +28,22 @@ namespace NewsService.Fetchers
             PageFetcher = EngadgetPageFetcher.Create(_loggerFactory).Result;
         }
 
-        protected override bool ExtractPublishedAt(HtmlNodeCollection? _node, string _url, out ZonedDateTime _value)
+        protected override (bool success, ZonedDateTime value) ExtractPublishedAt(HtmlNodeCollection? _node, string _url)
         {
             if (_node == null)
             {
-                LogAndSetFailure(_url, out _value);
+                Logger.LogWarning("Could not parse published at for article: {URL}", _url);
 
-                return false;
+                return (false, default);
             }
 
             var srcValue = _node.First().InnerText;
 
             if (srcValue == null)
             {
-                LogAndSetFailure(_url, out _value);
+                Logger.LogWarning("Could not parse published at for article: {URL}", _url);
 
-                return false;
+                return (false, default);
             }
 
             srcValue = srcValue.Trim('\n').Trim();
@@ -52,35 +52,33 @@ namespace NewsService.Fetchers
             if (Regex.IsMatch(srcValue, @"\d{1,2}m ago"))
             {
                 var duration = DurationPatternMinutes.Parse(srcValue).Value;
-                _value = new ZonedDateTime(now - duration, DateTimeZone.Utc);
 
-                return true;
+                return (true, new ZonedDateTime(now - duration, DateTimeZone.Utc));
             }
 
             if (Regex.IsMatch(srcValue, @"\d{1,2}h ago"))
             {
                 var duration = DurationPatternHours.Parse(srcValue).Value;
-                _value = new ZonedDateTime(now - duration, DateTimeZone.Utc);
 
-                return true;
+                return (true, new ZonedDateTime(now - duration, DateTimeZone.Utc));
             }
 
             var localDate = LocalDatePattern.Parse(srcValue).Value.AtStartOfDayInZone(DateTimeZone.Utc);
-            _value = localDate;
 
-            return true;
+            return (true, localDate);
         }
 
-        protected override bool ExtractImage(HtmlNodeCollection? _node, string _url, out string? _value)
+        protected override (bool success, string value) ExtractImage(HtmlNodeCollection? _node, string _url)
         {
-            if (!base.ExtractImage(_node, _url, out _value))
+            var result = base.ExtractImage(_node, _url);
+            if (result.success)
             {
-                return false;
+                return result;
             }
 
-            _value = _value?.Replace("&amp;", "&");
+            result.value = result.value.Replace("&amp;", "&");
 
-            return true;
+            return result;
         }
     }
 }

@@ -28,14 +28,13 @@ namespace NewsService.Fetchers
             PageFetcher = DefaultPageFetcher.Create(_loggerFactory).Result;
         }
 
-        protected override bool ExtractPublishedAt(HtmlNodeCollection? _node, string _url, out ZonedDateTime _value)
+        protected override (bool success, ZonedDateTime value) ExtractPublishedAt(HtmlNodeCollection? _node, string _url)
         {
             if (_node == null)
             {
                 Logger.LogWarning($"Published at was empty for article: {{URL}}", _url);
-                _value = default;
 
-                return false;
+                return (false, default);
             }
 
             var html = _node.First().InnerHtml;
@@ -44,9 +43,8 @@ namespace NewsService.Fetchers
             if (!match.Success)
             {
                 Logger.LogWarning($"Published at didn't match pattern for article: {{URL}}", _url);
-                _value = default;
 
-                return false;
+                return (false, default);
             }
 
             var date = match.Groups[1].Value;
@@ -57,27 +55,21 @@ namespace NewsService.Fetchers
                                 .CreateWithInvariantCulture("MMM d yyyy h:mm tt z", dateTimeZoneProvider)
                                 .Parse(dateTime);
 
-            if (!zonedDateTime.Success)
-            {
-                Logger.LogWarning($"Published at didn't match pattern for article: {{URL}}", _url);
-                _value = default;
+            if (zonedDateTime.Success)
+                return (true, zonedDateTime.Value);
 
-                return false;
-            }
+            Logger.LogWarning($"Published at didn't match pattern for article: {{URL}}", _url);
 
-            _value = zonedDateTime.Value;
-
-            return true;
+            return (false, default);
         }
 
-        protected override bool ExtractBody(HtmlNodeCollection? _node, string _url, out string? _value)
+        protected override (bool success, string value) ExtractBody(HtmlNodeCollection? _node, string _url)
         {
             if (_node == null)
             {
                 Logger.LogWarning($"Body was null for article: {{URL}}", _url);
-                _value = null;
 
-                return false;
+                return (false, null)!;
             }
 
             var sb = new StringBuilder();
@@ -87,20 +79,20 @@ namespace NewsService.Fetchers
                 sb.AppendLine(node.InnerText);
             }
 
-            _value = sb.ToString();
-
-            return true;
+            return (true, sb.ToString());
         }
 
-        protected override bool ExtractImage(HtmlNodeCollection? _node, string _url, out string? _value)
+        protected override (bool success, string value) ExtractImage(HtmlNodeCollection? _node, string _url)
         {
-            if (base.ExtractImage(_node, _url, out _value))
-                return true;
+            var result = base.ExtractImage(_node, _url);
+            if (result.success)
+            {
+                return result;
+            }
 
             Logger.LogWarning($"Image couldn't be found (possibly a video article?) for article: {{URL}}", _url);
-            _value = null;
 
-            return false;
+            return (false, null)!;
         }
     }
 }

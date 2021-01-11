@@ -22,29 +22,23 @@ namespace NewsService.Fetchers
             PageFetcher = DefaultPageFetcher.Create(_loggerFactory).Result;
         }
 
-        protected override bool ExtractPublishedAt(HtmlNodeCollection? _node, string _url, out ZonedDateTime _value)
+        protected override (bool success, ZonedDateTime value) ExtractPublishedAt(HtmlNodeCollection? _node, string _url)
         {
             if (_node == null)
             {
                 Logger.LogWarning($"Could not parse published at for article: {{URL}}", _url);
-                _value = default;
 
-                return false;
+                return (false, default);
             }
 
             var srcValue = _node.First().GetAttributeValue("data-source", null);
 
-            if (srcValue == null)
-            {
-                Logger.LogWarning($"Could not parse published at for article: {{URL}}", _url);
-                _value = default;
+            if (srcValue != null)
+                return (true, ParseZonedDateTimeUTC(srcValue));
 
-                return false;
-            }
+            Logger.LogWarning($"Could not parse published at for article: {{URL}}", _url);
 
-            _value = ParseZonedDateTimeUTC(srcValue);
-
-            return true;
+            return (false, default);
         }
     }
 }

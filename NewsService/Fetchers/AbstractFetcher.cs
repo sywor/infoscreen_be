@@ -110,9 +110,12 @@ namespace NewsService.Fetchers
                     else
                     {
                         var titleNodes = GetNodes(document, TitleXPaths);
+                        var (titleSuccess, titleValue) = ExtractTitle(titleNodes, responseUri);
 
-                        if (!ExtractTitle(titleNodes, responseUri, out title))
+                        if (!titleSuccess)
                             continue;
+
+                        title = titleValue;
                     }
 
                     var key = CreateRedisKey(title);
@@ -133,22 +136,28 @@ namespace NewsService.Fetchers
                     else
                     {
                         var publishedAtNodes = GetNodes(document, PublishedAtXPaths);
+                        var (publishedAtSuccess, publishedAtValue) = ExtractPublishedAt(publishedAtNodes, responseUri);
 
-                        if (!ExtractPublishedAt(publishedAtNodes, responseUri, out publishedAt))
+                        if (!publishedAtSuccess)
                             continue;
+
+                        publishedAt = publishedAtValue;
                     }
 
                     var bodyNodes = GetNodes(document, BodyXPaths);
+                    var (bodySuccess, body) = ExtractBody(bodyNodes, responseUri);
 
-                    if (!ExtractBody(bodyNodes, responseUri, out var body))
+                    if (!bodySuccess)
                         continue;
+
 
                     var imageNodes = GetNodes(document, ImageXPaths);
+                    var (success, value) = ExtractImage(imageNodes, responseUri);
 
-                    if (!ExtractImage(imageNodes, responseUri, out var imageUrl))
+                    if (!success)
                         continue;
 
-                    var imageResult = await RestRequestHandler.SendGetRequestAsync(imageUrl!, fileDownloadParser, Logger);
+                    var imageResult = await RestRequestHandler.SendGetRequestAsync(value!, fileDownloadParser, Logger);
 
                     if (!imageResult.Success)
                     {
@@ -164,7 +173,7 @@ namespace NewsService.Fetchers
                         Title = title!,
                         Source = Name,
                         PublishedAt = publishedAt,
-                        Body = body!,
+                        Body = body,
                         ImagePath = imagePath,
                         FetchedAt = _fetchTime,
                         Url = responseUri
@@ -200,41 +209,53 @@ namespace NewsService.Fetchers
             return key;
         }
 
-        protected static HtmlNodeCollection? GetNodes(HtmlDocument _page, string[] _xPaths)
+        protected static HtmlNodeCollection? GetNodes(HtmlDocument _page, IEnumerable<string> _xPaths)
         {
             return _xPaths
                    .Select(_xPath => _page.DocumentNode.SelectNodes(_xPath))
                    .FirstOrDefault(_tag => _tag != null);
         }
 
-        protected virtual bool ExtractTitle(HtmlNodeCollection? _node, string _url, out string? _value)
+        protected virtual (bool success, string value) ExtractTitle(HtmlNodeCollection? _node, string _url)
         {
-            if (string.IsNullOrEmpty(_node?.First().InnerText))
-            {
-                Logger.LogWarning("Title was empty for article: {URL}", _url);
-                _value = null;
+            if (!string.IsNullOrEmpty(_node?.First().InnerText))
+                return (true, _node.First().InnerText)!;
 
-                return false;
-            }
+            Logger.LogWarning("Title was empty for article: {URL}", _url);
 
-            _value = _node.First().InnerText;
-
-            return true;
+            return (false, null)!;
         }
 
-        protected virtual bool ExtractPublishedAt(HtmlNodeCollection? _node, string _url, out ZonedDateTime _value)
+        protected virtual (bool success, ZonedDateTime value) ExtractPublishedAt(HtmlNodeCollection? _node, string _url)
         {
-            if (string.IsNullOrEmpty(_node?.First().InnerText))
-            {
-                Logger.LogWarning("Could not parse published at for article: {URL}", _url);
-                _value = default;
+            if (!string.IsNullOrEmpty(_node?.First().InnerText))
+                return (true, ParseZonedDateTimeUTC(_node.First().InnerText));
 
-                return false;
-            }
+            Logger.LogWarning("Could not parse published at for article: {URL}", _url);
 
-            _value = ParseZonedDateTimeUTC(_node.First().InnerText);
+            return (false, default);
+        }
 
-            return true;
+        protected virtual (bool success, string value) ExtractBody(HtmlNodeCollection? _node, string _url)
+        {
+            if (!string.IsNullOrEmpty(_node?.First().InnerText))
+                return (true, _node.First().InnerText);
+
+            Logger.LogWarning("Body was empty for article: {URL}", _url);
+
+            return (false, null)!;
+        }
+
+        protected virtual (bool success, string value) ExtractImage(HtmlNodeCollection? _node, string _url)
+        {
+            var srcValue = _node?.First().GetAttributeValue("src", null);
+
+            if (srcValue != null)
+                return (true, srcValue);
+
+            Logger.LogWarning("Image src tag couldn't be found for article: {URL}", _url);
+
+            return (false, null)!;
         }
 
         protected virtual ZonedDateTime ParseZonedDateTimeUTC(string _dateTimeText)
@@ -245,47 +266,9 @@ namespace NewsService.Fetchers
                    .Value.InUtc();
         }
 
-        protected virtual bool ExtractBody(HtmlNodeCollection? _node, string _url, out string? _value)
-        {
-            if (string.IsNullOrEmpty(_node?.First().InnerText))
-            {
-                Logger.LogWarning("Body was empty for article: {URL}", _url);
-                _value = null;
-
-                return false;
-            }
-
-            _value = _node.First().InnerText;
-
-            return true;
-        }
-
-        protected virtual bool ExtractImage(HtmlNodeCollection? _node, string _url, out string? _value)
-        {
-            var srcValue = _node?.First().GetAttributeValue("src", null);
-
-            if (srcValue == null)
-            {
-                Logger.LogWarning("Image src tag couldn't be found for article: {URL}", _url);
-                _value = null;
-
-                return false;
-            }
-
-            _value = srcValue;
-
-            return true;
-        }
-
         protected virtual bool ShouldFetchArticle(ArticleLinkResponse _url)
         {
             return true;
-        }
-
-        protected void LogAndSetFailure<Type>(string _url, out Type _value)
-        {
-            Logger.LogWarning("Could not parse {Type} for article: {URL}", nameof(Type), _url);
-            _value = default!;
         }
     }
 }

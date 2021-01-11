@@ -22,11 +22,12 @@ namespace NewsService.Fetchers
             PageFetcher = DefaultPageFetcher.Create(_loggerFactory).Result;
         }
 
-        protected override bool ExtractImage(HtmlNodeCollection? _node, string _url, out string? _value)
+        protected override (bool success, string value) ExtractImage(HtmlNodeCollection? _node, string _url)
         {
-            if (base.ExtractImage(_node, _url, out _value))
+            var result = base.ExtractImage(_node, _url);
+            if (result.success)
             {
-                return true;
+                return result;
             }
 
             Logger.LogWarning("Attempting fallback method");
@@ -35,49 +36,37 @@ namespace NewsService.Fetchers
             if (srcValue == null)
             {
                 Logger.LogWarning($"Image style tag couldn't be found for article: {{URL}}", _url);
-                _value = null;
 
-                return false;
+                return (false, null)!;
             }
 
             Match match = regex.Match(srcValue);
 
-            if (!match.Success)
-            {
-                Logger.LogWarning($"Image style tag didn't match pattern for article: {{URL}}", _url);
-                _value = null;
+            if (match.Success)
+                return (true, match.Groups[1].Value);
 
-                return false;
-            }
+            Logger.LogWarning($"Image style tag didn't match pattern for article: {{URL}}", _url);
 
-            _value = match.Groups[1].Value;
-
-            return true;
+            return (false, null)!;
         }
 
-        protected override bool ExtractBody(HtmlNodeCollection? _node, string _url, out string? _value)
+        protected override (bool success, string value) ExtractBody(HtmlNodeCollection? _node, string _url)
         {
             if (_node == null)
             {
                 Logger.LogWarning($"Body could be found for article: {{URL}}", _url);
-                _value = null;
 
-                return false;
+                return (false, null)!;
             }
 
             var result = _node.FirstOrDefault(_x => !string.IsNullOrEmpty(_x.InnerText))?.InnerText;
 
-            if (result == null)
-            {
-                Logger.LogWarning($"Body was empty for article: {{URL}}", _url);
-                _value = null;
+            if (result != null)
+                return (true, result);
 
-                return false;
-            }
+            Logger.LogWarning($"Body was empty for article: {{URL}}", _url);
 
-            _value = result;
-
-            return true;
+            return (false, null)!;
         }
     }
 }

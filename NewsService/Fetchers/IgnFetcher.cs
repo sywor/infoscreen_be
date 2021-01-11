@@ -30,16 +30,15 @@ namespace NewsService.Fetchers
             return urlFilter.IsMatch(_url.Uri);
         }
 
-        protected override bool ExtractImage(HtmlNodeCollection? _node, string _url, out string? _value)
+        protected override (bool success, string value) ExtractImage(HtmlNodeCollection? _node, string _url)
         {
             var htmlNode = _node?.First();
 
             if (htmlNode == null)
             {
                 Logger.LogWarning("Image src tag couldn't be found for article: {URL}", _url);
-                _value = null;
 
-                return false;
+                return (false, null)!;
             }
 
             if (htmlNode.Name == "iframe")
@@ -59,14 +58,11 @@ namespace NewsService.Fetchers
                 var match = iframeFilter.Match(attributeValue ?? string.Empty);
                 if (match.Success)
                 {
-                    _value = match.Groups[1].Value;
-
-                    return true;
+                    return (true, match.Groups[1].Value);
                 }
                 Logger.LogWarning("Image src tag couldn't be found for article: {URL}", _url);
-                _value = null;
 
-                return false;
+                return (false, null)!;
             }
 
             var url0 = htmlNode.GetAttributeValue("data-thumb-src", null);
@@ -74,21 +70,14 @@ namespace NewsService.Fetchers
             var url2 = htmlNode.GetAttributeValue("src", null);
             var url4 = htmlNode.GetAttributeValue("href", null);
 
-            _value = url0 ?? url1 ?? url2 ?? url4;
-
-            return true;
+            return (true, url0 ?? url1 ?? url2 ?? url4);
         }
 
-        protected override bool ExtractBody(HtmlNodeCollection? _node, string _url, out string? _value)
+        protected override (bool success, string value) ExtractBody(HtmlNodeCollection? _node, string _url)
         {
-            if (!base.ExtractBody(_node, _url, out _value))
-            {
-                return false;
-            }
+            var result = base.ExtractBody(_node, _url);
 
-            _value = Regex.Replace(_value, "<.*?>", string.Empty);
-
-            return true;
+            return !result.success ? result : (true, Regex.Replace(result.value, "<.*?>", string.Empty));
         }
     }
 }
