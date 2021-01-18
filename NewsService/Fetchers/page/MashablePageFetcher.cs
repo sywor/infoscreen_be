@@ -24,7 +24,7 @@ namespace NewsService.Fetchers.page
             return instance;
         }
 
-        public override async Task<HtmlDocument?> FetchPage(string _url)
+        public override async Task<HtmlDocument?> FetchRenderedPage(string _url)
         {
             try
             {
@@ -42,6 +42,9 @@ namespace NewsService.Fetchers.page
                     var doc = new HtmlDocument();
                     doc.LoadHtml(pageContent);
 
+                    await page.CloseAsync();
+                    await browserContext.CloseAsync();
+
                     return doc;
                 }
 
@@ -55,11 +58,6 @@ namespace NewsService.Fetchers.page
             }
 
             return null;
-        }
-
-        public override Task<HtmlDocument?> FetchRootPage(string _url)
-        {
-            return FetchPage(_url);
         }
     }
 }

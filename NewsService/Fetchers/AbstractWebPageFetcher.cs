@@ -16,7 +16,7 @@ using NodaTime;
 
 namespace NewsService.Fetchers
 {
-    public class AbstractWebPageFetcher<T> : AbstractFetcher<T>, IFetcher
+    public abstract class AbstractWebPageFetcher<T> : AbstractFetcher<T>, IFetcher
     {
         public AbstractWebPageFetcher(NewsSourceConfigurations _configuration,
                                       MinioConfiguration _minioConfiguration,

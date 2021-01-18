@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 
 using NewsService.Config;
 using NewsService.Data;
-using NewsService.Fetchers.page;
 using NewsService.Services;
 
 using NodaTime;

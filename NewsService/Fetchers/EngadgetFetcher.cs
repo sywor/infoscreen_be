@@ -28,7 +28,7 @@ namespace NewsService.Fetchers
             PageFetcher = EngadgetPageFetcher.Create(_loggerFactory).Result;
         }
 
-        protected override (bool success, ZonedDateTime value) ExtractPublishedAt(HtmlNodeCollection? _node, string _url)
+        protected override (bool success, ZonedDateTime value) ExtractPublishedAt(HtmlNodeCollection? _node, string _url, ArticleSourceType _articleSourceType)
         {
             if (_node == null)
             {
@@ -68,9 +68,9 @@ namespace NewsService.Fetchers
             return (true, localDate);
         }
 
-        protected override (bool success, string value) ExtractImage(HtmlNodeCollection? _node, string _url)
+        protected override (bool success, string value) ExtractMedia(HtmlNodeCollection? _node, string _url, ArticleSourceType _articleSourceType)
         {
-            var result = base.ExtractImage(_node, _url);
+            var result = base.ExtractMedia(_node, _url, _articleSourceType);
             if (result.success)
             {
                 return result;

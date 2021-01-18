@@ -12,6 +12,7 @@ namespace NewsService.Data
         public string ImagePath { get; set; }
         public ZonedDateTime FetchedAt { get; set; }
         public string Url { get; set; }
+        public string Type { get; set; }
 
         public override string ToString()
         {

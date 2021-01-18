@@ -24,7 +24,7 @@ namespace NewsService.Fetchers.page
             return instance;
         }
 
-        public override async Task<HtmlDocument?> FetchPage(string _url)
+        public override async Task<HtmlDocument?> FetchRenderedPage(string _url)
         {
             return await Fetch(_url, false);
         }
@@ -39,7 +39,7 @@ namespace NewsService.Fetchers.page
             try
             {
                 var browserContext = await Browser.CreateIncognitoBrowserContextAsync();
-                var page = await browserContext.NewPageAsync();
+                await using var page = await browserContext.NewPageAsync();
                 var response = await page.GoToAsync(_url, WaitUntilNavigation);
 
                 if (response.Status == HttpStatusCode.OK)
@@ -56,6 +56,9 @@ namespace NewsService.Fetchers.page
                     var pageContent = await page.GetContentAsync();
                     var doc = new HtmlDocument();
                     doc.LoadHtml(pageContent);
+
+                    await page.CloseAsync();
+                    await browserContext.CloseAsync();
 
                     return doc;
                 }

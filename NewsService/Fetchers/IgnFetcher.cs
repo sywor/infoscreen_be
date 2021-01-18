@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 
 using HtmlAgilityPack;
@@ -30,7 +31,7 @@ namespace NewsService.Fetchers
             return urlFilter.IsMatch(_url.Uri);
         }
 
-        protected override (bool success, string value) ExtractImage(HtmlNodeCollection? _node, string _url)
+        protected override (bool success, string value) ExtractMedia(HtmlNodeCollection? _node, string _url, ArticleSourceType _articleSourceType)
         {
             var htmlNode = _node?.First();
 
@@ -49,11 +50,11 @@ namespace NewsService.Fetchers
 
                 Logger.LogInformation("iFrame source {URL}", url);
 
-                var fetchPage = PageFetcher.FetchPage(url).Result;
+                var fetchPage = PageFetcher.FetchRenderedPage(url).Result;
 
                 var selectSingleNode = fetchPage?.DocumentNode.SelectSingleNode("//div[@class='video-embed']//div[@class='screen-background-image']");
                 var attributeValue = selectSingleNode?.GetAttributeValue("style", null);
-                attributeValue = attributeValue?.Replace("&quot;", "\"");
+                attributeValue = WebUtility.HtmlDecode(attributeValue);
 
                 var match = iframeFilter.Match(attributeValue ?? string.Empty);
                 if (match.Success)
@@ -73,9 +74,9 @@ namespace NewsService.Fetchers
             return (true, url0 ?? url1 ?? url2 ?? url4);
         }
 
-        protected override (bool success, string value) ExtractBody(HtmlNodeCollection? _node, string _url)
+        protected override (bool success, string value) ExtractBody(HtmlNodeCollection? _node, string _url, ArticleSourceType _articleSourceType)
         {
-            var result = base.ExtractBody(_node, _url);
+            var result = base.ExtractBody(_node, _url, _articleSourceType);
 
             return !result.success ? result : (true, Regex.Replace(result.value, "<.*?>", string.Empty));
         }

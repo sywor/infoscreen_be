@@ -21,10 +21,15 @@ namespace NewsService.Fetchers
 {
     public abstract class AbstractFetcher<T>
     {
+        protected enum ArticleSourceType
+        {
+            RAW_ARTICLE,
+            RENDERED_ARTICLE
+        }
+
         public string Name { get; }
 
         private readonly RedisCacheService redis;
-
         private readonly FileDownloadParser fileDownloadParser;
         protected readonly ILogger Logger;
         protected readonly string BaseUrl;
@@ -36,6 +41,7 @@ namespace NewsService.Fetchers
         protected readonly string[] PublishedAtXPaths;
         protected readonly List<InstantPattern> PublishedAtPatterns;
         protected IPageFetcher PageFetcher { get; set; }
+        protected ILoggerFactory LoggerFactory { get; }
 
         protected AbstractFetcher(NewsSourceConfigurations _newsSourceConfigurations,
                                   MinioConfiguration _minioConfiguration,
@@ -44,6 +50,7 @@ namespace NewsService.Fetchers
                                   ILoggerFactory _loggerFactory)
         {
             redis = _redis;
+            LoggerFactory = _loggerFactory;
             Name = _name;
             Logger = _loggerFactory.CreateLogger<T>();
 
@@ -94,7 +101,14 @@ namespace NewsService.Fetchers
 
                     Logger.LogInformation("Fetching: {URL}", responseUri);
 
-                    var document = await PageFetcher.FetchPage(responseUri);
+                    var articleSourceType = GetArticleSourceType(articleLinkResponse);
+
+                    var document = articleSourceType switch
+                    {
+                        ArticleSourceType.RAW_ARTICLE      => await PageFetcher.FetchRawPage(responseUri),
+                        ArticleSourceType.RENDERED_ARTICLE => await PageFetcher.FetchRenderedPage(responseUri),
+                        _                                  => throw new ArgumentOutOfRangeException()
+                    };
 
                     if (document == null)
                     {
@@ -110,7 +124,7 @@ namespace NewsService.Fetchers
                     else
                     {
                         var titleNodes = GetNodes(document, TitleXPaths);
-                        var (titleSuccess, titleValue) = ExtractTitle(titleNodes, responseUri);
+                        var (titleSuccess, titleValue) = ExtractTitle(titleNodes, responseUri, articleSourceType);
 
                         if (!titleSuccess)
                             continue;
@@ -136,7 +150,7 @@ namespace NewsService.Fetchers
                     else
                     {
                         var publishedAtNodes = GetNodes(document, PublishedAtXPaths);
-                        var (publishedAtSuccess, publishedAtValue) = ExtractPublishedAt(publishedAtNodes, responseUri);
+                        var (publishedAtSuccess, publishedAtValue) = ExtractPublishedAt(publishedAtNodes, responseUri, articleSourceType);
 
                         if (!publishedAtSuccess)
                             continue;
@@ -145,14 +159,14 @@ namespace NewsService.Fetchers
                     }
 
                     var bodyNodes = GetNodes(document, BodyXPaths);
-                    var (bodySuccess, body) = ExtractBody(bodyNodes, responseUri);
+                    var (bodySuccess, body) = ExtractBody(bodyNodes, responseUri, articleSourceType);
 
                     if (!bodySuccess)
                         continue;
 
 
                     var imageNodes = GetNodes(document, ImageXPaths);
-                    var (success, value) = ExtractImage(imageNodes, responseUri);
+                    var (success, value) = ExtractMedia(imageNodes, responseUri, articleSourceType);
 
                     if (!success)
                         continue;
@@ -176,7 +190,8 @@ namespace NewsService.Fetchers
                         Body = body,
                         ImagePath = imagePath,
                         FetchedAt = _fetchTime,
-                        Url = responseUri
+                        Url = responseUri,
+                        Type = GetArticleType(articleSourceType)
                     };
 
                     if (await redis.AddValue(key, newsArticle))
@@ -199,9 +214,21 @@ namespace NewsService.Fetchers
             return result;
         }
 
+        protected virtual bool ShouldFetchArticle(ArticleLinkResponse _url)
+        {
+            return true;
+        }
+
+        protected virtual ArticleSourceType GetArticleSourceType(ArticleLinkResponse _articleLinkResponse)
+        {
+            return ArticleSourceType.RENDERED_ARTICLE;
+        }
+
         private string CreateRedisKey(string _title)
         {
-            var keyTitle = Regex.Replace(_title!.Trim(), @"\s+", "_");
+            var keyTitle = _title.Trim();
+            keyTitle = keyTitle.Replace("_", "");
+            keyTitle = Regex.Replace(keyTitle, @"\s+", "_");
             keyTitle = Regex.Replace(keyTitle, @"[^\w\*]", "");
 
             var key = $"news_article:{Name}:{keyTitle}";
@@ -216,7 +243,7 @@ namespace NewsService.Fetchers
                    .FirstOrDefault(_tag => _tag != null);
         }
 
-        protected virtual (bool success, string value) ExtractTitle(HtmlNodeCollection? _node, string _url)
+        protected virtual (bool success, string value) ExtractTitle(HtmlNodeCollection? _node, string _url, ArticleSourceType _articleSourceType)
         {
             if (!string.IsNullOrEmpty(_node?.First().InnerText))
                 return (true, _node.First().InnerText)!;
@@ -226,7 +253,7 @@ namespace NewsService.Fetchers
             return (false, null)!;
         }
 
-        protected virtual (bool success, ZonedDateTime value) ExtractPublishedAt(HtmlNodeCollection? _node, string _url)
+        protected virtual (bool success, ZonedDateTime value) ExtractPublishedAt(HtmlNodeCollection? _node, string _url, ArticleSourceType _articleSourceType)
         {
             if (!string.IsNullOrEmpty(_node?.First().InnerText))
                 return (true, ParseZonedDateTimeUTC(_node.First().InnerText));
@@ -236,7 +263,7 @@ namespace NewsService.Fetchers
             return (false, default);
         }
 
-        protected virtual (bool success, string value) ExtractBody(HtmlNodeCollection? _node, string _url)
+        protected virtual (bool success, string value) ExtractBody(HtmlNodeCollection? _node, string _url, ArticleSourceType _articleSourceType)
         {
             if (!string.IsNullOrEmpty(_node?.First().InnerText))
                 return (true, _node.First().InnerText);
@@ -246,7 +273,7 @@ namespace NewsService.Fetchers
             return (false, null)!;
         }
 
-        protected virtual (bool success, string value) ExtractImage(HtmlNodeCollection? _node, string _url)
+        protected virtual (bool success, string value) ExtractMedia(HtmlNodeCollection? _node, string _url, ArticleSourceType _articleSourceType)
         {
             var srcValue = _node?.First().GetAttributeValue("src", null);
 
@@ -258,17 +285,17 @@ namespace NewsService.Fetchers
             return (false, null)!;
         }
 
+        protected virtual string GetArticleType(ArticleSourceType _articleSourceType)
+        {
+            return "TEXT";
+        }
+
         protected virtual ZonedDateTime ParseZonedDateTimeUTC(string _dateTimeText)
         {
             return PublishedAtPatterns
                    .Select(_pattern => _pattern.Parse(_dateTimeText))
                    .First(_parseResult => _parseResult.Success)
                    .Value.InUtc();
-        }
-
-        protected virtual bool ShouldFetchArticle(ArticleLinkResponse _url)
-        {
-            return true;
         }
     }
 }

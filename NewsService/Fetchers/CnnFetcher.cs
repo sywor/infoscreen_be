@@ -28,8 +28,8 @@ namespace NewsService.Fetchers
         {
             PageFetcher = DefaultPageFetcher.Create(_loggerFactory, WaitUntilNavigation.Networkidle2).Result;
         }
-
-        protected override (bool success, ZonedDateTime value) ExtractPublishedAt(HtmlNodeCollection? _node, string _url)
+        
+        protected override (bool success, ZonedDateTime value) ExtractPublishedAt(HtmlNodeCollection? _node, string _url, ArticleSourceType _articleSourceType)
         {
             if (_node == null)
             {
@@ -76,7 +76,7 @@ namespace NewsService.Fetchers
             return (false, default);
         }
 
-        protected override (bool success, string value) ExtractBody(HtmlNodeCollection? _node, string _url)
+        protected override (bool success, string value) ExtractBody(HtmlNodeCollection? _node, string _url, ArticleSourceType _articleSourceType)
         {
             if (_node == null)
             {
@@ -102,9 +102,9 @@ namespace NewsService.Fetchers
             return (true, sb.ToString());
         }
 
-        protected override (bool success, string value) ExtractImage(HtmlNodeCollection? _node, string _url)
+        protected override (bool success, string value) ExtractMedia(HtmlNodeCollection? _node, string _url, ArticleSourceType _articleSourceType)
         {
-            var result = base.ExtractImage(_node, _url);
+            var result = base.ExtractMedia(_node, _url, _articleSourceType);
             if (result.success)
             {
                 return result;

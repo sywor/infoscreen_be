@@ -105,8 +105,8 @@ namespace NewsService
                 RecurringJob.AddOrUpdate<EngadgetFetcher>(EngadgetFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
                 RecurringJob.AddOrUpdate<IgnFetcher>(IgnFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
                 RecurringJob.AddOrUpdate<MashableFetcher>(MashableFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
-
                 RecurringJob.AddOrUpdate<NationalGeographicFetcher>(NationalGeographicFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
+
                 RecurringJob.AddOrUpdate<NyTimesFetcher>(NyTimesFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
                 RecurringJob.AddOrUpdate<PolygonFetcher>(PolygonFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
                 RecurringJob.AddOrUpdate<RecodeFetcher>(RecodeFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);

@@ -2,8 +2,9 @@ using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+
 using Microsoft.Extensions.Logging;
+
 using Minio;
 
 using NewsService.Config;
@@ -14,7 +15,6 @@ namespace NewsService.Data.Parsers
     {
         private readonly ILogger logger;
         private readonly string bucketName;
-        private readonly string filePrefix;
         private readonly string bucketDirectory;
         private readonly string staticEndpoint;
         private readonly MinioClient minioClient;
@@ -24,7 +24,6 @@ namespace NewsService.Data.Parsers
             logger = _loggerFactory.CreateLogger<FileDownloadParser>();
 
             bucketName = _configuration.BucketName;
-            filePrefix = _configuration.FilePrefix;
             bucketDirectory = _configuration.BucketDirectory;
             staticEndpoint = _configuration.StaticHostEndpoint;
 
@@ -33,38 +32,34 @@ namespace NewsService.Data.Parsers
 
         public async Task<IResponse> ParseAsync(HttpContent _responseContent)
         {
-            async Task<IResponse> ParseFileDownload()
+            try
             {
-                try
+                var response = await _responseContent.ReadAsStreamAsync();
+
+                var contentType = _responseContent.Headers.ContentType;
+                var mediaType = contentType.MediaType;
+                var prefix = mediaType.Split('/').First();
+                var extension = mediaType.Split('/').Last();
+                var fullFileName = $"{bucketDirectory}/{prefix}_{Guid.NewGuid()}.{extension}";
+
+                if (!await minioClient.BucketExistsAsync(bucketName))
                 {
-                    var response = await _responseContent.ReadAsStreamAsync();
-
-                    var contentType = _responseContent.Headers.ContentType;
-                    var mediaType = contentType.MediaType;
-                    var extension = mediaType.Split('/').Last();
-                    var fullFileName = $"{bucketDirectory}/{filePrefix}_{Guid.NewGuid()}.{extension}";
-
-                    if (!await minioClient.BucketExistsAsync(bucketName))
-                    {
-                        await minioClient.MakeBucketAsync(bucketName);
-                    }
-
-                    await minioClient.PutObjectAsync(bucketName, fullFileName, response, response.Length, mediaType);
-
-                    return new FileDownloadResponse
-                    {
-                        FileUri = $"http://{staticEndpoint}/{fullFileName}"
-                    };
-                }
-                catch (Exception e)
-                {
-                    logger.LogError(e, "Failed to parse file download result");
+                    await minioClient.MakeBucketAsync(bucketName);
                 }
 
-                return FailureResponse.Instance;
+                await minioClient.PutObjectAsync(bucketName, fullFileName, response, response.Length, mediaType);
+
+                return new FileDownloadResponse
+                {
+                    FileUri = $"http://{staticEndpoint}/{fullFileName}"
+                };
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "Failed to parse file download result");
             }
 
-            return await Task.Run(ParseFileDownload);
+            return FailureResponse.Instance;
         }
     }
 }
