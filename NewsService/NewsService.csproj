@@ -18,21 +18,19 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="FeedlySharp" Version="1.1.135" />
         <PackageReference Include="Grpc.AspNetCore" Version="2.28.0" />
         <PackageReference Include="Hangfire.AspNetCore" Version="1.7.18" />
         <PackageReference Include="Hangfire.Redis.StackExchange" Version="1.8.4" />
-        <PackageReference Include="HtmlAgilityPack" Version="1.11.28" />
         <PackageReference Include="Minio" Version="3.1.13" />
         <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
         <PackageReference Include="NodaTime" Version="3.0.3" />
         <PackageReference Include="NodaTime.Serialization.JsonNet" Version="3.0.0" />
-        <PackageReference Include="PuppeteerSharp" Version="2.0.4" />
         <PackageReference Include="Serilog" Version="2.10.0" />
         <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
         <PackageReference Include="Serilog.Enrichers.AspNetCore" Version="1.0.0" />
         <PackageReference Include="Serilog.Exceptions" Version="5.7.0" />
         <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
-        <PackageReference Include="SimpleFeedReader" Version="1.0.9" />
         <PackageReference Include="StackExchange.Redis" Version="2.1.58" />
         <PackageReference Include="StackExchange.Redis.Extensions.Core" Version="6.3.5" />
         <PackageReference Include="StackExchange.Redis.Extensions.Newtonsoft" Version="6.3.5" />

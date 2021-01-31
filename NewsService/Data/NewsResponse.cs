@@ -1,3 +1,5 @@
+using NewsService.Feedly;
+
 namespace NewsService.Data
 {
     public struct NewsResponse

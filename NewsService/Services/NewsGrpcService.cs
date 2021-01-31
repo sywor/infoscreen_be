@@ -36,8 +36,8 @@ namespace NewsService.Services
                 var article = new Article
                 {
                     Title = newsArticle.Title,
-                    ImagePath = newsArticle.ImagePath,
-                    Body = newsArticle.Body,
+                    ImagePath = newsArticle.ImageUrl,
+                    Content = newsArticle.Content,
                     Source = newsArticle.Source,
                     FetchedUnix = newsArticle.FetchedAt.ToInstant().ToUnixTimeMilliseconds(),
                     PublishedUnix = newsArticle.PublishedAt.ToInstant().ToUnixTimeMilliseconds()
@@ -65,8 +65,8 @@ namespace NewsService.Services
                     Article = new Article
                     {
                         Title = newsArticle.Title,
-                        ImagePath = newsArticle.ImagePath,
-                        Body = newsArticle.Body,
+                        ImagePath = newsArticle.ImageUrl,
+                        Content = newsArticle.Content,
                         Source = newsArticle.Source,
                         FetchedUnix = newsArticle.FetchedAt.ToInstant().ToUnixTimeMilliseconds(),
                         PublishedUnix = newsArticle.PublishedAt.ToInstant().ToUnixTimeMilliseconds()

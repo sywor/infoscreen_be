@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 using NewsService.Data;
+using NewsService.Feedly;
 
 using StackExchange.Redis.Extensions.Core.Abstractions;
 

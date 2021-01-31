@@ -27,22 +27,23 @@ namespace NewsService {
             "ChFQcm90b3MvbmV3cy5wcm90bxIEbmV3cxobZ29vZ2xlL3Byb3RvYnVmL2Vt",
             "cHR5LnByb3RvIiQKDkFydGljbGVSZXF1ZXN0EhIKCmFydGljbGVLZXkYASAB",
             "KAkiOQoGU3RhdHVzEg8KB01lc3NhZ2UYASABKAkSHgoEQ29kZRgCIAEoDjIQ",
-            "Lm5ld3MuU3RhdHVzQ29kZSJ3CgdBcnRpY2xlEg0KBXRpdGxlGAEgASgJEhQK",
+            "Lm5ld3MuU3RhdHVzQ29kZSJ6CgdBcnRpY2xlEg0KBXRpdGxlGAEgASgJEhQK",
             "DGZldGNoZWRfdW5peBgCIAEoAxIWCg5wdWJsaXNoZWRfdW5peBgDIAEoAxIR",
-            "CglpbWFnZVBhdGgYBCABKAkSDAoEYm9keRgFIAEoCRIOCgZzb3VyY2UYBiAB",
-            "KAkiXwoPQXJ0aWNsZVJlc3BvbnNlEiAKB2FydGljbGUYASABKAsyDS5uZXdz",
-            "LkFydGljbGVIABIeCgZzdGF0dXMYAiABKAsyDC5uZXdzLlN0YXR1c0gAQgoK",
-            "CHJlc3BvbnNlKi8KClN0YXR1c0NvZGUSCwoHRmFpbHVyZRAAEgwKCEZldGNo",
-            "aW5nEAESBgoCT2sQAjKLAQoLTmV3c0ZldGNoZXISQQoOR2V0QWxsQXJ0aWNs",
-            "ZXMSFi5nb29nbGUucHJvdG9idWYuRW1wdHkaFS5uZXdzLkFydGljbGVSZXNw",
-            "b25zZTABEjkKCkdldEFydGljbGUSFC5uZXdzLkFydGljbGVSZXF1ZXN0GhUu",
-            "bmV3cy5BcnRpY2xlUmVzcG9uc2VCDqoCC05ld3NTZXJ2aWNlYgZwcm90bzM="));
+            "CglpbWFnZVBhdGgYBCABKAkSDwoHY29udGVudBgFIAEoCRIOCgZzb3VyY2UY",
+            "BiABKAkiXwoPQXJ0aWNsZVJlc3BvbnNlEiAKB2FydGljbGUYASABKAsyDS5u",
+            "ZXdzLkFydGljbGVIABIeCgZzdGF0dXMYAiABKAsyDC5uZXdzLlN0YXR1c0gA",
+            "QgoKCHJlc3BvbnNlKi8KClN0YXR1c0NvZGUSCwoHRmFpbHVyZRAAEgwKCEZl",
+            "dGNoaW5nEAESBgoCT2sQAjKLAQoLTmV3c0ZldGNoZXISQQoOR2V0QWxsQXJ0",
+            "aWNsZXMSFi5nb29nbGUucHJvdG9idWYuRW1wdHkaFS5uZXdzLkFydGljbGVS",
+            "ZXNwb25zZTABEjkKCkdldEFydGljbGUSFC5uZXdzLkFydGljbGVSZXF1ZXN0",
+            "GhUubmV3cy5BcnRpY2xlUmVzcG9uc2VCDqoCC05ld3NTZXJ2aWNlYgZwcm90",
+            "bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::NewsService.StatusCode), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::NewsService.ArticleRequest), global::NewsService.ArticleRequest.Parser, new[]{ "ArticleKey" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::NewsService.Status), global::NewsService.Status.Parser, new[]{ "Message", "Code" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::NewsService.Article), global::NewsService.Article.Parser, new[]{ "Title", "FetchedUnix", "PublishedUnix", "ImagePath", "Body", "Source" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::NewsService.Article), global::NewsService.Article.Parser, new[]{ "Title", "FetchedUnix", "PublishedUnix", "ImagePath", "Content", "Source" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::NewsService.ArticleResponse), global::NewsService.ArticleResponse.Parser, new[]{ "Article", "Status" }, new[]{ "Response" }, null, null, null)
           }));
     }
@@ -374,7 +375,7 @@ namespace NewsService {
       fetchedUnix_ = other.fetchedUnix_;
       publishedUnix_ = other.publishedUnix_;
       imagePath_ = other.imagePath_;
-      body_ = other.body_;
+      content_ = other.content_;
       source_ = other.source_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -428,14 +429,14 @@ namespace NewsService {
       }
     }
 
-    /// <summary>Field number for the "body" field.</summary>
-    public const int BodyFieldNumber = 5;
-    private string body_ = "";
+    /// <summary>Field number for the "content" field.</summary>
+    public const int ContentFieldNumber = 5;
+    private string content_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Body {
-      get { return body_; }
+    public string Content {
+      get { return content_; }
       set {
-        body_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        content_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -467,7 +468,7 @@ namespace NewsService {
       if (FetchedUnix != other.FetchedUnix) return false;
       if (PublishedUnix != other.PublishedUnix) return false;
       if (ImagePath != other.ImagePath) return false;
-      if (Body != other.Body) return false;
+      if (Content != other.Content) return false;
       if (Source != other.Source) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -479,7 +480,7 @@ namespace NewsService {
       if (FetchedUnix != 0L) hash ^= FetchedUnix.GetHashCode();
       if (PublishedUnix != 0L) hash ^= PublishedUnix.GetHashCode();
       if (ImagePath.Length != 0) hash ^= ImagePath.GetHashCode();
-      if (Body.Length != 0) hash ^= Body.GetHashCode();
+      if (Content.Length != 0) hash ^= Content.GetHashCode();
       if (Source.Length != 0) hash ^= Source.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -510,9 +511,9 @@ namespace NewsService {
         output.WriteRawTag(34);
         output.WriteString(ImagePath);
       }
-      if (Body.Length != 0) {
+      if (Content.Length != 0) {
         output.WriteRawTag(42);
-        output.WriteString(Body);
+        output.WriteString(Content);
       }
       if (Source.Length != 0) {
         output.WriteRawTag(50);
@@ -538,8 +539,8 @@ namespace NewsService {
       if (ImagePath.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(ImagePath);
       }
-      if (Body.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Body);
+      if (Content.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Content);
       }
       if (Source.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Source);
@@ -567,8 +568,8 @@ namespace NewsService {
       if (other.ImagePath.Length != 0) {
         ImagePath = other.ImagePath;
       }
-      if (other.Body.Length != 0) {
-        Body = other.Body;
+      if (other.Content.Length != 0) {
+        Content = other.Content;
       }
       if (other.Source.Length != 0) {
         Source = other.Source;
@@ -601,7 +602,7 @@ namespace NewsService {
             break;
           }
           case 42: {
-            Body = input.ReadString();
+            Content = input.ReadString();
             break;
           }
           case 50: {

@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using NewsService.Config;
-using NewsService.Fetchers;
+using NewsService.Feedly;
 using NewsService.Services;
 
 using StackExchange.Redis;
@@ -33,8 +33,8 @@ namespace NewsService
         public void ConfigureServices(IServiceCollection _services)
         {
             var redisConfiguration = configuration.GetSection("Redis").Get<RedisConfiguration>();
-            var newsSourceConfigurations = new NewsSourceConfigurations(configuration.GetSection("NewsSources").Get<NewsSourceConfiguration[]>());
             var minioConfiguration = configuration.GetSection("Minio").Get<MinioConfiguration>();
+            var feedlyConfiguration = configuration.GetSection("Feedly").Get<FeedlyConfiguration>();
 
             _services.AddGrpc();
             _services.AddAuthorization();
@@ -50,8 +50,8 @@ namespace NewsService
             _services.AddSingleton<NewsHandlerService>();
             _services.AddSingleton<RedisCacheService>();
             _services.AddSingleton(redisConfiguration);
-            _services.AddSingleton(newsSourceConfigurations);
             _services.AddSingleton(minioConfiguration);
+            _services.AddSingleton(feedlyConfiguration);
 
             _services.AddHangfire(_configuration =>
             {
@@ -95,27 +95,9 @@ namespace NewsService
                 _endpoints.MapHangfireDashboard();
 
 #if DEBUG
-                BackgroundJob.Enqueue<MashableFetcher>(_fetcher => _fetcher.Fetch());
+                BackgroundJob.Enqueue<FeedlyFetcher>(_fetcher => _fetcher.Fetch());
 #else
-                RecurringJob.AddOrUpdate<ArsTechnicaFetcher>(ArsTechnicaFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
-                RecurringJob.AddOrUpdate<AssociatedPressFetcher>(AssociatedPressFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
-                RecurringJob.AddOrUpdate<BbcFetcher>(BbcFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
-                RecurringJob.AddOrUpdate<CnbcFetcher>(CnbcFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
-                RecurringJob.AddOrUpdate<CnnFetcher>(CnnFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
-                RecurringJob.AddOrUpdate<EngadgetFetcher>(EngadgetFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
-                RecurringJob.AddOrUpdate<IgnFetcher>(IgnFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
-                RecurringJob.AddOrUpdate<MashableFetcher>(MashableFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
-                RecurringJob.AddOrUpdate<NationalGeographicFetcher>(NationalGeographicFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
-
-                RecurringJob.AddOrUpdate<NyTimesFetcher>(NyTimesFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
-                RecurringJob.AddOrUpdate<PolygonFetcher>(PolygonFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
-                RecurringJob.AddOrUpdate<RecodeFetcher>(RecodeFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
-                RecurringJob.AddOrUpdate<ReutersFetcher>(ReutersFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
-                RecurringJob.AddOrUpdate<TechradarFetcher>(TechradarFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
-                RecurringJob.AddOrUpdate<TheVergeFetcher>(TheVergeFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
-                RecurringJob.AddOrUpdate<ViceFetcher>(ViceFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
-                RecurringJob.AddOrUpdate<WashingtonPostFetcher>(WashingtonPostFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
-                RecurringJob.AddOrUpdate<WiredFetcher>(WiredFetcher.NAME, _fetcher => _fetcher.Fetch(), Cron.Hourly);
+                RecurringJob.AddOrUpdate<FeedlyFetcher>(_fetcher => _fetcher.Fetch(), Cron.Hourly);
 #endif
             });
         }
