@@ -95,7 +95,7 @@ namespace NewsService
                 _endpoints.MapHangfireDashboard();
 
 #if DEBUG
-                BackgroundJob.Enqueue<FeedlyFetcher>(_fetcher => _fetcher.Fetch());
+                 //BackgroundJob.Enqueue<FeedlyFetcher>(_fetcher => _fetcher.Fetch());
 #else
                 RecurringJob.AddOrUpdate<FeedlyFetcher>(_fetcher => _fetcher.Fetch(), Cron.Hourly);
 #endif

@@ -10,8 +10,8 @@ namespace NewsService.Feedly
         public string Fingerprint { get; set; }
         public string Title { get; set; }
         public string Source { get; set; }
-        public ZonedDateTime PublishedAt { get; set; }
-        public ZonedDateTime FetchedAt { get; set; }
+        public long PublishedAt { get; set; }
+        public long FetchedAt { get; set; }
         public string Content { get; set; }
         public string ImageUrl { get; set; }
         public string ArticleUrl { get; set; }

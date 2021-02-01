@@ -27,12 +27,13 @@ message Status {
 }
 
 message Article {
-    string title = 1;
-    int64 fetched_unix = 2;
-    int64 published_unix = 3;
-    string imagePath = 4;
-    string content = 5;
-    string source = 6;
+    string key = 1;
+    string title = 2;
+    int64 fetched_unix = 3;
+    int64 published_unix = 4;
+    string imagePath = 5;
+    string content = 6;
+    string source = 7;
 }
 
 message ArticleResponse {

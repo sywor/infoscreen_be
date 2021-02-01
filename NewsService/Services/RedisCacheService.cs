@@ -44,7 +44,19 @@ namespace NewsService.Services
             var newsArticleResponse = await redis.Db0.GetAllAsync<NewsArticle>(keys);
             logger.LogInformation("Returned news article from Redis with keys: {KeyCount}", keys.Count());
 
-            return newsArticleResponse.Values.Select(NewsResponse.SUCCESS).ToList();
+            var response = new List<NewsResponse>();
+            
+            foreach (var (key, value) in newsArticleResponse)
+            {
+                response.Add(new NewsResponse
+                {
+                    Key = key,
+                    NewsArticle = value,
+                    Success = true
+                });
+            }
+
+            return response;
         }
 
         public Task<bool> AddValue(string _key, NewsArticle _value)
@@ -54,9 +66,9 @@ namespace NewsService.Services
             return redis.Db0.AddAsync(_key, _value, TimeSpan.FromDays(2));
         }
 
-        public async Task<List<string>> GetKeys()
+        public async Task<List<string>> GetKeys(string _searchPattern)
         {
-            var keys = await redis.Db0.SearchKeysAsync("*");
+            var keys = await redis.Db0.SearchKeysAsync(_searchPattern);
             var result = keys.ToList();
             logger.LogDebug("Returned news article keys from Redis {Count}", result.Count());
 
@@ -65,7 +77,7 @@ namespace NewsService.Services
 
         public async Task<bool> KeyExist(string _key)
         {
-            var keys = await GetKeys();
+            var keys = await GetKeys("news_article:*");
 
             return keys.Contains(_key);
         }

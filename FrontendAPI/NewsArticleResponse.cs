@@ -8,5 +8,6 @@ namespace FrontendAPI
         public string ImagePath { get; init; }
         public string Content { get; init; }
         public string Source { get; init; }
+        public string Key { get; init; }
     }
 }

@@ -1,7 +1,9 @@
 using System.Threading.Tasks;
-using Google.Protobuf;
+
 using Google.Protobuf.WellKnownTypes;
+
 using Grpc.Core;
+
 using Microsoft.Extensions.Logging;
 
 namespace NewsService.Services
@@ -35,12 +37,13 @@ namespace NewsService.Services
 
                 var article = new Article
                 {
+                    Key = newsArticleResponse.Key,
                     Title = newsArticle.Title,
                     ImagePath = newsArticle.ImageUrl,
                     Content = newsArticle.Content,
                     Source = newsArticle.Source,
-                    FetchedUnix = newsArticle.FetchedAt.ToInstant().ToUnixTimeMilliseconds(),
-                    PublishedUnix = newsArticle.PublishedAt.ToInstant().ToUnixTimeMilliseconds()
+                    FetchedUnix = newsArticle.FetchedAt,
+                    PublishedUnix = newsArticle.PublishedAt
                 };
 
                 logger.LogInformation("Streaming article: {Title}", article.Title);
@@ -64,12 +67,13 @@ namespace NewsService.Services
                 {
                     Article = new Article
                     {
+                        Key = _request.ArticleKey,
                         Title = newsArticle.Title,
                         ImagePath = newsArticle.ImageUrl,
                         Content = newsArticle.Content,
                         Source = newsArticle.Source,
-                        FetchedUnix = newsArticle.FetchedAt.ToInstant().ToUnixTimeMilliseconds(),
-                        PublishedUnix = newsArticle.PublishedAt.ToInstant().ToUnixTimeMilliseconds()
+                        FetchedUnix = newsArticle.FetchedAt,
+                        PublishedUnix = newsArticle.PublishedAt
                     }
                 };
             }

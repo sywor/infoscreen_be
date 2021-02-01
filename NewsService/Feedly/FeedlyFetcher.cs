@@ -121,10 +121,10 @@ namespace NewsService.Feedly
                     Fingerprint = entry.Fingerprint,
                     Title = entry.Title,
                     Source = entry.Origin.Title,
-                    PublishedAt = publishedAt,
+                    PublishedAt = publishedAt.ToInstant().ToUnixTimeSeconds(),
                     Content = content,
                     ImageUrl = imageUrl,
-                    FetchedAt = fetchedAt,
+                    FetchedAt = fetchedAt.ToInstant().ToUnixTimeSeconds(),
                     ArticleUrl = articleUrl
                 };
 

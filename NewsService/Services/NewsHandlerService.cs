@@ -20,7 +20,7 @@ namespace NewsService.Services
 
         public async Task<IEnumerable<NewsResponse>> NewsArticles()
         {
-            var keys = await redis.GetKeys();
+            var keys = await redis.GetKeys("news_article:*");
 
             if (!keys.Any())
             {
