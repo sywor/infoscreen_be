@@ -9,7 +9,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using NewsService.Config;
-using NewsService.Services;
 
 using StackExchange.Redis;
 using StackExchange.Redis.Extensions.Core;
@@ -18,7 +17,7 @@ using StackExchange.Redis.Extensions.Core.Configuration;
 using StackExchange.Redis.Extensions.Core.Implementations;
 using StackExchange.Redis.Extensions.Newtonsoft;
 
-namespace NewsService
+namespace WeatherService
 {
     public class Startup
     {
@@ -33,11 +32,10 @@ namespace NewsService
         {
             var redisConfiguration = configuration.GetSection("Redis").Get<RedisConfiguration>();
             var minioConfiguration = configuration.GetSection("Minio").Get<MinioConfiguration>();
-            var feedlyConfiguration = configuration.GetSection("Feedly").Get<FeedlyConfiguration>();
-
+            
             _services.AddGrpc();
             _services.AddAuthorization();
-
+            
             var redisCacheConnectionPoolManager = new RedisCacheConnectionPoolManager(redisConfiguration);
 
             _services.AddSingleton<IRedisCacheClient, RedisCacheClient>();
@@ -45,13 +43,10 @@ namespace NewsService
             _services.AddSingleton<ISerializer, NewtonsoftSerializer>();
 
             _services.AddSingleton((_provider) => _provider.GetRequiredService<IRedisCacheClient>().GetDbFromConfiguration());
-
-            _services.AddSingleton<NewsHandlerService>();
-            _services.AddSingleton<RedisCacheService>();
+            
             _services.AddSingleton(redisConfiguration);
             _services.AddSingleton(minioConfiguration);
-            _services.AddSingleton(feedlyConfiguration);
-
+            
             _services.AddHangfire(_configuration =>
             {
                 var connectionMultiplexer = (ConnectionMultiplexer) redisCacheConnectionPoolManager.GetConnection();
@@ -82,23 +77,14 @@ namespace NewsService
             _app.UseHangfireDashboard();
             _app.UseEndpoints(_endpoints =>
             {
-                _endpoints.MapGrpcService<NewsGrpcService>();
-
-                _endpoints.MapGet("/",
-                                  async _context =>
-                                  {
-                                      await _context.Response.WriteAsync(
-                                          "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
-                                  });
-
+                _endpoints.MapGrpcService<Services.WeatherService>();
                 _endpoints.MapHangfireDashboard();
+                _endpoints.MapGet("/",
+                                  async context =>
+                                  {
+                                      await context.Response.WriteAsync("Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+                                  });
             });
-
-#if DEBUG
-            //BackgroundJob.Enqueue<FeedlyFetcher>(_fetcher => _fetcher.Fetch());
-#else
-                RecurringJob.AddOrUpdate<FeedlyFetcher>(_fetcher => _fetcher.Fetch(), Cron.Hourly);
-#endif
         }
     }
 }

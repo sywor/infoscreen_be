@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+option csharp_namespace = "WeatherService";
+
+import "google/protobuf/empty.proto";
+
+package weather;
+
+service WeatherFetcher {
+  rpc GetWeatherReport (google.protobuf.Empty) returns (WeatherResponse);
+}
+
+enum StatusCode {
+  Failure = 0;
+  Fetching = 1;
+  Ok = 2;
+}
+
+message Status {
+  string Message = 1;
+  StatusCode Code = 2;
+}
+
+message Precipitation {
+  float LastHour = 1;
+  float Last3Hours = 2;
+  float Last12Hours = 3;
+  float Last24Hours = 4;
+}
+
+message Weather {
+  string WeatherIconUrl = 1;
+  string WeatherDescription = 2;
+  float Temperature = 3;
+  float WindSpeed = 4;
+  float WindGustSpeed = 5;
+  string WindDirectionUrl = 6;
+  string RadarImgUrl = 7;
+  Precipitation PrecipitationValue = 8;
+  int32 Humidity = 9;
+  float Visibility = 10;
+  int32 CloudCover = 11;
+  string WeatherForecastUrl = 12;
+}
+
+message WeatherResponse {
+  oneof response {
+    Weather weather = 1;
+    Status status = 2;
+  }
+}
