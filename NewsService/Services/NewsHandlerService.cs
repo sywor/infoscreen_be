@@ -1,9 +1,13 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
+using Common.Redis;
+
 using Microsoft.Extensions.Logging;
+
 using NewsService.Data;
+using NewsService.Feedly;
 
 namespace NewsService.Services
 {
@@ -22,17 +26,44 @@ namespace NewsService.Services
         {
             var keys = await redis.GetKeys("news_article:*");
 
-            if (!keys.Any())
+            if (keys.Any())
             {
-                return SingleEnumerable<NewsResponse>.Of(NewsResponse.Failed("No keys found"));
+                return (await redis.GetValues<NewsArticle>(keys))
+                       .Where(_response => _response.Success)
+                       .Select(_response =>
+                       {
+                           var redisResponse = (RedisResponse<NewsArticle>) _response;
+
+                           return new NewsResponse
+                           {
+                               Key = redisResponse.Key,
+                               NewsArticle = redisResponse.Value
+                           };
+                       })
+                       .ToList();
             }
-            
-            return await redis.GetValues(keys);
+
+            logger.LogWarning("No keys found for news articles");
+            return new List<NewsResponse>();
         }
 
-        public Task<NewsResponse> GetArticle(string _articleKey)
+        public async Task<NewsResponse?> GetArticle(string _articleKey)
         {
-            return redis.GetValue(_articleKey);
+            var article = await redis.GetValue<NewsArticle>(_articleKey);
+
+            if (!article.Success)
+            {
+                logger.LogWarning("No keys found for news article with key {Key}", _articleKey);
+                return null;
+            }
+
+            var redisResponse = (RedisResponse<NewsArticle>) article;
+
+            return new NewsResponse()
+            {
+                Key = redisResponse.Key,
+                NewsArticle = redisResponse.Value
+            };
         }
     }
 }

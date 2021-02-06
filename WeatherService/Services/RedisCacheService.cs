@@ -5,14 +5,11 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.Logging;
 
-using NewsService.Data;
-using NewsService.Feedly;
-
 using StackExchange.Redis.Extensions.Core.Abstractions;
 
-namespace NewsService.Services
+namespace WeatherService.Services
 {
-    public class RedisCacheService
+    public class RedisCacheService : IRedisCacheService
     {
         private readonly ILogger logger;
         private readonly IRedisCacheClient redis;
@@ -23,43 +20,35 @@ namespace NewsService.Services
             redis = _redis;
         }
 
-        public async Task<NewsResponse> GetValue(string _key)
+        public async Task<WeatherResponse?> GetValue(string _key)
         {
             if (!await redis.Db0.ExistsAsync(_key))
             {
                 logger.LogWarning("Could not find news article in Redis with key: {Key}", _key);
-
-                return NewsResponse.Failed("No article with key: " + _key);
+                return null;
             }
 
-            var newsArticleResponse = await redis.Db0.GetAsync<NewsArticle>(_key);
             logger.LogInformation("Returned news article from Redis with key: {Key}", _key);
-
-            return NewsResponse.SUCCESS(newsArticleResponse);
+            return await redis.Db0.GetAsync<WeatherResponse>(_key);
         }
 
-        public async Task<List<NewsResponse>> GetValues(IEnumerable<string> _keys)
+        public async Task<List<WeatherResponse>> GetValues(IEnumerable<string> _keys)
         {
             var keys = _keys.ToList();
-            var newsArticleResponse = await redis.Db0.GetAllAsync<NewsArticle>(keys);
+            var newsArticleResponse = await redis.Db0.GetAllAsync<WeatherResponse>(keys);
             logger.LogInformation("Returned news article from Redis with keys: {KeyCount}", keys.Count());
 
-            var response = new List<NewsResponse>();
-            
+            var response = new List<WeatherResponse>();
+
             foreach (var (key, value) in newsArticleResponse)
             {
-                response.Add(new NewsResponse
-                {
-                    Key = key,
-                    NewsArticle = value,
-                    Success = true
-                });
+                response.Add(new WeatherResponse());
             }
 
             return response;
         }
 
-        public Task<bool> AddValue(string _key, NewsArticle _value)
+        public Task<bool> AddValue(string _key, WeatherResponse _value)
         {
             logger.LogInformation("Added news article to Redis with key: {Key}", _key);
 

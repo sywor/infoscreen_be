@@ -3,13 +3,14 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using Common.Config;
+using Common.Response;
+
 using Microsoft.Extensions.Logging;
 
 using Minio;
 
-using NewsService.Config;
-
-namespace NewsService.Data.Parsers
+namespace Common.File
 {
     public class FileDownloadParser : IResponseParser
     {
@@ -23,9 +24,9 @@ namespace NewsService.Data.Parsers
         {
             logger = _loggerFactory.CreateLogger<FileDownloadParser>();
 
-            bucketName = _configuration.BucketName;
-            bucketDirectory = _configuration.BucketDirectory;
-            staticEndpoint = _configuration.StaticHostEndpoint;
+            bucketName = _configuration.BucketName!;
+            bucketDirectory = _configuration.BucketDirectory!;
+            staticEndpoint = _configuration.StaticHostEndpoint!;
 
             minioClient = new MinioClient(_configuration.MinioEndpoint, _configuration.AccessKey, _configuration.SecretKey);
         }
@@ -37,9 +38,9 @@ namespace NewsService.Data.Parsers
                 var response = await _responseContent.ReadAsStreamAsync();
 
                 var contentType = _responseContent.Headers.ContentType;
-                var mediaType = contentType.MediaType;
-                var prefix = mediaType.Split('/').First();
-                var extension = mediaType.Split('/').Last();
+                var mediaType = contentType?.MediaType;
+                var prefix = mediaType?.Split('/').First();
+                var extension = mediaType?.Split('/').Last();
                 var fullFileName = $"{bucketDirectory}/{prefix}_{Guid.NewGuid()}.{extension}";
 
                 if (!await minioClient.BucketExistsAsync(bucketName))

@@ -1,4 +1,4 @@
-namespace NewsService.Data.Parsers
+namespace Common.Response
 {
     public class FailureResponse : IResponse
     {

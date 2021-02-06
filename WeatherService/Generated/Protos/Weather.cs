@@ -25,29 +25,40 @@ namespace WeatherService {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChRQcm90b3Mvd2VhdGhlci5wcm90bxIHd2VhdGhlchobZ29vZ2xlL3Byb3Rv",
-            "YnVmL2VtcHR5LnByb3RvIjwKBlN0YXR1cxIPCgdNZXNzYWdlGAEgASgJEiEK",
-            "BENvZGUYAiABKA4yEy53ZWF0aGVyLlN0YXR1c0NvZGUiXwoNUHJlY2lwaXRh",
-            "dGlvbhIQCghMYXN0SG91chgBIAEoAhISCgpMYXN0M0hvdXJzGAIgASgCEhMK",
-            "C0xhc3QxMkhvdXJzGAMgASgCEhMKC0xhc3QyNEhvdXJzGAQgASgCIrUCCgdX",
-            "ZWF0aGVyEhYKDldlYXRoZXJJY29uVXJsGAEgASgJEhoKEldlYXRoZXJEZXNj",
-            "cmlwdGlvbhgCIAEoCRITCgtUZW1wZXJhdHVyZRgDIAEoAhIRCglXaW5kU3Bl",
-            "ZWQYBCABKAISFQoNV2luZEd1c3RTcGVlZBgFIAEoAhIYChBXaW5kRGlyZWN0",
-            "aW9uVXJsGAYgASgJEhMKC1JhZGFySW1nVXJsGAcgASgJEjIKElByZWNpcGl0",
-            "YXRpb25WYWx1ZRgIIAEoCzIWLndlYXRoZXIuUHJlY2lwaXRhdGlvbhIQCghI",
-            "dW1pZGl0eRgJIAEoBRISCgpWaXNpYmlsaXR5GAogASgCEhIKCkNsb3VkQ292",
-            "ZXIYCyABKAUSGgoSV2VhdGhlckZvcmVjYXN0VXJsGAwgASgJImUKD1dlYXRo",
-            "ZXJSZXNwb25zZRIjCgd3ZWF0aGVyGAEgASgLMhAud2VhdGhlci5XZWF0aGVy",
-            "SAASIQoGc3RhdHVzGAIgASgLMg8ud2VhdGhlci5TdGF0dXNIAEIKCghyZXNw",
-            "b25zZSovCgpTdGF0dXNDb2RlEgsKB0ZhaWx1cmUQABIMCghGZXRjaGluZxAB",
-            "EgYKAk9rEAIyVgoOV2VhdGhlckZldGNoZXISRAoQR2V0V2VhdGhlclJlcG9y",
-            "dBIWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eRoYLndlYXRoZXIuV2VhdGhlclJl",
-            "c3BvbnNlQhGqAg5XZWF0aGVyU2VydmljZWIGcHJvdG8z"));
+            "YnVmL2VtcHR5LnByb3RvGh9nb29nbGUvcHJvdG9idWYvdGltZXN0YW1wLnBy",
+            "b3RvIjwKBlN0YXR1cxIPCgdNZXNzYWdlGAEgASgJEiEKBENvZGUYAiABKA4y",
+            "Ey53ZWF0aGVyLlN0YXR1c0NvZGUiXwoNUHJlY2lwaXRhdGlvbhIQCghMYXN0",
+            "SG91chgBIAEoAhISCgpMYXN0M0hvdXJzGAIgASgCEhMKC0xhc3QxMkhvdXJz",
+            "GAMgASgCEhMKC0xhc3QyNEhvdXJzGAQgASgCInoKA0JhchIcChRXaW5kRGly",
+            "ZWN0aW9uSWNvblVybBgBIAEoCRIWCg5XZWF0aGVySWNvblVybBgCIAEoCRIV",
+            "Cg1QcmVjaXBpdGF0aW9uGAMgASgCEhMKC1RlbXBlcmF0dXJlGAQgASgCEhEK",
+            "CVdpbmRTcGVlZBgFIAEoAiLbAQoPV2VhdGhlckZvcmVjYXN0Eg8KB01pblRl",
+            "bXAYASABKAISDwoHTWF4VGVtcBgCIAEoAhIUCgxNaW5XaW5kU3BlZWQYAyAB",
+            "KAISFAoMTWF4V2luZFNwZWVkGAQgASgCEi0KCXN0YXJ0VGltZRgFIAEoCzIa",
+            "Lmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASKwoHZW5kVGltZRgGIAEoCzIa",
+            "Lmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASHgoIRm9yZWNhc3QYByADKAsy",
+            "DC53ZWF0aGVyLkJhciLMAgoHV2VhdGhlchIWCg5XZWF0aGVySWNvblVybBgB",
+            "IAEoCRIaChJXZWF0aGVyRGVzY3JpcHRpb24YAiABKAkSEwoLVGVtcGVyYXR1",
+            "cmUYAyABKAISEQoJV2luZFNwZWVkGAQgASgCEhUKDVdpbmRHdXN0U3BlZWQY",
+            "BSABKAISGAoQV2luZERpcmVjdGlvblVybBgGIAEoCRITCgtSYWRhckltZ1Vy",
+            "bBgHIAEoCRIyChJQcmVjaXBpdGF0aW9uVmFsdWUYCCABKAsyFi53ZWF0aGVy",
+            "LlByZWNpcGl0YXRpb24SEAoISHVtaWRpdHkYCSABKAUSEgoKVmlzaWJpbGl0",
+            "eRgKIAEoAhISCgpDbG91ZENvdmVyGAsgASgFEjEKD1dlYXRoZXJGb3JlY2Fz",
+            "dBgMIAEoCzIYLndlYXRoZXIuV2VhdGhlckZvcmVjYXN0ImUKD1dlYXRoZXJS",
+            "ZXNwb25zZRIjCgd3ZWF0aGVyGAEgASgLMhAud2VhdGhlci5XZWF0aGVySAAS",
+            "IQoGc3RhdHVzGAIgASgLMg8ud2VhdGhlci5TdGF0dXNIAEIKCghyZXNwb25z",
+            "ZSovCgpTdGF0dXNDb2RlEgsKB0ZhaWx1cmUQABIMCghGZXRjaGluZxABEgYK",
+            "Ak9rEAIyVgoOV2VhdGhlckZldGNoZXISRAoQR2V0V2VhdGhlclJlcG9ydBIW",
+            "Lmdvb2dsZS5wcm90b2J1Zi5FbXB0eRoYLndlYXRoZXIuV2VhdGhlclJlc3Bv",
+            "bnNlQhGqAg5XZWF0aGVyU2VydmljZWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::WeatherService.StatusCode), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.Status), global::WeatherService.Status.Parser, new[]{ "Message", "Code" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.Precipitation), global::WeatherService.Precipitation.Parser, new[]{ "LastHour", "Last3Hours", "Last12Hours", "Last24Hours" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.Weather), global::WeatherService.Weather.Parser, new[]{ "WeatherIconUrl", "WeatherDescription", "Temperature", "WindSpeed", "WindGustSpeed", "WindDirectionUrl", "RadarImgUrl", "PrecipitationValue", "Humidity", "Visibility", "CloudCover", "WeatherForecastUrl" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.Bar), global::WeatherService.Bar.Parser, new[]{ "WindDirectionIconUrl", "WeatherIconUrl", "Precipitation", "Temperature", "WindSpeed" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.WeatherForecast), global::WeatherService.WeatherForecast.Parser, new[]{ "MinTemp", "MaxTemp", "MinWindSpeed", "MaxWindSpeed", "StartTime", "EndTime", "Forecast" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.Weather), global::WeatherService.Weather.Parser, new[]{ "WeatherIconUrl", "WeatherDescription", "Temperature", "WindSpeed", "WindGustSpeed", "WindDirectionUrl", "RadarImgUrl", "PrecipitationValue", "Humidity", "Visibility", "CloudCover", "WeatherForecast" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.WeatherResponse), global::WeatherService.WeatherResponse.Parser, new[]{ "Weather", "Status" }, new[]{ "Response" }, null, null, null)
           }));
     }
@@ -552,6 +563,717 @@ namespace WeatherService {
 
   }
 
+  public sealed partial class Bar : pb::IMessage<Bar>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<Bar> _parser = new pb::MessageParser<Bar>(() => new Bar());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<Bar> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::WeatherService.WeatherReflection.Descriptor.MessageTypes[2]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Bar() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Bar(Bar other) : this() {
+      windDirectionIconUrl_ = other.windDirectionIconUrl_;
+      weatherIconUrl_ = other.weatherIconUrl_;
+      precipitation_ = other.precipitation_;
+      temperature_ = other.temperature_;
+      windSpeed_ = other.windSpeed_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Bar Clone() {
+      return new Bar(this);
+    }
+
+    /// <summary>Field number for the "WindDirectionIconUrl" field.</summary>
+    public const int WindDirectionIconUrlFieldNumber = 1;
+    private string windDirectionIconUrl_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string WindDirectionIconUrl {
+      get { return windDirectionIconUrl_; }
+      set {
+        windDirectionIconUrl_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "WeatherIconUrl" field.</summary>
+    public const int WeatherIconUrlFieldNumber = 2;
+    private string weatherIconUrl_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string WeatherIconUrl {
+      get { return weatherIconUrl_; }
+      set {
+        weatherIconUrl_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "Precipitation" field.</summary>
+    public const int PrecipitationFieldNumber = 3;
+    private float precipitation_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public float Precipitation {
+      get { return precipitation_; }
+      set {
+        precipitation_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "Temperature" field.</summary>
+    public const int TemperatureFieldNumber = 4;
+    private float temperature_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public float Temperature {
+      get { return temperature_; }
+      set {
+        temperature_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "WindSpeed" field.</summary>
+    public const int WindSpeedFieldNumber = 5;
+    private float windSpeed_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public float WindSpeed {
+      get { return windSpeed_; }
+      set {
+        windSpeed_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as Bar);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(Bar other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (WindDirectionIconUrl != other.WindDirectionIconUrl) return false;
+      if (WeatherIconUrl != other.WeatherIconUrl) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Precipitation, other.Precipitation)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Temperature, other.Temperature)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(WindSpeed, other.WindSpeed)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (WindDirectionIconUrl.Length != 0) hash ^= WindDirectionIconUrl.GetHashCode();
+      if (WeatherIconUrl.Length != 0) hash ^= WeatherIconUrl.GetHashCode();
+      if (Precipitation != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Precipitation);
+      if (Temperature != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Temperature);
+      if (WindSpeed != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(WindSpeed);
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (WindDirectionIconUrl.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(WindDirectionIconUrl);
+      }
+      if (WeatherIconUrl.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(WeatherIconUrl);
+      }
+      if (Precipitation != 0F) {
+        output.WriteRawTag(29);
+        output.WriteFloat(Precipitation);
+      }
+      if (Temperature != 0F) {
+        output.WriteRawTag(37);
+        output.WriteFloat(Temperature);
+      }
+      if (WindSpeed != 0F) {
+        output.WriteRawTag(45);
+        output.WriteFloat(WindSpeed);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (WindDirectionIconUrl.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(WindDirectionIconUrl);
+      }
+      if (WeatherIconUrl.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(WeatherIconUrl);
+      }
+      if (Precipitation != 0F) {
+        output.WriteRawTag(29);
+        output.WriteFloat(Precipitation);
+      }
+      if (Temperature != 0F) {
+        output.WriteRawTag(37);
+        output.WriteFloat(Temperature);
+      }
+      if (WindSpeed != 0F) {
+        output.WriteRawTag(45);
+        output.WriteFloat(WindSpeed);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (WindDirectionIconUrl.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(WindDirectionIconUrl);
+      }
+      if (WeatherIconUrl.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(WeatherIconUrl);
+      }
+      if (Precipitation != 0F) {
+        size += 1 + 4;
+      }
+      if (Temperature != 0F) {
+        size += 1 + 4;
+      }
+      if (WindSpeed != 0F) {
+        size += 1 + 4;
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(Bar other) {
+      if (other == null) {
+        return;
+      }
+      if (other.WindDirectionIconUrl.Length != 0) {
+        WindDirectionIconUrl = other.WindDirectionIconUrl;
+      }
+      if (other.WeatherIconUrl.Length != 0) {
+        WeatherIconUrl = other.WeatherIconUrl;
+      }
+      if (other.Precipitation != 0F) {
+        Precipitation = other.Precipitation;
+      }
+      if (other.Temperature != 0F) {
+        Temperature = other.Temperature;
+      }
+      if (other.WindSpeed != 0F) {
+        WindSpeed = other.WindSpeed;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            WindDirectionIconUrl = input.ReadString();
+            break;
+          }
+          case 18: {
+            WeatherIconUrl = input.ReadString();
+            break;
+          }
+          case 29: {
+            Precipitation = input.ReadFloat();
+            break;
+          }
+          case 37: {
+            Temperature = input.ReadFloat();
+            break;
+          }
+          case 45: {
+            WindSpeed = input.ReadFloat();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            WindDirectionIconUrl = input.ReadString();
+            break;
+          }
+          case 18: {
+            WeatherIconUrl = input.ReadString();
+            break;
+          }
+          case 29: {
+            Precipitation = input.ReadFloat();
+            break;
+          }
+          case 37: {
+            Temperature = input.ReadFloat();
+            break;
+          }
+          case 45: {
+            WindSpeed = input.ReadFloat();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class WeatherForecast : pb::IMessage<WeatherForecast>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<WeatherForecast> _parser = new pb::MessageParser<WeatherForecast>(() => new WeatherForecast());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<WeatherForecast> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::WeatherService.WeatherReflection.Descriptor.MessageTypes[3]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public WeatherForecast() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public WeatherForecast(WeatherForecast other) : this() {
+      minTemp_ = other.minTemp_;
+      maxTemp_ = other.maxTemp_;
+      minWindSpeed_ = other.minWindSpeed_;
+      maxWindSpeed_ = other.maxWindSpeed_;
+      startTime_ = other.startTime_ != null ? other.startTime_.Clone() : null;
+      endTime_ = other.endTime_ != null ? other.endTime_.Clone() : null;
+      forecast_ = other.forecast_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public WeatherForecast Clone() {
+      return new WeatherForecast(this);
+    }
+
+    /// <summary>Field number for the "MinTemp" field.</summary>
+    public const int MinTempFieldNumber = 1;
+    private float minTemp_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public float MinTemp {
+      get { return minTemp_; }
+      set {
+        minTemp_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "MaxTemp" field.</summary>
+    public const int MaxTempFieldNumber = 2;
+    private float maxTemp_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public float MaxTemp {
+      get { return maxTemp_; }
+      set {
+        maxTemp_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "MinWindSpeed" field.</summary>
+    public const int MinWindSpeedFieldNumber = 3;
+    private float minWindSpeed_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public float MinWindSpeed {
+      get { return minWindSpeed_; }
+      set {
+        minWindSpeed_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "MaxWindSpeed" field.</summary>
+    public const int MaxWindSpeedFieldNumber = 4;
+    private float maxWindSpeed_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public float MaxWindSpeed {
+      get { return maxWindSpeed_; }
+      set {
+        maxWindSpeed_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "startTime" field.</summary>
+    public const int StartTimeFieldNumber = 5;
+    private global::Google.Protobuf.WellKnownTypes.Timestamp startTime_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Google.Protobuf.WellKnownTypes.Timestamp StartTime {
+      get { return startTime_; }
+      set {
+        startTime_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "endTime" field.</summary>
+    public const int EndTimeFieldNumber = 6;
+    private global::Google.Protobuf.WellKnownTypes.Timestamp endTime_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Google.Protobuf.WellKnownTypes.Timestamp EndTime {
+      get { return endTime_; }
+      set {
+        endTime_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "Forecast" field.</summary>
+    public const int ForecastFieldNumber = 7;
+    private static readonly pb::FieldCodec<global::WeatherService.Bar> _repeated_forecast_codec
+        = pb::FieldCodec.ForMessage(58, global::WeatherService.Bar.Parser);
+    private readonly pbc::RepeatedField<global::WeatherService.Bar> forecast_ = new pbc::RepeatedField<global::WeatherService.Bar>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::WeatherService.Bar> Forecast {
+      get { return forecast_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as WeatherForecast);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(WeatherForecast other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(MinTemp, other.MinTemp)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(MaxTemp, other.MaxTemp)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(MinWindSpeed, other.MinWindSpeed)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(MaxWindSpeed, other.MaxWindSpeed)) return false;
+      if (!object.Equals(StartTime, other.StartTime)) return false;
+      if (!object.Equals(EndTime, other.EndTime)) return false;
+      if(!forecast_.Equals(other.forecast_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (MinTemp != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(MinTemp);
+      if (MaxTemp != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(MaxTemp);
+      if (MinWindSpeed != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(MinWindSpeed);
+      if (MaxWindSpeed != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(MaxWindSpeed);
+      if (startTime_ != null) hash ^= StartTime.GetHashCode();
+      if (endTime_ != null) hash ^= EndTime.GetHashCode();
+      hash ^= forecast_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (MinTemp != 0F) {
+        output.WriteRawTag(13);
+        output.WriteFloat(MinTemp);
+      }
+      if (MaxTemp != 0F) {
+        output.WriteRawTag(21);
+        output.WriteFloat(MaxTemp);
+      }
+      if (MinWindSpeed != 0F) {
+        output.WriteRawTag(29);
+        output.WriteFloat(MinWindSpeed);
+      }
+      if (MaxWindSpeed != 0F) {
+        output.WriteRawTag(37);
+        output.WriteFloat(MaxWindSpeed);
+      }
+      if (startTime_ != null) {
+        output.WriteRawTag(42);
+        output.WriteMessage(StartTime);
+      }
+      if (endTime_ != null) {
+        output.WriteRawTag(50);
+        output.WriteMessage(EndTime);
+      }
+      forecast_.WriteTo(output, _repeated_forecast_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (MinTemp != 0F) {
+        output.WriteRawTag(13);
+        output.WriteFloat(MinTemp);
+      }
+      if (MaxTemp != 0F) {
+        output.WriteRawTag(21);
+        output.WriteFloat(MaxTemp);
+      }
+      if (MinWindSpeed != 0F) {
+        output.WriteRawTag(29);
+        output.WriteFloat(MinWindSpeed);
+      }
+      if (MaxWindSpeed != 0F) {
+        output.WriteRawTag(37);
+        output.WriteFloat(MaxWindSpeed);
+      }
+      if (startTime_ != null) {
+        output.WriteRawTag(42);
+        output.WriteMessage(StartTime);
+      }
+      if (endTime_ != null) {
+        output.WriteRawTag(50);
+        output.WriteMessage(EndTime);
+      }
+      forecast_.WriteTo(ref output, _repeated_forecast_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (MinTemp != 0F) {
+        size += 1 + 4;
+      }
+      if (MaxTemp != 0F) {
+        size += 1 + 4;
+      }
+      if (MinWindSpeed != 0F) {
+        size += 1 + 4;
+      }
+      if (MaxWindSpeed != 0F) {
+        size += 1 + 4;
+      }
+      if (startTime_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(StartTime);
+      }
+      if (endTime_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(EndTime);
+      }
+      size += forecast_.CalculateSize(_repeated_forecast_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(WeatherForecast other) {
+      if (other == null) {
+        return;
+      }
+      if (other.MinTemp != 0F) {
+        MinTemp = other.MinTemp;
+      }
+      if (other.MaxTemp != 0F) {
+        MaxTemp = other.MaxTemp;
+      }
+      if (other.MinWindSpeed != 0F) {
+        MinWindSpeed = other.MinWindSpeed;
+      }
+      if (other.MaxWindSpeed != 0F) {
+        MaxWindSpeed = other.MaxWindSpeed;
+      }
+      if (other.startTime_ != null) {
+        if (startTime_ == null) {
+          StartTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+        }
+        StartTime.MergeFrom(other.StartTime);
+      }
+      if (other.endTime_ != null) {
+        if (endTime_ == null) {
+          EndTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+        }
+        EndTime.MergeFrom(other.EndTime);
+      }
+      forecast_.Add(other.forecast_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 13: {
+            MinTemp = input.ReadFloat();
+            break;
+          }
+          case 21: {
+            MaxTemp = input.ReadFloat();
+            break;
+          }
+          case 29: {
+            MinWindSpeed = input.ReadFloat();
+            break;
+          }
+          case 37: {
+            MaxWindSpeed = input.ReadFloat();
+            break;
+          }
+          case 42: {
+            if (startTime_ == null) {
+              StartTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            input.ReadMessage(StartTime);
+            break;
+          }
+          case 50: {
+            if (endTime_ == null) {
+              EndTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            input.ReadMessage(EndTime);
+            break;
+          }
+          case 58: {
+            forecast_.AddEntriesFrom(input, _repeated_forecast_codec);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 13: {
+            MinTemp = input.ReadFloat();
+            break;
+          }
+          case 21: {
+            MaxTemp = input.ReadFloat();
+            break;
+          }
+          case 29: {
+            MinWindSpeed = input.ReadFloat();
+            break;
+          }
+          case 37: {
+            MaxWindSpeed = input.ReadFloat();
+            break;
+          }
+          case 42: {
+            if (startTime_ == null) {
+              StartTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            input.ReadMessage(StartTime);
+            break;
+          }
+          case 50: {
+            if (endTime_ == null) {
+              EndTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            }
+            input.ReadMessage(EndTime);
+            break;
+          }
+          case 58: {
+            forecast_.AddEntriesFrom(ref input, _repeated_forecast_codec);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
   public sealed partial class Weather : pb::IMessage<Weather>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -564,7 +1286,7 @@ namespace WeatherService {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::WeatherService.WeatherReflection.Descriptor.MessageTypes[2]; }
+      get { return global::WeatherService.WeatherReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -592,7 +1314,7 @@ namespace WeatherService {
       humidity_ = other.humidity_;
       visibility_ = other.visibility_;
       cloudCover_ = other.cloudCover_;
-      weatherForecastUrl_ = other.weatherForecastUrl_;
+      weatherForecast_ = other.weatherForecast_ != null ? other.weatherForecast_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -722,14 +1444,14 @@ namespace WeatherService {
       }
     }
 
-    /// <summary>Field number for the "WeatherForecastUrl" field.</summary>
-    public const int WeatherForecastUrlFieldNumber = 12;
-    private string weatherForecastUrl_ = "";
+    /// <summary>Field number for the "WeatherForecast" field.</summary>
+    public const int WeatherForecastFieldNumber = 12;
+    private global::WeatherService.WeatherForecast weatherForecast_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string WeatherForecastUrl {
-      get { return weatherForecastUrl_; }
+    public global::WeatherService.WeatherForecast WeatherForecast {
+      get { return weatherForecast_; }
       set {
-        weatherForecastUrl_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        weatherForecast_ = value;
       }
     }
 
@@ -757,7 +1479,7 @@ namespace WeatherService {
       if (Humidity != other.Humidity) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Visibility, other.Visibility)) return false;
       if (CloudCover != other.CloudCover) return false;
-      if (WeatherForecastUrl != other.WeatherForecastUrl) return false;
+      if (!object.Equals(WeatherForecast, other.WeatherForecast)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -775,7 +1497,7 @@ namespace WeatherService {
       if (Humidity != 0) hash ^= Humidity.GetHashCode();
       if (Visibility != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Visibility);
       if (CloudCover != 0) hash ^= CloudCover.GetHashCode();
-      if (WeatherForecastUrl.Length != 0) hash ^= WeatherForecastUrl.GetHashCode();
+      if (weatherForecast_ != null) hash ^= WeatherForecast.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -836,9 +1558,9 @@ namespace WeatherService {
         output.WriteRawTag(88);
         output.WriteInt32(CloudCover);
       }
-      if (WeatherForecastUrl.Length != 0) {
+      if (weatherForecast_ != null) {
         output.WriteRawTag(98);
-        output.WriteString(WeatherForecastUrl);
+        output.WriteMessage(WeatherForecast);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -893,9 +1615,9 @@ namespace WeatherService {
         output.WriteRawTag(88);
         output.WriteInt32(CloudCover);
       }
-      if (WeatherForecastUrl.Length != 0) {
+      if (weatherForecast_ != null) {
         output.WriteRawTag(98);
-        output.WriteString(WeatherForecastUrl);
+        output.WriteMessage(WeatherForecast);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -939,8 +1661,8 @@ namespace WeatherService {
       if (CloudCover != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(CloudCover);
       }
-      if (WeatherForecastUrl.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(WeatherForecastUrl);
+      if (weatherForecast_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(WeatherForecast);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -989,8 +1711,11 @@ namespace WeatherService {
       if (other.CloudCover != 0) {
         CloudCover = other.CloudCover;
       }
-      if (other.WeatherForecastUrl.Length != 0) {
-        WeatherForecastUrl = other.WeatherForecastUrl;
+      if (other.weatherForecast_ != null) {
+        if (weatherForecast_ == null) {
+          WeatherForecast = new global::WeatherService.WeatherForecast();
+        }
+        WeatherForecast.MergeFrom(other.WeatherForecast);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1054,7 +1779,10 @@ namespace WeatherService {
             break;
           }
           case 98: {
-            WeatherForecastUrl = input.ReadString();
+            if (weatherForecast_ == null) {
+              WeatherForecast = new global::WeatherService.WeatherForecast();
+            }
+            input.ReadMessage(WeatherForecast);
             break;
           }
         }
@@ -1119,7 +1847,10 @@ namespace WeatherService {
             break;
           }
           case 98: {
-            WeatherForecastUrl = input.ReadString();
+            if (weatherForecast_ == null) {
+              WeatherForecast = new global::WeatherService.WeatherForecast();
+            }
+            input.ReadMessage(WeatherForecast);
             break;
           }
         }
@@ -1141,7 +1872,7 @@ namespace WeatherService {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::WeatherService.WeatherReflection.Descriptor.MessageTypes[3]; }
+      get { return global::WeatherService.WeatherReflection.Descriptor.MessageTypes[5]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

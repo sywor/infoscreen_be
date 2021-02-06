@@ -4,10 +4,12 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using NewsService.Data.Parsers;
 
-namespace NewsService.Fetchers
+using Common.Response;
+
+using Microsoft.Extensions.Logging;
+
+namespace Common
 {
     public class RestRequestHandler
     {
@@ -44,7 +46,7 @@ namespace NewsService.Fetchers
                     return await _responseParser.ParseAsync(responseMessage.Content);
                 }
 
-                _logger.LogWarning("Failed to send request to: {URL}. Response code back was: {StatusCode}", _url, responseMessage.StatusCode);
+                _logger.LogWarning("Failed to send request to: {Url}. Response code back was: {StatusCode}", _url, responseMessage.StatusCode);
             }
             catch (Exception ex)
             {
@@ -54,7 +56,7 @@ namespace NewsService.Fetchers
             return FailureResponse.Instance;
         }
 
-        public static async Task<IResponse> SendPostRequestAsync(string _url, Dictionary<string, string> _content, IResponseParser _responseParser, ILogger _logger)
+        public static async Task<IResponse> SendPostRequestAsync(string _url, IEnumerable<KeyValuePair<string?, string?>> _content, IResponseParser _responseParser, ILogger _logger)
         {
             var client = new HttpClient();
 

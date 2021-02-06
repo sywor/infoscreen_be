@@ -1,4 +1,10 @@
-﻿using Hangfire;
+﻿using Common.Bootstrap;
+using Common.Config;
+using Common.Redis;
+
+using FeedlySharp.Models;
+
+using Hangfire;
 using Hangfire.Redis;
 
 using Microsoft.AspNetCore.Builder;
@@ -8,7 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using NewsService.Config;
+using NewsService.Feedly;
 using NewsService.Services;
 
 using StackExchange.Redis;
@@ -33,7 +39,8 @@ namespace NewsService
         {
             var redisConfiguration = configuration.GetSection("Redis").Get<RedisConfiguration>();
             var minioConfiguration = configuration.GetSection("Minio").Get<MinioConfiguration>();
-            var feedlyConfiguration = configuration.GetSection("Feedly").Get<FeedlyConfiguration>();
+            var feedlyOptions = configuration.GetSection("Feedly").Get<FeedlyOptions>();
+            var bootstrapConfiguration = configuration.GetSection("Bootstrap").Get<BootstrapConfiguration>();
 
             _services.AddGrpc();
             _services.AddAuthorization();
@@ -50,14 +57,17 @@ namespace NewsService
             _services.AddSingleton<RedisCacheService>();
             _services.AddSingleton(redisConfiguration);
             _services.AddSingleton(minioConfiguration);
-            _services.AddSingleton(feedlyConfiguration);
+            _services.AddSingleton(feedlyOptions);
+            _services.AddSingleton(bootstrapConfiguration);
+
+            _services.AddSingleton<IBootstrapService<FeedlyFetcher>, BootstrapService<FeedlyFetcher>>();
 
             _services.AddHangfire(_configuration =>
             {
                 var connectionMultiplexer = (ConnectionMultiplexer) redisCacheConnectionPoolManager.GetConnection();
                 var redisStorageOptions = new RedisStorageOptions
                 {
-                    Prefix = "hangfire:"
+                    Prefix = "hangfire_news:"
                 };
 
                 _configuration
@@ -69,7 +79,7 @@ namespace NewsService
             });
         }
 
-        public void Configure(IApplicationBuilder _app, IWebHostEnvironment _env)
+        public void Configure(IApplicationBuilder _app, IWebHostEnvironment _env, IBootstrapService<FeedlyFetcher> _bootstrap)
         {
             if (_env.IsDevelopment())
             {
@@ -94,11 +104,7 @@ namespace NewsService
                 _endpoints.MapHangfireDashboard();
             });
 
-#if DEBUG
-            //BackgroundJob.Enqueue<FeedlyFetcher>(_fetcher => _fetcher.Fetch());
-#else
-                RecurringJob.AddOrUpdate<FeedlyFetcher>(_fetcher => _fetcher.Fetch(), Cron.Hourly);
-#endif
+            _bootstrap.Launch();
         }
     }
 }

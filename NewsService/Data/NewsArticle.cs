@@ -1,20 +1,18 @@
 using Newtonsoft.Json;
 
-using NodaTime;
-
-namespace NewsService.Feedly
+namespace NewsService.Data
 {
-    public struct NewsArticle
+    public readonly struct NewsArticle
     {
-        public string OriginId { get; set; }
-        public string Fingerprint { get; set; }
-        public string Title { get; set; }
-        public string Source { get; set; }
-        public long PublishedAt { get; set; }
-        public long FetchedAt { get; set; }
-        public string Content { get; set; }
-        public string ImageUrl { get; set; }
-        public string ArticleUrl { get; set; }
+        public string OriginId { get; init; }
+        public string Fingerprint { get; init; }
+        public string Title { get; init; }
+        public string Source { get; init; }
+        public long PublishedAt { get; init; }
+        public long FetchedAt { get; init; }
+        public string Content { get; init; }
+        public string ImageUrl { get; init; }
+        public string ArticleUrl { get; init; }
 
         public override string ToString()
         {

@@ -1,4 +1,7 @@
-﻿using Hangfire;
+﻿using Common.Bootstrap;
+using Common.Config;
+
+using Hangfire;
 using Hangfire.Redis;
 
 using Microsoft.AspNetCore.Builder;
@@ -8,14 +11,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using NewsService.Config;
-
 using StackExchange.Redis;
 using StackExchange.Redis.Extensions.Core;
 using StackExchange.Redis.Extensions.Core.Abstractions;
 using StackExchange.Redis.Extensions.Core.Configuration;
 using StackExchange.Redis.Extensions.Core.Implementations;
 using StackExchange.Redis.Extensions.Newtonsoft;
+
+using WeatherService.Smhi;
 
 namespace WeatherService
 {
@@ -32,10 +35,10 @@ namespace WeatherService
         {
             var redisConfiguration = configuration.GetSection("Redis").Get<RedisConfiguration>();
             var minioConfiguration = configuration.GetSection("Minio").Get<MinioConfiguration>();
-            
+
             _services.AddGrpc();
             _services.AddAuthorization();
-            
+
             var redisCacheConnectionPoolManager = new RedisCacheConnectionPoolManager(redisConfiguration);
 
             _services.AddSingleton<IRedisCacheClient, RedisCacheClient>();
@@ -43,16 +46,18 @@ namespace WeatherService
             _services.AddSingleton<ISerializer, NewtonsoftSerializer>();
 
             _services.AddSingleton((_provider) => _provider.GetRequiredService<IRedisCacheClient>().GetDbFromConfiguration());
-            
+
             _services.AddSingleton(redisConfiguration);
             _services.AddSingleton(minioConfiguration);
-            
+
+            _services.AddSingleton<IBootstrapService<SmhiFetcher>, BootstrapService<SmhiFetcher>>();
+
             _services.AddHangfire(_configuration =>
             {
                 var connectionMultiplexer = (ConnectionMultiplexer) redisCacheConnectionPoolManager.GetConnection();
                 var redisStorageOptions = new RedisStorageOptions
                 {
-                    Prefix = "hangfire:"
+                    Prefix = "hangfire_weather:"
                 };
 
                 _configuration
@@ -64,7 +69,7 @@ namespace WeatherService
             });
         }
 
-        public void Configure(IApplicationBuilder _app, IWebHostEnvironment _env)
+        public void Configure(IApplicationBuilder _app, IWebHostEnvironment _env, IBootstrapService<SmhiFetcher> _bootstrap)
         {
             if (_env.IsDevelopment())
             {
@@ -85,6 +90,8 @@ namespace WeatherService
                                       await context.Response.WriteAsync("Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
                                   });
             });
+
+            _bootstrap.Launch();
         }
     }
 }

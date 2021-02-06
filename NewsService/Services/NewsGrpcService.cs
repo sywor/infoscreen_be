@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 
 using Google.Protobuf.WellKnownTypes;
@@ -23,16 +24,18 @@ namespace NewsService.Services
         {
             logger.LogInformation("All articles fetch request received");
 
-            foreach (var newsArticleResponse in await newsHandler.NewsArticles())
-            {
-                if (!newsArticleResponse.Success)
-                {
-                    var statusMessage = CreateStatusMessage(newsArticleResponse.Message);
-                    logger.LogInformation("Could not serv any articles, reason: {StatusMessage}", newsArticleResponse.Message);
-                    await _responseStream.WriteAsync(statusMessage);
-                    break;
-                }
+            var newsResponses = (await newsHandler.NewsArticles()).ToList();
 
+            if (!newsResponses.Any())
+            {
+                var statusMessage = CreateStatusMessage("No articles found");
+                logger.LogInformation("No articles found");
+                await _responseStream.WriteAsync(statusMessage);
+                return;
+            }
+
+            foreach (var newsArticleResponse in newsResponses)
+            {
                 var newsArticle = newsArticleResponse.NewsArticle;
 
                 var article = new Article
@@ -56,18 +59,19 @@ namespace NewsService.Services
         {
             logger.LogInformation("Get next article request received");
 
-            var newsResponse = await newsHandler.GetArticle(_request.ArticleKey);
+            var key = _request.ArticleKey;
+            var newsResponse = await newsHandler.GetArticle(key);
 
-            if (newsResponse.Success)
+            if (newsResponse != null)
             {
-                var newsArticle = newsResponse.NewsArticle;
+                var newsArticle = newsResponse.Value.NewsArticle;
 
                 logger.LogInformation("Returning article: {Title}", newsArticle.Title);
                 return new ArticleResponse
                 {
                     Article = new Article
                     {
-                        Key = _request.ArticleKey,
+                        Key = key,
                         Title = newsArticle.Title,
                         ImagePath = newsArticle.ImageUrl,
                         Content = newsArticle.Content,
@@ -78,8 +82,8 @@ namespace NewsService.Services
                 };
             }
 
-            var statusMessage = CreateStatusMessage(newsResponse.Message);
-            logger.LogInformation("Could not serv article, reason: {StatusMessage}", newsResponse.Message);
+            var statusMessage = CreateStatusMessage($"No article found with key: {key}");
+            logger.LogInformation("No article found with key: {Key}", key);
             return statusMessage;
         }
 

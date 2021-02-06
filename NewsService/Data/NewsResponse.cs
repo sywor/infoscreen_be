@@ -2,13 +2,9 @@ using NewsService.Feedly;
 
 namespace NewsService.Data
 {
-    public struct NewsResponse
+    public readonly struct NewsResponse
     {
-        public static NewsResponse Failed(string _message = "") => new NewsResponse {Success = false, Message = _message};
-        public static NewsResponse SUCCESS(NewsArticle _article) => new NewsResponse {Success = true, NewsArticle = _article};
-        public NewsArticle NewsArticle { get; set; }
-        public string Key { get; set; }
-        public bool Success { get; set; }
-        public string Message { get; set; }
+        public NewsArticle NewsArticle { get; init; }
+        public string Key { get; init; }
     }
 }

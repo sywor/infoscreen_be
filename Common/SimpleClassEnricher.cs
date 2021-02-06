@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+
 using Serilog.Core;
 using Serilog.Events;
 
-namespace InfoScreenServerV3.Server
+namespace Common
 {
     public class SimpleClassEnricher : ILogEventEnricher
     {

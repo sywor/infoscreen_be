@@ -3,6 +3,7 @@ syntax = "proto3";
 option csharp_namespace = "WeatherService";
 
 import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
 
 package weather;
 
@@ -28,6 +29,24 @@ message Precipitation {
   float Last24Hours = 4;
 }
 
+message Bar {
+  string WindDirectionIconUrl = 1;
+  string WeatherIconUrl = 2;
+  float Precipitation = 3;
+  float Temperature = 4;
+  float WindSpeed = 5;
+}
+
+message WeatherForecast {
+  float MinTemp = 1;
+  float MaxTemp = 2;
+  float MinWindSpeed = 3;
+  float MaxWindSpeed = 4;
+  google.protobuf.Timestamp startTime = 5;
+  google.protobuf.Timestamp endTime = 6;
+  repeated Bar Forecast = 7;
+}
+
 message Weather {
   string WeatherIconUrl = 1;
   string WeatherDescription = 2;
@@ -40,7 +59,7 @@ message Weather {
   int32 Humidity = 9;
   float Visibility = 10;
   int32 CloudCover = 11;
-  string WeatherForecastUrl = 12;
+  WeatherForecast WeatherForecast = 12;
 }
 
 message WeatherResponse {

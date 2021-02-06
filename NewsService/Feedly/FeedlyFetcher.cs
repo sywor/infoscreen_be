@@ -4,48 +4,47 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
+using Common;
+using Common.Bootstrap;
+using Common.Config;
+using Common.File;
+using Common.Redis;
+
 using FeedlySharp;
 using FeedlySharp.Models;
 
 using Microsoft.Extensions.Logging;
 
-using NewsService.Config;
-using NewsService.Data.Parsers;
-using NewsService.Fetchers;
-using NewsService.Services;
+using NewsService.Data;
 
 using NodaTime;
 using NodaTime.Extensions;
 
 namespace NewsService.Feedly
 {
-    public class FeedlyFetcher
+    public class FeedlyFetcher : IRunnable
     {
-        private readonly FeedlyConfiguration feedlyConfiguration;
+        private readonly FeedlyOptions feedlyOptions;
         private readonly RedisCacheService redis;
         private readonly ILogger<FeedlyFetcher> logger;
         private readonly FileDownloadParser fileDownloadParser;
         private static readonly Random Random = new Random();
 
-        public FeedlyFetcher(ILoggerFactory _loggerFactory, FeedlyConfiguration _feedlyConfiguration, MinioConfiguration _minioConfiguration, RedisCacheService _redis)
+        private const string NoUrl = "No article url found for Feedly entry";
+        private const string ContentLenghtToShort = "Content lenght to short";
+        private const string NoImage = "No image could be downloaded";
+
+        public FeedlyFetcher(ILoggerFactory _loggerFactory, FeedlyOptions _feedlyOptions, MinioConfiguration _minioConfiguration, RedisCacheService _redis)
         {
             logger = _loggerFactory.CreateLogger<FeedlyFetcher>();
-            feedlyConfiguration = _feedlyConfiguration;
+            feedlyOptions = _feedlyOptions;
             redis = _redis;
             fileDownloadParser = new FileDownloadParser(_minioConfiguration, _loggerFactory);
         }
 
-        public async Task Fetch()
+        public async Task Run()
         {
-            var options = new FeedlyOptions()
-            {
-                AccessToken = feedlyConfiguration.AccessToken,
-                RefreshToken = feedlyConfiguration.RefreshToken,
-                UserID = feedlyConfiguration.UserID
-            };
-
-
-            var feedlySharp = new FeedlySharpHttpClient(options);
+            var feedlySharp = new FeedlySharpHttpClient(feedlyOptions);
 
             var now = SystemClock.Instance.GetCurrentInstant();
             var cutoff = now.Minus(Duration.FromDays(1));
@@ -81,6 +80,16 @@ namespace NewsService.Feedly
 
             foreach (var entry in entries.Where(Validate))
             {
+                var key = CreateRedisKey(entry.Origin.Title, entry.Fingerprint, entry.Title);
+                var fetchedAt = now.ToDateTimeOffset().ToZonedDateTime();
+                var unixTimeSeconds = fetchedAt.ToInstant().ToUnixTimeSeconds();
+
+                if (await redis.KeyExist(key) || await redis.KeyExist($"failed_{key}"))
+                {
+                    logger.LogInformation("Article with key: {Key} already exists, skipping", key);
+                    continue;
+                }
+
                 string articleUrl;
                 if (Regex.IsMatch(entry.OriginId, @"https:\/\/|http:\/\/.+"))
                 {
@@ -92,7 +101,8 @@ namespace NewsService.Feedly
                 }
                 else
                 {
-                    logger.LogWarning("No article url found for Feedly entry");
+                    logger.LogWarning(NoUrl);
+                    await StashFailedArticle(NoUrl, unixTimeSeconds, key);
                     continue;
                 }
 
@@ -101,17 +111,18 @@ namespace NewsService.Feedly
                 if (!imageResult.Success)
                 {
                     logger.LogWarning("No image could be downloaded for article: {Url}", articleUrl);
-
+                    await StashFailedArticle(NoImage, unixTimeSeconds, key);
                     continue;
                 }
                 var imageUrl = ((FileDownloadResponse) imageResult).FileUri;
                 var publishedAt = ZonedDateTime.FromDateTimeOffset(entry.Published);
                 var content = Regex.Replace(entry.Summary.Content, "<.*?>", string.Empty);
-                var fetchedAt = now.ToDateTimeOffset().ToZonedDateTime();
+
 
                 if (content.Length < 100)
                 {
-                    logger.LogWarning("Content lenght to short");
+                    logger.LogWarning(ContentLenghtToShort);
+                    await StashFailedArticle(ContentLenghtToShort, unixTimeSeconds, key);
                     continue;
                 }
 
@@ -124,11 +135,11 @@ namespace NewsService.Feedly
                     PublishedAt = publishedAt.ToInstant().ToUnixTimeSeconds(),
                     Content = content,
                     ImageUrl = imageUrl,
-                    FetchedAt = fetchedAt.ToInstant().ToUnixTimeSeconds(),
+                    FetchedAt = unixTimeSeconds,
                     ArticleUrl = articleUrl
                 };
 
-                var key = CreateRedisKey(newsArticle);
+
                 await redis.AddValue(key, newsArticle);
 
                 logger.LogInformation("Add news article: {Title}", newsArticle.Title);
@@ -136,6 +147,17 @@ namespace NewsService.Feedly
             }
 
             logger.LogInformation("Done! Got {ArticleCount} articles", counter);
+        }
+
+        private async Task StashFailedArticle(string _reason, long _unixTimeSeconds, string _key)
+        {
+            var failedArticle = new FailedArticle
+            {
+                Reason = _reason,
+                FetchedAt = _unixTimeSeconds
+            };
+
+            await redis.AddValue($"failed_{_key}", failedArticle);
         }
 
         private bool Validate(Entry _entry)
@@ -185,7 +207,7 @@ namespace NewsService.Feedly
             return true;
         }
 
-        private static string CreateRedisKey(NewsArticle _newsArticle)
+        private static string CreateRedisKey(string _source, string _fingerprint, string _title)
         {
             static string Trim(string _str)
             {
@@ -193,10 +215,11 @@ namespace NewsService.Feedly
                 str = str.Replace("_", "");
                 str = Regex.Replace(str, @"\s+", "_");
                 str = Regex.Replace(str, @"[^\w\*]", "");
-                return str;
+                return str.ToLower();
             }
 
-            return $"news_article:{Trim(_newsArticle.Source)}:{_newsArticle.Fingerprint}:{Trim(_newsArticle.Title)}";
+            return $"news_article:{Trim(_source)}:{_fingerprint}:{Trim(_title)}";
         }
+
     }
 }

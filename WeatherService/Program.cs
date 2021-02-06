@@ -1,6 +1,6 @@
 using System;
 
-using InfoScreenServerV3.Server;
+using Common;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;

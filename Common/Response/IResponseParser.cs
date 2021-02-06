@@ -1,7 +1,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace NewsService.Data.Parsers
+namespace Common.Response
 {
     public interface IResponseParser
     {
