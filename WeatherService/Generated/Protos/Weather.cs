@@ -26,40 +26,41 @@ namespace WeatherService {
           string.Concat(
             "ChRQcm90b3Mvd2VhdGhlci5wcm90bxIHd2VhdGhlchobZ29vZ2xlL3Byb3Rv",
             "YnVmL2VtcHR5LnByb3RvGh9nb29nbGUvcHJvdG9idWYvdGltZXN0YW1wLnBy",
-            "b3RvIjwKBlN0YXR1cxIPCgdNZXNzYWdlGAEgASgJEiEKBENvZGUYAiABKA4y",
-            "Ey53ZWF0aGVyLlN0YXR1c0NvZGUiXwoNUHJlY2lwaXRhdGlvbhIQCghMYXN0",
-            "SG91chgBIAEoAhISCgpMYXN0M0hvdXJzGAIgASgCEhMKC0xhc3QxMkhvdXJz",
-            "GAMgASgCEhMKC0xhc3QyNEhvdXJzGAQgASgCInoKA0JhchIcChRXaW5kRGly",
-            "ZWN0aW9uSWNvblVybBgBIAEoCRIWCg5XZWF0aGVySWNvblVybBgCIAEoCRIV",
-            "Cg1QcmVjaXBpdGF0aW9uGAMgASgCEhMKC1RlbXBlcmF0dXJlGAQgASgCEhEK",
-            "CVdpbmRTcGVlZBgFIAEoAiLbAQoPV2VhdGhlckZvcmVjYXN0Eg8KB01pblRl",
-            "bXAYASABKAISDwoHTWF4VGVtcBgCIAEoAhIUCgxNaW5XaW5kU3BlZWQYAyAB",
-            "KAISFAoMTWF4V2luZFNwZWVkGAQgASgCEi0KCXN0YXJ0VGltZRgFIAEoCzIa",
-            "Lmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASKwoHZW5kVGltZRgGIAEoCzIa",
-            "Lmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASHgoIRm9yZWNhc3QYByADKAsy",
-            "DC53ZWF0aGVyLkJhciLMAgoHV2VhdGhlchIWCg5XZWF0aGVySWNvblVybBgB",
-            "IAEoCRIaChJXZWF0aGVyRGVzY3JpcHRpb24YAiABKAkSEwoLVGVtcGVyYXR1",
-            "cmUYAyABKAISEQoJV2luZFNwZWVkGAQgASgCEhUKDVdpbmRHdXN0U3BlZWQY",
-            "BSABKAISGAoQV2luZERpcmVjdGlvblVybBgGIAEoCRITCgtSYWRhckltZ1Vy",
-            "bBgHIAEoCRIyChJQcmVjaXBpdGF0aW9uVmFsdWUYCCABKAsyFi53ZWF0aGVy",
-            "LlByZWNpcGl0YXRpb24SEAoISHVtaWRpdHkYCSABKAUSEgoKVmlzaWJpbGl0",
-            "eRgKIAEoAhISCgpDbG91ZENvdmVyGAsgASgFEjEKD1dlYXRoZXJGb3JlY2Fz",
-            "dBgMIAEoCzIYLndlYXRoZXIuV2VhdGhlckZvcmVjYXN0ImUKD1dlYXRoZXJS",
-            "ZXNwb25zZRIjCgd3ZWF0aGVyGAEgASgLMhAud2VhdGhlci5XZWF0aGVySAAS",
-            "IQoGc3RhdHVzGAIgASgLMg8ud2VhdGhlci5TdGF0dXNIAEIKCghyZXNwb25z",
-            "ZSovCgpTdGF0dXNDb2RlEgsKB0ZhaWx1cmUQABIMCghGZXRjaGluZxABEgYK",
-            "Ak9rEAIyVgoOV2VhdGhlckZldGNoZXISRAoQR2V0V2VhdGhlclJlcG9ydBIW",
-            "Lmdvb2dsZS5wcm90b2J1Zi5FbXB0eRoYLndlYXRoZXIuV2VhdGhlclJlc3Bv",
-            "bnNlQhGqAg5XZWF0aGVyU2VydmljZWIGcHJvdG8z"));
+            "b3RvIkEKC1N0YXR1c1Byb3RvEg8KB01lc3NhZ2UYASABKAkSIQoEQ29kZRgC",
+            "IAEoDjITLndlYXRoZXIuU3RhdHVzQ29kZSJkChJQcmVjaXBpdGF0aW9uUHJv",
+            "dG8SEAoITGFzdEhvdXIYASABKAISEgoKTGFzdDNIb3VycxgCIAEoAhITCgtM",
+            "YXN0MTJIb3VycxgDIAEoAhITCgtMYXN0MjRIb3VycxgEIAEoAiJ/CghCYXJQ",
+            "cm90bxIcChRXaW5kRGlyZWN0aW9uSWNvblVybBgBIAEoCRIWCg5XZWF0aGVy",
+            "SWNvblVybBgCIAEoCRIVCg1QcmVjaXBpdGF0aW9uGAMgASgCEhMKC1RlbXBl",
+            "cmF0dXJlGAQgASgCEhEKCVdpbmRTcGVlZBgFIAEoAiLlAQoUV2VhdGhlckZv",
+            "cmVjYXN0UHJvdG8SDwoHTWluVGVtcBgBIAEoAhIPCgdNYXhUZW1wGAIgASgC",
+            "EhQKDE1pbldpbmRTcGVlZBgDIAEoAhIUCgxNYXhXaW5kU3BlZWQYBCABKAIS",
+            "LQoJc3RhcnRUaW1lGAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFt",
+            "cBIrCgdlbmRUaW1lGAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFt",
+            "cBIjCghGb3JlY2FzdBgHIAMoCzIRLndlYXRoZXIuQmFyUHJvdG8i2wIKDFdl",
+            "YXRoZXJQcm90bxIWCg5XZWF0aGVySWNvblVybBgBIAEoCRIaChJXZWF0aGVy",
+            "RGVzY3JpcHRpb24YAiABKAkSEwoLVGVtcGVyYXR1cmUYAyABKAISEQoJV2lu",
+            "ZFNwZWVkGAQgASgCEhUKDVdpbmRHdXN0U3BlZWQYBSABKAISGAoQV2luZERp",
+            "cmVjdGlvblVybBgGIAEoCRITCgtSYWRhckltZ1VybBgHIAEoCRI3ChJQcmVj",
+            "aXBpdGF0aW9uVmFsdWUYCCABKAsyGy53ZWF0aGVyLlByZWNpcGl0YXRpb25Q",
+            "cm90bxIQCghIdW1pZGl0eRgJIAEoBRISCgpWaXNpYmlsaXR5GAogASgCEhIK",
+            "CkNsb3VkQ292ZXIYCyABKAUSNgoPV2VhdGhlckZvcmVjYXN0GAwgASgLMh0u",
+            "d2VhdGhlci5XZWF0aGVyRm9yZWNhc3RQcm90byJ0ChRXZWF0aGVyUmVzcG9u",
+            "c2VQcm90bxIoCgd3ZWF0aGVyGAEgASgLMhUud2VhdGhlci5XZWF0aGVyUHJv",
+            "dG9IABImCgZzdGF0dXMYAiABKAsyFC53ZWF0aGVyLlN0YXR1c1Byb3RvSABC",
+            "CgoIcmVzcG9uc2UqLwoKU3RhdHVzQ29kZRILCgdGYWlsdXJlEAASDAoIRmV0",
+            "Y2hpbmcQARIGCgJPaxACMlsKDldlYXRoZXJGZXRjaGVyEkkKEEdldFdlYXRo",
+            "ZXJSZXBvcnQSFi5nb29nbGUucHJvdG9idWYuRW1wdHkaHS53ZWF0aGVyLldl",
+            "YXRoZXJSZXNwb25zZVByb3RvQhGqAg5XZWF0aGVyU2VydmljZWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::WeatherService.StatusCode), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.Status), global::WeatherService.Status.Parser, new[]{ "Message", "Code" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.Precipitation), global::WeatherService.Precipitation.Parser, new[]{ "LastHour", "Last3Hours", "Last12Hours", "Last24Hours" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.Bar), global::WeatherService.Bar.Parser, new[]{ "WindDirectionIconUrl", "WeatherIconUrl", "Precipitation", "Temperature", "WindSpeed" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.WeatherForecast), global::WeatherService.WeatherForecast.Parser, new[]{ "MinTemp", "MaxTemp", "MinWindSpeed", "MaxWindSpeed", "StartTime", "EndTime", "Forecast" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.Weather), global::WeatherService.Weather.Parser, new[]{ "WeatherIconUrl", "WeatherDescription", "Temperature", "WindSpeed", "WindGustSpeed", "WindDirectionUrl", "RadarImgUrl", "PrecipitationValue", "Humidity", "Visibility", "CloudCover", "WeatherForecast" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.WeatherResponse), global::WeatherService.WeatherResponse.Parser, new[]{ "Weather", "Status" }, new[]{ "Response" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.StatusProto), global::WeatherService.StatusProto.Parser, new[]{ "Message", "Code" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.PrecipitationProto), global::WeatherService.PrecipitationProto.Parser, new[]{ "LastHour", "Last3Hours", "Last12Hours", "Last24Hours" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.BarProto), global::WeatherService.BarProto.Parser, new[]{ "WindDirectionIconUrl", "WeatherIconUrl", "Precipitation", "Temperature", "WindSpeed" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.WeatherForecastProto), global::WeatherService.WeatherForecastProto.Parser, new[]{ "MinTemp", "MaxTemp", "MinWindSpeed", "MaxWindSpeed", "StartTime", "EndTime", "Forecast" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.WeatherProto), global::WeatherService.WeatherProto.Parser, new[]{ "WeatherIconUrl", "WeatherDescription", "Temperature", "WindSpeed", "WindGustSpeed", "WindDirectionUrl", "RadarImgUrl", "PrecipitationValue", "Humidity", "Visibility", "CloudCover", "WeatherForecast" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.WeatherResponseProto), global::WeatherService.WeatherResponseProto.Parser, new[]{ "Weather", "Status" }, new[]{ "Response" }, null, null, null)
           }));
     }
     #endregion
@@ -75,15 +76,15 @@ namespace WeatherService {
   #endregion
 
   #region Messages
-  public sealed partial class Status : pb::IMessage<Status>
+  public sealed partial class StatusProto : pb::IMessage<StatusProto>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<Status> _parser = new pb::MessageParser<Status>(() => new Status());
+    private static readonly pb::MessageParser<StatusProto> _parser = new pb::MessageParser<StatusProto>(() => new StatusProto());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<Status> Parser { get { return _parser; } }
+    public static pb::MessageParser<StatusProto> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -96,22 +97,22 @@ namespace WeatherService {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Status() {
+    public StatusProto() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Status(Status other) : this() {
+    public StatusProto(StatusProto other) : this() {
       message_ = other.message_;
       code_ = other.code_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Status Clone() {
-      return new Status(this);
+    public StatusProto Clone() {
+      return new StatusProto(this);
     }
 
     /// <summary>Field number for the "Message" field.</summary>
@@ -138,11 +139,11 @@ namespace WeatherService {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as Status);
+      return Equals(other as StatusProto);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(Status other) {
+    public bool Equals(StatusProto other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -222,7 +223,7 @@ namespace WeatherService {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(Status other) {
+    public void MergeFrom(StatusProto other) {
       if (other == null) {
         return;
       }
@@ -283,15 +284,15 @@ namespace WeatherService {
 
   }
 
-  public sealed partial class Precipitation : pb::IMessage<Precipitation>
+  public sealed partial class PrecipitationProto : pb::IMessage<PrecipitationProto>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<Precipitation> _parser = new pb::MessageParser<Precipitation>(() => new Precipitation());
+    private static readonly pb::MessageParser<PrecipitationProto> _parser = new pb::MessageParser<PrecipitationProto>(() => new PrecipitationProto());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<Precipitation> Parser { get { return _parser; } }
+    public static pb::MessageParser<PrecipitationProto> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -304,14 +305,14 @@ namespace WeatherService {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Precipitation() {
+    public PrecipitationProto() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Precipitation(Precipitation other) : this() {
+    public PrecipitationProto(PrecipitationProto other) : this() {
       lastHour_ = other.lastHour_;
       last3Hours_ = other.last3Hours_;
       last12Hours_ = other.last12Hours_;
@@ -320,8 +321,8 @@ namespace WeatherService {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Precipitation Clone() {
-      return new Precipitation(this);
+    public PrecipitationProto Clone() {
+      return new PrecipitationProto(this);
     }
 
     /// <summary>Field number for the "LastHour" field.</summary>
@@ -370,11 +371,11 @@ namespace WeatherService {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as Precipitation);
+      return Equals(other as PrecipitationProto);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(Precipitation other) {
+    public bool Equals(PrecipitationProto other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -480,7 +481,7 @@ namespace WeatherService {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(Precipitation other) {
+    public void MergeFrom(PrecipitationProto other) {
       if (other == null) {
         return;
       }
@@ -563,15 +564,15 @@ namespace WeatherService {
 
   }
 
-  public sealed partial class Bar : pb::IMessage<Bar>
+  public sealed partial class BarProto : pb::IMessage<BarProto>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<Bar> _parser = new pb::MessageParser<Bar>(() => new Bar());
+    private static readonly pb::MessageParser<BarProto> _parser = new pb::MessageParser<BarProto>(() => new BarProto());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<Bar> Parser { get { return _parser; } }
+    public static pb::MessageParser<BarProto> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -584,14 +585,14 @@ namespace WeatherService {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Bar() {
+    public BarProto() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Bar(Bar other) : this() {
+    public BarProto(BarProto other) : this() {
       windDirectionIconUrl_ = other.windDirectionIconUrl_;
       weatherIconUrl_ = other.weatherIconUrl_;
       precipitation_ = other.precipitation_;
@@ -601,8 +602,8 @@ namespace WeatherService {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Bar Clone() {
-      return new Bar(this);
+    public BarProto Clone() {
+      return new BarProto(this);
     }
 
     /// <summary>Field number for the "WindDirectionIconUrl" field.</summary>
@@ -662,11 +663,11 @@ namespace WeatherService {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as Bar);
+      return Equals(other as BarProto);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(Bar other) {
+    public bool Equals(BarProto other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -785,7 +786,7 @@ namespace WeatherService {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(Bar other) {
+    public void MergeFrom(BarProto other) {
       if (other == null) {
         return;
       }
@@ -879,15 +880,15 @@ namespace WeatherService {
 
   }
 
-  public sealed partial class WeatherForecast : pb::IMessage<WeatherForecast>
+  public sealed partial class WeatherForecastProto : pb::IMessage<WeatherForecastProto>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<WeatherForecast> _parser = new pb::MessageParser<WeatherForecast>(() => new WeatherForecast());
+    private static readonly pb::MessageParser<WeatherForecastProto> _parser = new pb::MessageParser<WeatherForecastProto>(() => new WeatherForecastProto());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<WeatherForecast> Parser { get { return _parser; } }
+    public static pb::MessageParser<WeatherForecastProto> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -900,14 +901,14 @@ namespace WeatherService {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public WeatherForecast() {
+    public WeatherForecastProto() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public WeatherForecast(WeatherForecast other) : this() {
+    public WeatherForecastProto(WeatherForecastProto other) : this() {
       minTemp_ = other.minTemp_;
       maxTemp_ = other.maxTemp_;
       minWindSpeed_ = other.minWindSpeed_;
@@ -919,8 +920,8 @@ namespace WeatherService {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public WeatherForecast Clone() {
-      return new WeatherForecast(this);
+    public WeatherForecastProto Clone() {
+      return new WeatherForecastProto(this);
     }
 
     /// <summary>Field number for the "MinTemp" field.</summary>
@@ -991,21 +992,21 @@ namespace WeatherService {
 
     /// <summary>Field number for the "Forecast" field.</summary>
     public const int ForecastFieldNumber = 7;
-    private static readonly pb::FieldCodec<global::WeatherService.Bar> _repeated_forecast_codec
-        = pb::FieldCodec.ForMessage(58, global::WeatherService.Bar.Parser);
-    private readonly pbc::RepeatedField<global::WeatherService.Bar> forecast_ = new pbc::RepeatedField<global::WeatherService.Bar>();
+    private static readonly pb::FieldCodec<global::WeatherService.BarProto> _repeated_forecast_codec
+        = pb::FieldCodec.ForMessage(58, global::WeatherService.BarProto.Parser);
+    private readonly pbc::RepeatedField<global::WeatherService.BarProto> forecast_ = new pbc::RepeatedField<global::WeatherService.BarProto>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::WeatherService.Bar> Forecast {
+    public pbc::RepeatedField<global::WeatherService.BarProto> Forecast {
       get { return forecast_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as WeatherForecast);
+      return Equals(other as WeatherForecastProto);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(WeatherForecast other) {
+    public bool Equals(WeatherForecastProto other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -1142,7 +1143,7 @@ namespace WeatherService {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(WeatherForecast other) {
+    public void MergeFrom(WeatherForecastProto other) {
       if (other == null) {
         return;
       }
@@ -1274,15 +1275,15 @@ namespace WeatherService {
 
   }
 
-  public sealed partial class Weather : pb::IMessage<Weather>
+  public sealed partial class WeatherProto : pb::IMessage<WeatherProto>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<Weather> _parser = new pb::MessageParser<Weather>(() => new Weather());
+    private static readonly pb::MessageParser<WeatherProto> _parser = new pb::MessageParser<WeatherProto>(() => new WeatherProto());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<Weather> Parser { get { return _parser; } }
+    public static pb::MessageParser<WeatherProto> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -1295,14 +1296,14 @@ namespace WeatherService {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Weather() {
+    public WeatherProto() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Weather(Weather other) : this() {
+    public WeatherProto(WeatherProto other) : this() {
       weatherIconUrl_ = other.weatherIconUrl_;
       weatherDescription_ = other.weatherDescription_;
       temperature_ = other.temperature_;
@@ -1319,8 +1320,8 @@ namespace WeatherService {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Weather Clone() {
-      return new Weather(this);
+    public WeatherProto Clone() {
+      return new WeatherProto(this);
     }
 
     /// <summary>Field number for the "WeatherIconUrl" field.</summary>
@@ -1402,9 +1403,9 @@ namespace WeatherService {
 
     /// <summary>Field number for the "PrecipitationValue" field.</summary>
     public const int PrecipitationValueFieldNumber = 8;
-    private global::WeatherService.Precipitation precipitationValue_;
+    private global::WeatherService.PrecipitationProto precipitationValue_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::WeatherService.Precipitation PrecipitationValue {
+    public global::WeatherService.PrecipitationProto PrecipitationValue {
       get { return precipitationValue_; }
       set {
         precipitationValue_ = value;
@@ -1446,9 +1447,9 @@ namespace WeatherService {
 
     /// <summary>Field number for the "WeatherForecast" field.</summary>
     public const int WeatherForecastFieldNumber = 12;
-    private global::WeatherService.WeatherForecast weatherForecast_;
+    private global::WeatherService.WeatherForecastProto weatherForecast_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::WeatherService.WeatherForecast WeatherForecast {
+    public global::WeatherService.WeatherForecastProto WeatherForecast {
       get { return weatherForecast_; }
       set {
         weatherForecast_ = value;
@@ -1457,11 +1458,11 @@ namespace WeatherService {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as Weather);
+      return Equals(other as WeatherProto);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(Weather other) {
+    public bool Equals(WeatherProto other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -1671,7 +1672,7 @@ namespace WeatherService {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(Weather other) {
+    public void MergeFrom(WeatherProto other) {
       if (other == null) {
         return;
       }
@@ -1698,7 +1699,7 @@ namespace WeatherService {
       }
       if (other.precipitationValue_ != null) {
         if (precipitationValue_ == null) {
-          PrecipitationValue = new global::WeatherService.Precipitation();
+          PrecipitationValue = new global::WeatherService.PrecipitationProto();
         }
         PrecipitationValue.MergeFrom(other.PrecipitationValue);
       }
@@ -1713,7 +1714,7 @@ namespace WeatherService {
       }
       if (other.weatherForecast_ != null) {
         if (weatherForecast_ == null) {
-          WeatherForecast = new global::WeatherService.WeatherForecast();
+          WeatherForecast = new global::WeatherService.WeatherForecastProto();
         }
         WeatherForecast.MergeFrom(other.WeatherForecast);
       }
@@ -1761,7 +1762,7 @@ namespace WeatherService {
           }
           case 66: {
             if (precipitationValue_ == null) {
-              PrecipitationValue = new global::WeatherService.Precipitation();
+              PrecipitationValue = new global::WeatherService.PrecipitationProto();
             }
             input.ReadMessage(PrecipitationValue);
             break;
@@ -1780,7 +1781,7 @@ namespace WeatherService {
           }
           case 98: {
             if (weatherForecast_ == null) {
-              WeatherForecast = new global::WeatherService.WeatherForecast();
+              WeatherForecast = new global::WeatherService.WeatherForecastProto();
             }
             input.ReadMessage(WeatherForecast);
             break;
@@ -1829,7 +1830,7 @@ namespace WeatherService {
           }
           case 66: {
             if (precipitationValue_ == null) {
-              PrecipitationValue = new global::WeatherService.Precipitation();
+              PrecipitationValue = new global::WeatherService.PrecipitationProto();
             }
             input.ReadMessage(PrecipitationValue);
             break;
@@ -1848,7 +1849,7 @@ namespace WeatherService {
           }
           case 98: {
             if (weatherForecast_ == null) {
-              WeatherForecast = new global::WeatherService.WeatherForecast();
+              WeatherForecast = new global::WeatherService.WeatherForecastProto();
             }
             input.ReadMessage(WeatherForecast);
             break;
@@ -1860,15 +1861,15 @@ namespace WeatherService {
 
   }
 
-  public sealed partial class WeatherResponse : pb::IMessage<WeatherResponse>
+  public sealed partial class WeatherResponseProto : pb::IMessage<WeatherResponseProto>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<WeatherResponse> _parser = new pb::MessageParser<WeatherResponse>(() => new WeatherResponse());
+    private static readonly pb::MessageParser<WeatherResponseProto> _parser = new pb::MessageParser<WeatherResponseProto>(() => new WeatherResponseProto());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<WeatherResponse> Parser { get { return _parser; } }
+    public static pb::MessageParser<WeatherResponseProto> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -1881,14 +1882,14 @@ namespace WeatherService {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public WeatherResponse() {
+    public WeatherResponseProto() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public WeatherResponse(WeatherResponse other) : this() {
+    public WeatherResponseProto(WeatherResponseProto other) : this() {
       switch (other.ResponseCase) {
         case ResponseOneofCase.Weather:
           Weather = other.Weather.Clone();
@@ -1902,15 +1903,15 @@ namespace WeatherService {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public WeatherResponse Clone() {
-      return new WeatherResponse(this);
+    public WeatherResponseProto Clone() {
+      return new WeatherResponseProto(this);
     }
 
     /// <summary>Field number for the "weather" field.</summary>
     public const int WeatherFieldNumber = 1;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::WeatherService.Weather Weather {
-      get { return responseCase_ == ResponseOneofCase.Weather ? (global::WeatherService.Weather) response_ : null; }
+    public global::WeatherService.WeatherProto Weather {
+      get { return responseCase_ == ResponseOneofCase.Weather ? (global::WeatherService.WeatherProto) response_ : null; }
       set {
         response_ = value;
         responseCase_ = value == null ? ResponseOneofCase.None : ResponseOneofCase.Weather;
@@ -1920,8 +1921,8 @@ namespace WeatherService {
     /// <summary>Field number for the "status" field.</summary>
     public const int StatusFieldNumber = 2;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::WeatherService.Status Status {
-      get { return responseCase_ == ResponseOneofCase.Status ? (global::WeatherService.Status) response_ : null; }
+    public global::WeatherService.StatusProto Status {
+      get { return responseCase_ == ResponseOneofCase.Status ? (global::WeatherService.StatusProto) response_ : null; }
       set {
         response_ = value;
         responseCase_ = value == null ? ResponseOneofCase.None : ResponseOneofCase.Status;
@@ -1949,11 +1950,11 @@ namespace WeatherService {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as WeatherResponse);
+      return Equals(other as WeatherResponseProto);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(WeatherResponse other) {
+    public bool Equals(WeatherResponseProto other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -2035,20 +2036,20 @@ namespace WeatherService {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(WeatherResponse other) {
+    public void MergeFrom(WeatherResponseProto other) {
       if (other == null) {
         return;
       }
       switch (other.ResponseCase) {
         case ResponseOneofCase.Weather:
           if (Weather == null) {
-            Weather = new global::WeatherService.Weather();
+            Weather = new global::WeatherService.WeatherProto();
           }
           Weather.MergeFrom(other.Weather);
           break;
         case ResponseOneofCase.Status:
           if (Status == null) {
-            Status = new global::WeatherService.Status();
+            Status = new global::WeatherService.StatusProto();
           }
           Status.MergeFrom(other.Status);
           break;
@@ -2069,7 +2070,7 @@ namespace WeatherService {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            global::WeatherService.Weather subBuilder = new global::WeatherService.Weather();
+            global::WeatherService.WeatherProto subBuilder = new global::WeatherService.WeatherProto();
             if (responseCase_ == ResponseOneofCase.Weather) {
               subBuilder.MergeFrom(Weather);
             }
@@ -2078,7 +2079,7 @@ namespace WeatherService {
             break;
           }
           case 18: {
-            global::WeatherService.Status subBuilder = new global::WeatherService.Status();
+            global::WeatherService.StatusProto subBuilder = new global::WeatherService.StatusProto();
             if (responseCase_ == ResponseOneofCase.Status) {
               subBuilder.MergeFrom(Status);
             }
@@ -2101,7 +2102,7 @@ namespace WeatherService {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            global::WeatherService.Weather subBuilder = new global::WeatherService.Weather();
+            global::WeatherService.WeatherProto subBuilder = new global::WeatherService.WeatherProto();
             if (responseCase_ == ResponseOneofCase.Weather) {
               subBuilder.MergeFrom(Weather);
             }
@@ -2110,7 +2111,7 @@ namespace WeatherService {
             break;
           }
           case 18: {
-            global::WeatherService.Status subBuilder = new global::WeatherService.Status();
+            global::WeatherService.StatusProto subBuilder = new global::WeatherService.StatusProto();
             if (responseCase_ == ResponseOneofCase.Status) {
               subBuilder.MergeFrom(Status);
             }

@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
-        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
@@ -15,7 +14,7 @@
             <Generator>MSBuild:Compile</Generator>
             <BeforeTargets>ResolveAssemblyReferences</BeforeTargets>
         </Protobuf>
-    </ItemGroup>    
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Grpc.AspNetCore" Version="2.32.0" />
@@ -33,14 +32,14 @@
         <PackageReference Include="StackExchange.Redis" Version="2.2.4" />
         <PackageReference Include="StackExchange.Redis.Extensions.Core" Version="6.3.6" />
         <PackageReference Include="StackExchange.Redis.Extensions.Newtonsoft" Version="6.3.6" />
-    </ItemGroup>    
+    </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Generated" />
-    </ItemGroup>    
+        <Folder Include="Generated" />
+    </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Common\Common.csproj" />
+        <ProjectReference Include="..\Common\Common.csproj" />
     </ItemGroup>
 
 </Project>

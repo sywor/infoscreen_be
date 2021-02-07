@@ -8,7 +8,7 @@ import "google/protobuf/timestamp.proto";
 package weather;
 
 service WeatherFetcher {
-  rpc GetWeatherReport (google.protobuf.Empty) returns (WeatherResponse);
+  rpc GetWeatherReport (google.protobuf.Empty) returns (WeatherResponseProto);
 }
 
 enum StatusCode {
@@ -17,19 +17,19 @@ enum StatusCode {
   Ok = 2;
 }
 
-message Status {
+message StatusProto {
   string Message = 1;
   StatusCode Code = 2;
 }
 
-message Precipitation {
+message PrecipitationProto {
   float LastHour = 1;
   float Last3Hours = 2;
   float Last12Hours = 3;
   float Last24Hours = 4;
 }
 
-message Bar {
+message BarProto {
   string WindDirectionIconUrl = 1;
   string WeatherIconUrl = 2;
   float Precipitation = 3;
@@ -37,17 +37,17 @@ message Bar {
   float WindSpeed = 5;
 }
 
-message WeatherForecast {
+message WeatherForecastProto {
   float MinTemp = 1;
   float MaxTemp = 2;
   float MinWindSpeed = 3;
   float MaxWindSpeed = 4;
   google.protobuf.Timestamp startTime = 5;
   google.protobuf.Timestamp endTime = 6;
-  repeated Bar Forecast = 7;
+  repeated BarProto Forecast = 7;
 }
 
-message Weather {
+message WeatherProto {
   string WeatherIconUrl = 1;
   string WeatherDescription = 2;
   float Temperature = 3;
@@ -55,16 +55,16 @@ message Weather {
   float WindGustSpeed = 5;
   string WindDirectionUrl = 6;
   string RadarImgUrl = 7;
-  Precipitation PrecipitationValue = 8;
+  PrecipitationProto PrecipitationValue = 8;
   int32 Humidity = 9;
   float Visibility = 10;
   int32 CloudCover = 11;
-  WeatherForecast WeatherForecast = 12;
+  WeatherForecastProto WeatherForecast = 12;
 }
 
-message WeatherResponse {
+message WeatherResponseProto {
   oneof response {
-    Weather weather = 1;
-    Status status = 2;
+    WeatherProto weather = 1;
+    StatusProto status = 2;
   }
 }

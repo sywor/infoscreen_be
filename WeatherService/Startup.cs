@@ -1,5 +1,6 @@
 ﻿using Common.Bootstrap;
 using Common.Config;
+using Common.Redis;
 
 using Hangfire;
 using Hangfire.Redis;
@@ -35,6 +36,7 @@ namespace WeatherService
         {
             var redisConfiguration = configuration.GetSection("Redis").Get<RedisConfiguration>();
             var minioConfiguration = configuration.GetSection("Minio").Get<MinioConfiguration>();
+            var bootstrapConfiguration = configuration.GetSection("Bootstrap").Get<BootstrapConfiguration>();
 
             _services.AddGrpc();
             _services.AddAuthorization();
@@ -47,8 +49,10 @@ namespace WeatherService
 
             _services.AddSingleton((_provider) => _provider.GetRequiredService<IRedisCacheClient>().GetDbFromConfiguration());
 
+            _services.AddSingleton<IRedisCacheService, RedisCacheService>();
             _services.AddSingleton(redisConfiguration);
             _services.AddSingleton(minioConfiguration);
+            _services.AddSingleton(bootstrapConfiguration);
 
             _services.AddSingleton<IBootstrapService<SmhiFetcher>, BootstrapService<SmhiFetcher>>();
 
