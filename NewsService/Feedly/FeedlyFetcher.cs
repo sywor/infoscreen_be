@@ -5,9 +5,9 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using Common;
-using Common.Bootstrap;
 using Common.Config;
 using Common.File;
+using Common.Recurrence;
 using Common.Redis;
 
 using FeedlySharp;
@@ -114,7 +114,7 @@ namespace NewsService.Feedly
                     await StashFailedArticle(NoImage, unixTimeSeconds, key);
                     continue;
                 }
-                var imageUrl = ((FileDownloadResponse) imageResult).FileUri;
+                var fileLocation = ((FileDownloadResponse) imageResult).FileLocation;
                 var publishedAt = ZonedDateTime.FromDateTimeOffset(entry.Published);
                 var content = Regex.Replace(entry.Summary.Content, "<.*?>", string.Empty);
 
@@ -134,7 +134,7 @@ namespace NewsService.Feedly
                     Source = entry.Origin.Title,
                     PublishedAt = publishedAt.ToInstant().ToUnixTimeSeconds(),
                     Content = content,
-                    ImageUrl = imageUrl,
+                    FileLocation = fileLocation,
                     FetchedAt = unixTimeSeconds,
                     ArticleUrl = articleUrl
                 };

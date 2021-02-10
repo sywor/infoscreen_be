@@ -37,12 +37,17 @@ namespace NewsService.Services
             foreach (var newsArticleResponse in newsResponses)
             {
                 var newsArticle = newsArticleResponse.NewsArticle;
+                var fileLocation = newsArticle.FileLocation;
 
                 var article = new Article
                 {
                     Key = newsArticleResponse.Key,
                     Title = newsArticle.Title,
-                    ImagePath = newsArticle.ImageUrl,
+                    ImageLocation = new ImageLocation()
+                    {
+                        Directory = fileLocation.Directory,
+                        FileName = fileLocation.FileName
+                    },
                     Content = newsArticle.Content,
                     Source = newsArticle.Source,
                     FetchedUnix = newsArticle.FetchedAt,
@@ -65,15 +70,21 @@ namespace NewsService.Services
             if (newsResponse != null)
             {
                 var newsArticle = newsResponse.Value.NewsArticle;
+                var fileLocation = newsArticle.FileLocation;
 
                 logger.LogInformation("Returning article: {Title}", newsArticle.Title);
+
                 return new ArticleResponse
                 {
                     Article = new Article
                     {
                         Key = key,
                         Title = newsArticle.Title,
-                        ImagePath = newsArticle.ImageUrl,
+                        ImageLocation = new ImageLocation()
+                        {
+                            Directory = fileLocation.Directory,
+                            FileName = fileLocation.FileName
+                        },
                         Content = newsArticle.Content,
                         Source = newsArticle.Source,
                         FetchedUnix = newsArticle.FetchedAt,

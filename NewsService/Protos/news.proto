@@ -26,12 +26,17 @@ message Status {
     StatusCode Code = 2;
 }
 
+message ImageLocation {
+    string directory = 1;
+    string fileName = 2;
+}
+
 message Article {
     string key = 1;
     string title = 2;
     int64 fetched_unix = 3;
     int64 published_unix = 4;
-    string imagePath = 5;
+    ImageLocation imageLocation = 5;
     string content = 6;
     string source = 7;
 }

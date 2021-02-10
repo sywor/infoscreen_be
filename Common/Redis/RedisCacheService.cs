@@ -26,13 +26,13 @@ namespace Common.Redis
         {
             if (!await redis.Db0.ExistsAsync(_key))
             {
-                logger.LogWarning("Could not find object in Redis with key: {Key}", _key);
+                logger.LogDebug("Could not find object in Redis with key: {Key}", _key);
 
                 return FailureResponse.Instance;
             }
 
             var response = await redis.Db0.GetAsync<T>(_key);
-            logger.LogInformation("Returned object from Redis with key: {Key}", _key);
+            logger.LogDebug("Returned object from Redis with key: {Key}", _key);
 
             return new RedisResponse<T>
             {
@@ -45,7 +45,7 @@ namespace Common.Redis
         {
             var keys = _keys.ToList();
             var redisResponse = await redis.Db0.GetAllAsync<T>(keys);
-            logger.LogInformation("Returned objects from Redis with keys: {KeyCount}", keys.Count);
+            logger.LogDebug("Returned objects from Redis with keys: {KeyCount}", keys.Count);
 
             var response = new List<IResponse>();
 
@@ -63,7 +63,7 @@ namespace Common.Redis
 
         public Task<bool> AddValue<T>(string _key, T _value)
         {
-            logger.LogInformation("Added object to Redis with key: {Key}", _key);
+            logger.LogDebug("Added object to Redis with key: {Key}", _key);
 
             return redis.Db0.AddAsync(_key, _value, TimeSpan.FromDays(2));
         }

@@ -75,7 +75,7 @@ namespace WeatherService.Smhi
                         WeatherSymbols = weatherSymbols
                     };
 
-                    logger.LogInformation("Parsed weather forecast: {Forecast}", result);
+                    logger.LogInformation("Parsed weather forecast");
 
                     return new WeatherForecastResponse
                     {

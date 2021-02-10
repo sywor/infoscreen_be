@@ -1,9 +1,6 @@
-﻿using Common.Bootstrap;
-using Common.Config;
+﻿using Common.Config;
+using Common.Recurrence;
 using Common.Redis;
-
-using Hangfire;
-using Hangfire.Redis;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,7 +9,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using StackExchange.Redis;
+using Newtonsoft.Json;
+
+using NodaTime;
+using NodaTime.Serialization.JsonNet;
+
 using StackExchange.Redis.Extensions.Core;
 using StackExchange.Redis.Extensions.Core.Abstractions;
 using StackExchange.Redis.Extensions.Core.Configuration;
@@ -36,7 +37,7 @@ namespace WeatherService
         {
             var redisConfiguration = configuration.GetSection("Redis").Get<RedisConfiguration>();
             var minioConfiguration = configuration.GetSection("Minio").Get<MinioConfiguration>();
-            var bootstrapConfiguration = configuration.GetSection("Bootstrap").Get<BootstrapConfiguration>();
+            var recurrenceConfiguration = configuration.GetSection("Recurrence").Get<RecurrenceConfiguration>();
 
             _services.AddGrpc();
             _services.AddAuthorization();
@@ -45,35 +46,25 @@ namespace WeatherService
 
             _services.AddSingleton<IRedisCacheClient, RedisCacheClient>();
             _services.AddSingleton<IRedisCacheConnectionPoolManager>(redisCacheConnectionPoolManager);
-            _services.AddSingleton<ISerializer, NewtonsoftSerializer>();
 
-            _services.AddSingleton((_provider) => _provider.GetRequiredService<IRedisCacheClient>().GetDbFromConfiguration());
+            var settings = new JsonSerializerSettings();
+            settings.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
+            var jsonSerializer = new NewtonsoftSerializer(settings);
+
+            _services.AddSingleton<ISerializer>(jsonSerializer);
+
+            _services.AddSingleton(_provider => _provider.GetRequiredService<IRedisCacheClient>().GetDbFromConfiguration());
 
             _services.AddSingleton<IRedisCacheService, RedisCacheService>();
             _services.AddSingleton(redisConfiguration);
             _services.AddSingleton(minioConfiguration);
-            _services.AddSingleton(bootstrapConfiguration);
+            _services.AddSingleton(recurrenceConfiguration);
 
-            _services.AddSingleton<IBootstrapService<SmhiFetcher>, BootstrapService<SmhiFetcher>>();
-
-            _services.AddHangfire(_configuration =>
-            {
-                var connectionMultiplexer = (ConnectionMultiplexer) redisCacheConnectionPoolManager.GetConnection();
-                var redisStorageOptions = new RedisStorageOptions
-                {
-                    Prefix = "hangfire_weather:"
-                };
-
-                _configuration
-                    .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
-                    .UseSimpleAssemblyNameTypeSerializer()
-                    .UseRecommendedSerializerSettings()
-                    .UseSerilogLogProvider()
-                    .UseRedisStorage(connectionMultiplexer, redisStorageOptions);
-            });
+            _services.AddSingleton<SmhiFetcher>();
+            _services.AddSingleton<RecurrenceService<SmhiFetcher>>();
         }
 
-        public void Configure(IApplicationBuilder _app, IWebHostEnvironment _env, IBootstrapService<SmhiFetcher> _bootstrap)
+        public void Configure(IApplicationBuilder _app, IWebHostEnvironment _env, RecurrenceService<SmhiFetcher> _recurrence)
         {
             if (_env.IsDevelopment())
             {
@@ -82,12 +73,9 @@ namespace WeatherService
 
             _app.UseRouting();
             _app.UseAuthorization();
-            _app.UseHangfireServer();
-            _app.UseHangfireDashboard();
             _app.UseEndpoints(_endpoints =>
             {
                 _endpoints.MapGrpcService<Services.WeatherService>();
-                _endpoints.MapHangfireDashboard();
                 _endpoints.MapGet("/",
                                   async context =>
                                   {
@@ -95,7 +83,7 @@ namespace WeatherService
                                   });
             });
 
-            _bootstrap.Launch();
+            _recurrence.Start();
         }
     }
 }

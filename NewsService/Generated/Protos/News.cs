@@ -27,23 +27,26 @@ namespace NewsService {
             "ChFQcm90b3MvbmV3cy5wcm90bxIEbmV3cxobZ29vZ2xlL3Byb3RvYnVmL2Vt",
             "cHR5LnByb3RvIiQKDkFydGljbGVSZXF1ZXN0EhIKCmFydGljbGVLZXkYASAB",
             "KAkiOQoGU3RhdHVzEg8KB01lc3NhZ2UYASABKAkSHgoEQ29kZRgCIAEoDjIQ",
-            "Lm5ld3MuU3RhdHVzQ29kZSKHAQoHQXJ0aWNsZRILCgNrZXkYASABKAkSDQoF",
-            "dGl0bGUYAiABKAkSFAoMZmV0Y2hlZF91bml4GAMgASgDEhYKDnB1Ymxpc2hl",
-            "ZF91bml4GAQgASgDEhEKCWltYWdlUGF0aBgFIAEoCRIPCgdjb250ZW50GAYg",
-            "ASgJEg4KBnNvdXJjZRgHIAEoCSJfCg9BcnRpY2xlUmVzcG9uc2USIAoHYXJ0",
-            "aWNsZRgBIAEoCzINLm5ld3MuQXJ0aWNsZUgAEh4KBnN0YXR1cxgCIAEoCzIM",
-            "Lm5ld3MuU3RhdHVzSABCCgoIcmVzcG9uc2UqLwoKU3RhdHVzQ29kZRILCgdG",
-            "YWlsdXJlEAASDAoIRmV0Y2hpbmcQARIGCgJPaxACMosBCgtOZXdzRmV0Y2hl",
-            "chJBCg5HZXRBbGxBcnRpY2xlcxIWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eRoV",
-            "Lm5ld3MuQXJ0aWNsZVJlc3BvbnNlMAESOQoKR2V0QXJ0aWNsZRIULm5ld3Mu",
-            "QXJ0aWNsZVJlcXVlc3QaFS5uZXdzLkFydGljbGVSZXNwb25zZUIOqgILTmV3",
-            "c1NlcnZpY2ViBnByb3RvMw=="));
+            "Lm5ld3MuU3RhdHVzQ29kZSI0Cg1JbWFnZUxvY2F0aW9uEhEKCWRpcmVjdG9y",
+            "eRgBIAEoCRIQCghmaWxlTmFtZRgCIAEoCSKgAQoHQXJ0aWNsZRILCgNrZXkY",
+            "ASABKAkSDQoFdGl0bGUYAiABKAkSFAoMZmV0Y2hlZF91bml4GAMgASgDEhYK",
+            "DnB1Ymxpc2hlZF91bml4GAQgASgDEioKDWltYWdlTG9jYXRpb24YBSABKAsy",
+            "Ey5uZXdzLkltYWdlTG9jYXRpb24SDwoHY29udGVudBgGIAEoCRIOCgZzb3Vy",
+            "Y2UYByABKAkiXwoPQXJ0aWNsZVJlc3BvbnNlEiAKB2FydGljbGUYASABKAsy",
+            "DS5uZXdzLkFydGljbGVIABIeCgZzdGF0dXMYAiABKAsyDC5uZXdzLlN0YXR1",
+            "c0gAQgoKCHJlc3BvbnNlKi8KClN0YXR1c0NvZGUSCwoHRmFpbHVyZRAAEgwK",
+            "CEZldGNoaW5nEAESBgoCT2sQAjKLAQoLTmV3c0ZldGNoZXISQQoOR2V0QWxs",
+            "QXJ0aWNsZXMSFi5nb29nbGUucHJvdG9idWYuRW1wdHkaFS5uZXdzLkFydGlj",
+            "bGVSZXNwb25zZTABEjkKCkdldEFydGljbGUSFC5uZXdzLkFydGljbGVSZXF1",
+            "ZXN0GhUubmV3cy5BcnRpY2xlUmVzcG9uc2VCDqoCC05ld3NTZXJ2aWNlYgZw",
+            "cm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::NewsService.StatusCode), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::NewsService.ArticleRequest), global::NewsService.ArticleRequest.Parser, new[]{ "ArticleKey" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::NewsService.Status), global::NewsService.Status.Parser, new[]{ "Message", "Code" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::NewsService.Article), global::NewsService.Article.Parser, new[]{ "Key", "Title", "FetchedUnix", "PublishedUnix", "ImagePath", "Content", "Source" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::NewsService.ImageLocation), global::NewsService.ImageLocation.Parser, new[]{ "Directory", "FileName" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::NewsService.Article), global::NewsService.Article.Parser, new[]{ "Key", "Title", "FetchedUnix", "PublishedUnix", "ImageLocation", "Content", "Source" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::NewsService.ArticleResponse), global::NewsService.ArticleResponse.Parser, new[]{ "Article", "Status" }, new[]{ "Response" }, null, null, null)
           }));
     }
@@ -440,6 +443,214 @@ namespace NewsService {
 
   }
 
+  public sealed partial class ImageLocation : pb::IMessage<ImageLocation>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<ImageLocation> _parser = new pb::MessageParser<ImageLocation>(() => new ImageLocation());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<ImageLocation> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::NewsService.NewsReflection.Descriptor.MessageTypes[2]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ImageLocation() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ImageLocation(ImageLocation other) : this() {
+      directory_ = other.directory_;
+      fileName_ = other.fileName_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ImageLocation Clone() {
+      return new ImageLocation(this);
+    }
+
+    /// <summary>Field number for the "directory" field.</summary>
+    public const int DirectoryFieldNumber = 1;
+    private string directory_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Directory {
+      get { return directory_; }
+      set {
+        directory_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "fileName" field.</summary>
+    public const int FileNameFieldNumber = 2;
+    private string fileName_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string FileName {
+      get { return fileName_; }
+      set {
+        fileName_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as ImageLocation);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(ImageLocation other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Directory != other.Directory) return false;
+      if (FileName != other.FileName) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Directory.Length != 0) hash ^= Directory.GetHashCode();
+      if (FileName.Length != 0) hash ^= FileName.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Directory.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Directory);
+      }
+      if (FileName.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(FileName);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Directory.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Directory);
+      }
+      if (FileName.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(FileName);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Directory.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Directory);
+      }
+      if (FileName.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(FileName);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(ImageLocation other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Directory.Length != 0) {
+        Directory = other.Directory;
+      }
+      if (other.FileName.Length != 0) {
+        FileName = other.FileName;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Directory = input.ReadString();
+            break;
+          }
+          case 18: {
+            FileName = input.ReadString();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            Directory = input.ReadString();
+            break;
+          }
+          case 18: {
+            FileName = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
   public sealed partial class Article : pb::IMessage<Article>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -452,7 +663,7 @@ namespace NewsService {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::NewsService.NewsReflection.Descriptor.MessageTypes[2]; }
+      get { return global::NewsService.NewsReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -473,7 +684,7 @@ namespace NewsService {
       title_ = other.title_;
       fetchedUnix_ = other.fetchedUnix_;
       publishedUnix_ = other.publishedUnix_;
-      imagePath_ = other.imagePath_;
+      imageLocation_ = other.imageLocation_ != null ? other.imageLocation_.Clone() : null;
       content_ = other.content_;
       source_ = other.source_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -528,14 +739,14 @@ namespace NewsService {
       }
     }
 
-    /// <summary>Field number for the "imagePath" field.</summary>
-    public const int ImagePathFieldNumber = 5;
-    private string imagePath_ = "";
+    /// <summary>Field number for the "imageLocation" field.</summary>
+    public const int ImageLocationFieldNumber = 5;
+    private global::NewsService.ImageLocation imageLocation_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string ImagePath {
-      get { return imagePath_; }
+    public global::NewsService.ImageLocation ImageLocation {
+      get { return imageLocation_; }
       set {
-        imagePath_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        imageLocation_ = value;
       }
     }
 
@@ -578,7 +789,7 @@ namespace NewsService {
       if (Title != other.Title) return false;
       if (FetchedUnix != other.FetchedUnix) return false;
       if (PublishedUnix != other.PublishedUnix) return false;
-      if (ImagePath != other.ImagePath) return false;
+      if (!object.Equals(ImageLocation, other.ImageLocation)) return false;
       if (Content != other.Content) return false;
       if (Source != other.Source) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -591,7 +802,7 @@ namespace NewsService {
       if (Title.Length != 0) hash ^= Title.GetHashCode();
       if (FetchedUnix != 0L) hash ^= FetchedUnix.GetHashCode();
       if (PublishedUnix != 0L) hash ^= PublishedUnix.GetHashCode();
-      if (ImagePath.Length != 0) hash ^= ImagePath.GetHashCode();
+      if (imageLocation_ != null) hash ^= ImageLocation.GetHashCode();
       if (Content.Length != 0) hash ^= Content.GetHashCode();
       if (Source.Length != 0) hash ^= Source.GetHashCode();
       if (_unknownFields != null) {
@@ -626,9 +837,9 @@ namespace NewsService {
         output.WriteRawTag(32);
         output.WriteInt64(PublishedUnix);
       }
-      if (ImagePath.Length != 0) {
+      if (imageLocation_ != null) {
         output.WriteRawTag(42);
-        output.WriteString(ImagePath);
+        output.WriteMessage(ImageLocation);
       }
       if (Content.Length != 0) {
         output.WriteRawTag(50);
@@ -663,9 +874,9 @@ namespace NewsService {
         output.WriteRawTag(32);
         output.WriteInt64(PublishedUnix);
       }
-      if (ImagePath.Length != 0) {
+      if (imageLocation_ != null) {
         output.WriteRawTag(42);
-        output.WriteString(ImagePath);
+        output.WriteMessage(ImageLocation);
       }
       if (Content.Length != 0) {
         output.WriteRawTag(50);
@@ -696,8 +907,8 @@ namespace NewsService {
       if (PublishedUnix != 0L) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(PublishedUnix);
       }
-      if (ImagePath.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(ImagePath);
+      if (imageLocation_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ImageLocation);
       }
       if (Content.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Content);
@@ -728,8 +939,11 @@ namespace NewsService {
       if (other.PublishedUnix != 0L) {
         PublishedUnix = other.PublishedUnix;
       }
-      if (other.ImagePath.Length != 0) {
-        ImagePath = other.ImagePath;
+      if (other.imageLocation_ != null) {
+        if (imageLocation_ == null) {
+          ImageLocation = new global::NewsService.ImageLocation();
+        }
+        ImageLocation.MergeFrom(other.ImageLocation);
       }
       if (other.Content.Length != 0) {
         Content = other.Content;
@@ -768,7 +982,10 @@ namespace NewsService {
             break;
           }
           case 42: {
-            ImagePath = input.ReadString();
+            if (imageLocation_ == null) {
+              ImageLocation = new global::NewsService.ImageLocation();
+            }
+            input.ReadMessage(ImageLocation);
             break;
           }
           case 50: {
@@ -810,7 +1027,10 @@ namespace NewsService {
             break;
           }
           case 42: {
-            ImagePath = input.ReadString();
+            if (imageLocation_ == null) {
+              ImageLocation = new global::NewsService.ImageLocation();
+            }
+            input.ReadMessage(ImageLocation);
             break;
           }
           case 50: {
@@ -840,7 +1060,7 @@ namespace NewsService {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::NewsService.NewsReflection.Descriptor.MessageTypes[3]; }
+      get { return global::NewsService.NewsReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

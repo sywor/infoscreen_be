@@ -1,8 +1,8 @@
 namespace Common.Response
 {
-    public class FailureResponse : IResponse
+    public readonly struct FailureResponse : IResponse
     {
-        public static readonly FailureResponse Instance = new FailureResponse();
+        public static readonly FailureResponse Instance = new();
 
         public bool Success => false;
     }

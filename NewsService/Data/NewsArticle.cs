@@ -1,3 +1,5 @@
+using Common.Minio;
+
 using Newtonsoft.Json;
 
 namespace NewsService.Data
@@ -11,7 +13,7 @@ namespace NewsService.Data
         public long PublishedAt { get; init; }
         public long FetchedAt { get; init; }
         public string Content { get; init; }
-        public string ImageUrl { get; init; }
+        public MinioFile FileLocation { get; init; }
         public string ArticleUrl { get; init; }
 
         public override string ToString()

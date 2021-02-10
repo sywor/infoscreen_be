@@ -1,11 +1,8 @@
-﻿using Common.Bootstrap;
-using Common.Config;
+﻿using Common.Config;
+using Common.Recurrence;
 using Common.Redis;
 
 using FeedlySharp.Models;
-
-using Hangfire;
-using Hangfire.Redis;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -17,7 +14,11 @@ using Microsoft.Extensions.Hosting;
 using NewsService.Feedly;
 using NewsService.Services;
 
-using StackExchange.Redis;
+using Newtonsoft.Json;
+
+using NodaTime;
+using NodaTime.Serialization.JsonNet;
+
 using StackExchange.Redis.Extensions.Core;
 using StackExchange.Redis.Extensions.Core.Abstractions;
 using StackExchange.Redis.Extensions.Core.Configuration;
@@ -40,7 +41,7 @@ namespace NewsService
             var redisConfiguration = configuration.GetSection("Redis").Get<RedisConfiguration>();
             var minioConfiguration = configuration.GetSection("Minio").Get<MinioConfiguration>();
             var feedlyOptions = configuration.GetSection("Feedly").Get<FeedlyOptions>();
-            var bootstrapConfiguration = configuration.GetSection("Bootstrap").Get<BootstrapConfiguration>();
+            var recurrenceConfiguration = configuration.GetSection("Bootstrap").Get<RecurrenceConfiguration>();
 
             _services.AddGrpc();
             _services.AddAuthorization();
@@ -49,7 +50,12 @@ namespace NewsService
 
             _services.AddSingleton<IRedisCacheClient, RedisCacheClient>();
             _services.AddSingleton<IRedisCacheConnectionPoolManager>(redisCacheConnectionPoolManager);
-            _services.AddSingleton<ISerializer, NewtonsoftSerializer>();
+
+            var settings = new JsonSerializerSettings();
+            settings.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
+            var jsonSerializer = new NewtonsoftSerializer(settings);
+
+            _services.AddSingleton<ISerializer>(jsonSerializer);
 
             _services.AddSingleton((_provider) => _provider.GetRequiredService<IRedisCacheClient>().GetDbFromConfiguration());
 
@@ -58,28 +64,13 @@ namespace NewsService
             _services.AddSingleton(redisConfiguration);
             _services.AddSingleton(minioConfiguration);
             _services.AddSingleton(feedlyOptions);
-            _services.AddSingleton(bootstrapConfiguration);
-
-            _services.AddSingleton<IBootstrapService<FeedlyFetcher>, BootstrapService<FeedlyFetcher>>();
-
-            _services.AddHangfire(_configuration =>
-            {
-                var connectionMultiplexer = (ConnectionMultiplexer) redisCacheConnectionPoolManager.GetConnection();
-                var redisStorageOptions = new RedisStorageOptions
-                {
-                    Prefix = "hangfire_news:"
-                };
-
-                _configuration
-                    .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
-                    .UseSimpleAssemblyNameTypeSerializer()
-                    .UseRecommendedSerializerSettings()
-                    .UseSerilogLogProvider()
-                    .UseRedisStorage(connectionMultiplexer, redisStorageOptions);
-            });
+            _services.AddSingleton(recurrenceConfiguration);
+            
+            _services.AddSingleton<FeedlyFetcher>();
+            _services.AddSingleton<RecurrenceService<FeedlyFetcher>>();
         }
 
-        public void Configure(IApplicationBuilder _app, IWebHostEnvironment _env, IBootstrapService<FeedlyFetcher> _bootstrap)
+        public void Configure(IApplicationBuilder _app, IWebHostEnvironment _env, RecurrenceService<FeedlyFetcher> _bootstrap)
         {
             if (_env.IsDevelopment())
             {
@@ -88,8 +79,6 @@ namespace NewsService
 
             _app.UseRouting();
             _app.UseAuthorization();
-            _app.UseHangfireServer();
-            _app.UseHangfireDashboard();
             _app.UseEndpoints(_endpoints =>
             {
                 _endpoints.MapGrpcService<NewsGrpcService>();
@@ -100,11 +89,9 @@ namespace NewsService
                                       await _context.Response.WriteAsync(
                                           "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
                                   });
-
-                _endpoints.MapHangfireDashboard();
             });
 
-            _bootstrap.Launch();
+            _bootstrap.Start();
         }
     }
 }

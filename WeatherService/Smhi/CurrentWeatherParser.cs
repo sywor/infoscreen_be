@@ -69,6 +69,9 @@ namespace WeatherService.Smhi
                         WeatherSymbol = (int) paramNameDict["Wsymb2"].Values.First(),
                         Precipitation = precipitation
                     };
+                    
+                    
+                    logger.LogInformation("Parsed current weather");
 
                     return new CurrentWeatherResponse
                     {

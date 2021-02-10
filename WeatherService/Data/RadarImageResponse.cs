@@ -1,3 +1,5 @@
+using Common.Minio;
+
 using NodaTime;
 
 namespace WeatherService.Data
@@ -7,6 +9,6 @@ namespace WeatherService.Data
         public Instant TimeStamp { get; init; }
         public string OriginUrl { get; init; }
         public string Key { get; init; }
-        public string ImageUrl { get; init; }
+        public MinioFile FileLocation { get; init; }
     }
 }

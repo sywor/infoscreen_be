@@ -59,8 +59,6 @@ namespace WeatherService.Smhi
                         return FailureResponse.Instance;
                     }
 
-                    var result = new List<RadarImageResponse>();
-
                     foreach (var file in jRadar.Files)
                     {
                         var imageUrl = file.Formats.First().Link;
@@ -71,8 +69,6 @@ namespace WeatherService.Smhi
 
                         if (redisResult.Success)
                         {
-                            var redisRadarImage = (RedisResponse<RadarImageResponse>) redisResult;
-                            result.Add(redisRadarImage.Value);
                             logger.LogDebug("Radar image with key {Key} already downloaded, skipping", key);
                             continue;
                         }
@@ -84,19 +80,20 @@ namespace WeatherService.Smhi
 
                         var parseResult = timeStampPattern.Parse(timeStamp);
 
-                        result.Add(new RadarImageResponse
+                        var radarImageResponse = new RadarImageResponse
                         {
                             TimeStamp = parseResult.Success ? parseResult.Value : default,
                             OriginUrl = imageUrl,
                             Key = key,
-                            ImageUrl = ((FileDownloadResponse) imageResult).FileUri
-                        });
+                            FileLocation = ((FileDownloadResponse) imageResult).FileLocation
+                        };
+
+                        await redis.AddValue($"weather_radar_image:{key}", radarImageResponse);
                     }
 
-                    return new RadarResponse
-                    {
-                        RadarImages = result
-                    };
+                    logger.LogInformation("Parsed radar images");
+                    
+                    return SuccessResponse.Instance;
                 }
                 catch (Exception e)
                 {

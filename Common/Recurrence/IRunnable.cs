@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace Common.Bootstrap
+namespace Common.Recurrence
 {
     public interface IRunnable
     {

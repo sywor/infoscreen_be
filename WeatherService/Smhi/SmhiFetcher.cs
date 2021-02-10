@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 
 using Common;
-using Common.Bootstrap;
 using Common.Config;
+using Common.Recurrence;
 using Common.Redis;
 
 using Microsoft.Extensions.Logging;
@@ -20,10 +20,11 @@ namespace WeatherService.Smhi
         private readonly CurrentWeatherParser currentWeatherParser;
         private readonly WeatherForecastParser weatherForecastParser;
         private readonly RadarParser radarParser;
+        private readonly RadarImageCombiner radarImageCombiner;
 
-        private const string ANALYSIS_URL = "https://opendata-download-metanalys.smhi.se/api/category/mesan1g/version/2/geotype/point/lon/15.605473/lat/56.187119/data.json";
-        private const string FORECAST_URL = "https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/15.605473/lat/56.187119/data.json";
-        private const string RADAR_URL = "https://opendata-download-radar.smhi.se/api/version/latest/area/sweden/product/comp/";
+        private const string AnalysisUrl = "https://opendata-download-metanalys.smhi.se/api/category/mesan1g/version/2/geotype/point/lon/15.605473/lat/56.187119/data.json";
+        private const string ForecastUrl = "https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/15.605473/lat/56.187119/data.json";
+        private const string RadarUrl = "https://opendata-download-radar.smhi.se/api/version/latest/area/sweden/product/comp/";
 
         public SmhiFetcher(ILoggerFactory _loggerFactory, MinioConfiguration _minioConfiguration, IRedisCacheService _redis)
         {
@@ -33,17 +34,18 @@ namespace WeatherService.Smhi
             radarParser = new RadarParser(_minioConfiguration, _redis, _loggerFactory);
             currentWeatherParser = new CurrentWeatherParser(_loggerFactory);
             weatherForecastParser = new WeatherForecastParser(_loggerFactory);
+            radarImageCombiner = new RadarImageCombiner(_loggerFactory, _minioConfiguration, _redis);
         }
 
         public async Task Run()
         {
             var clock = SystemClock.Instance.GetCurrentInstant();
             var nowUtc = clock.InUtc();
-            var url = $"{RADAR_URL}{nowUtc.Year}/{nowUtc.Month:D2}/{nowUtc.Day:D2}?format=png";
-            
+            var url = $"{RadarUrl}{nowUtc.Year}/{nowUtc.Month:D2}/{nowUtc.Day:D2}?format=png";
+
             var radarResponseTask = RestRequestHandler.SendGetRequestAsync(url, radarParser, logger);
-            var forecastResponseTask = RestRequestHandler.SendGetRequestAsync(FORECAST_URL, weatherForecastParser, logger);
-            var currentWeatherResponseTask = RestRequestHandler.SendGetRequestAsync(ANALYSIS_URL, currentWeatherParser, logger);
+            var forecastResponseTask = RestRequestHandler.SendGetRequestAsync(ForecastUrl, weatherForecastParser, logger);
+            var currentWeatherResponseTask = RestRequestHandler.SendGetRequestAsync(AnalysisUrl, currentWeatherParser, logger);
 
             await Task.WhenAll(radarResponseTask, forecastResponseTask, currentWeatherResponseTask);
 
@@ -57,13 +59,13 @@ namespace WeatherService.Smhi
                 return;
             }
 
-            var radarImages = ((RadarResponse) radarResponse).RadarImages;
+            var radarFileLocation = await radarImageCombiner.GenerateRadar();
 
             var weatherReport = new WeatherReport()
             {
-                CurrentWeather = ((CurrentWeatherResponse) currentWeatherResponse).CurrentWeather,
-                WeatherForecast = ((WeatherForecastResponse) forecastResponse).WeatherForecast,
-                RadarUrl = null
+                CurrentWeather = ((CurrentWeatherResponse)currentWeatherResponse).CurrentWeather,
+                WeatherForecast = ((WeatherForecastResponse)forecastResponse).WeatherForecast,
+                RadarFileLocation = radarFileLocation
             };
 
             await redis.AddValue($"weather_report:{clock.ToUnixTimeSeconds()}", weatherReport);
