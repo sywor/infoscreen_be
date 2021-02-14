@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option csharp_namespace = "WashingMachineService";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/duration.proto";
+
+package washingMachine;
+
+service WashingMachineFetcher {
+  rpc GetWashingMachineStatus (google.protobuf.Empty) returns (MachineStatus);
+}
+
+enum DoorState {
+  OPEN = 0;
+  CLOSED = 1;
+}
+
+enum MachineState {
+  OFFLINE = 0;
+  STANDBY = 1;
+  RUNNING = 2;
+}
+
+message MachineStatus {
+  DoorState DoreState = 1;
+  MachineState State = 2;
+  string programName = 3;
+  google.protobuf.Duration TimeLeft = 4;
+}
