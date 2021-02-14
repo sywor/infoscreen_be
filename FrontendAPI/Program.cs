@@ -12,13 +12,13 @@ namespace FrontendAPI
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static void Main(string[] _args)
         {
-            CreateHostBuilder(args).Build().Run();
+            CreateHostBuilder(_args).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+        public static IHostBuilder CreateHostBuilder(string[] _args) =>
+            Host.CreateDefaultBuilder(_args)
+                .ConfigureWebHostDefaults(_webBuilder => { _webBuilder.UseStartup<Startup>(); });
     }
 }

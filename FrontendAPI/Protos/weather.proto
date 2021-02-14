@@ -4,29 +4,13 @@ option csharp_namespace = "WeatherService";
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
+import "Common/Protos/common.proto";
 
 package weather;
 
 service WeatherFetcher {
   rpc GetLatestWeatherReport (google.protobuf.Empty) returns (WeatherResponseProto);
   rpc GetAllWeatherReports (google.protobuf.Empty) returns (stream WeatherResponseProto);
-}
-
-enum StatusCode {
-  Failure = 0;
-  Fetching = 1;
-  Ok = 2;
-}
-
-message StatusProto {
-  string Message = 1;
-  StatusCode Code = 2;
-}
-
-message ProtoMinioFile {
-  string Bucket = 1;
-  string Directory = 2;
-  string FileName = 3;
 }
 
 message PrecipitationProto {
@@ -37,8 +21,8 @@ message PrecipitationProto {
 }
 
 message BarProto {
-  ProtoMinioFile WindDirectionIcon = 1;
-  ProtoMinioFile WeatherIcon = 2;
+  common.ProtoMinioFile WindDirectionIcon = 1;
+  common.ProtoMinioFile WeatherIcon = 2;
   float Precipitation = 3;
   float Temperature = 4;
   float WindSpeed = 5;
@@ -55,13 +39,13 @@ message WeatherForecastProto {
 }
 
 message WeatherProto {
-  ProtoMinioFile WeatherIcon = 1;
+  common.ProtoMinioFile WeatherIcon = 1;
   string WeatherDescription = 2;
   float Temperature = 3;
   float WindSpeed = 4;
   float WindGustSpeed = 5;
-  ProtoMinioFile WindDirection = 6;
-  ProtoMinioFile RadarImage = 7;
+  common.ProtoMinioFile WindDirection = 6;
+  common.ProtoMinioFile RadarImage = 7;
   PrecipitationProto PrecipitationValue = 8;
   int32 Humidity = 9;
   float Visibility = 10;
@@ -72,6 +56,6 @@ message WeatherProto {
 message WeatherResponseProto {
   oneof response {
     WeatherProto weather = 1;
-    StatusProto status = 2;
+    common.Status status = 2;
   }
 }

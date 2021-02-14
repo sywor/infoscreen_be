@@ -41,7 +41,7 @@ namespace NewsService
             var redisConfiguration = configuration.GetSection("Redis").Get<RedisConfiguration>();
             var minioConfiguration = configuration.GetSection("Minio").Get<MinioConfiguration>();
             var feedlyOptions = configuration.GetSection("Feedly").Get<FeedlyOptions>();
-            var recurrenceConfiguration = configuration.GetSection("Bootstrap").Get<RecurrenceConfiguration>();
+            var recurrenceConfiguration = configuration.GetSection("Recurrence").Get<RecurrenceConfiguration>();
 
             _services.AddGrpc();
             _services.AddAuthorization();

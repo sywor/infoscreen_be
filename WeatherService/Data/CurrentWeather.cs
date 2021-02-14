@@ -10,11 +10,11 @@ namespace WeatherService.Data
         public float Temperature { get; init; }
         public float WindSpeed { get; init; }
         public float WindGustSpeed { get; init; }
-        public int WindDirectionSymbol { get; init; }
+        public int WindDirectionIcon { get; init; }
         public int Humidity { get; init; }
         public float Visibility { get; init; }
         public int CloudCover { get; init; }
-        public int WeatherSymbol { get; init; }
+        public int WeatherIcon { get; init; }
         public List<float> Precipitation { get; init; }
     }
 }

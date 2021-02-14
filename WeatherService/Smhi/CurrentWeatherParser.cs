@@ -62,11 +62,11 @@ namespace WeatherService.Smhi
                         Temperature = paramNameDict["t"].Values.First(),
                         WindSpeed = paramNameDict["ws"].Values.First(),
                         WindGustSpeed = paramNameDict["gust"].Values.First(),
-                        WindDirectionSymbol = (int) paramNameDict["wd"].Values.First(),
+                        WindDirectionIcon = (int) paramNameDict["wd"].Values.First(),
                         Humidity = (int) paramNameDict["r"].Values.First(),
                         Visibility = paramNameDict["vis"].Values.First(),
                         CloudCover = (int) paramNameDict["tcc"].Values.First(),
-                        WeatherSymbol = (int) paramNameDict["Wsymb2"].Values.First(),
+                        WeatherIcon = (int) paramNameDict["Wsymb2"].Values.First(),
                         Precipitation = precipitation
                     };
                     

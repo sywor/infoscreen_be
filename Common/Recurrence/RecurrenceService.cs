@@ -28,13 +28,13 @@ namespace Common.Recurrence
         {
             timer = new Timer(async _ =>
             {
-                logger.LogInformation("Executing {Type}", nameof(T));
+                logger.LogInformation("Executing {Type}", typeof(T).Name);
                 var time = Stopwatch.StartNew();
 
                 await runnable.Run();
 
                 time.Stop();
-                logger.LogInformation("Done executing {Type}. Took: {Took}", nameof(T), time.Elapsed);
+                logger.LogInformation("Done executing {Type}. Took: {Took}", typeof(T).Name, time.Elapsed);
                 LastUpdate = DateTime.UtcNow;
 
             }, null, TimeSpan.Zero, configuration.Period);

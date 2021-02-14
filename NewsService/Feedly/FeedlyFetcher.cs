@@ -82,7 +82,7 @@ namespace NewsService.Feedly
             {
                 var key = CreateRedisKey(entry.Origin.Title, entry.Fingerprint, entry.Title);
                 var fetchedAt = now.ToDateTimeOffset().ToZonedDateTime();
-                var unixTimeSeconds = fetchedAt.ToInstant().ToUnixTimeSeconds();
+                var unixTime = fetchedAt.ToInstant();
 
                 if (await redis.KeyExist(key) || await redis.KeyExist($"failed_{key}"))
                 {
@@ -102,7 +102,7 @@ namespace NewsService.Feedly
                 else
                 {
                     logger.LogWarning(NoUrl);
-                    await StashFailedArticle(NoUrl, unixTimeSeconds, key);
+                    await StashFailedArticle(NoUrl, unixTime, key);
                     continue;
                 }
 
@@ -111,7 +111,7 @@ namespace NewsService.Feedly
                 if (!imageResult.Success)
                 {
                     logger.LogWarning("No image could be downloaded for article: {Url}", articleUrl);
-                    await StashFailedArticle(NoImage, unixTimeSeconds, key);
+                    await StashFailedArticle(NoImage, unixTime, key);
                     continue;
                 }
                 var fileLocation = ((FileDownloadResponse) imageResult).FileLocation;
@@ -122,7 +122,7 @@ namespace NewsService.Feedly
                 if (content.Length < 100)
                 {
                     logger.LogWarning(ContentLenghtToShort);
-                    await StashFailedArticle(ContentLenghtToShort, unixTimeSeconds, key);
+                    await StashFailedArticle(ContentLenghtToShort, unixTime, key);
                     continue;
                 }
 
@@ -132,10 +132,10 @@ namespace NewsService.Feedly
                     Fingerprint = entry.Fingerprint,
                     Title = entry.Title,
                     Source = entry.Origin.Title,
-                    PublishedAt = publishedAt.ToInstant().ToUnixTimeSeconds(),
+                    PublishedAt = publishedAt.ToInstant(),
                     Content = content,
                     FileLocation = fileLocation,
-                    FetchedAt = unixTimeSeconds,
+                    FetchedAt = unixTime,
                     ArticleUrl = articleUrl
                 };
 
@@ -149,12 +149,12 @@ namespace NewsService.Feedly
             logger.LogInformation("Done! Got {ArticleCount} articles", counter);
         }
 
-        private async Task StashFailedArticle(string _reason, long _unixTimeSeconds, string _key)
+        private async Task StashFailedArticle(string _reason, Instant _unixTime, string _key)
         {
             var failedArticle = new FailedArticle
             {
                 Reason = _reason,
-                FetchedAt = _unixTimeSeconds
+                FetchedAt = _unixTime
             };
 
             await redis.AddValue($"failed_{_key}", failedArticle);

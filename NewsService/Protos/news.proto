@@ -3,6 +3,7 @@ syntax = "proto3";
 option csharp_namespace = "NewsService";
 
 import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
 
 package news;
 
@@ -12,7 +13,7 @@ service NewsFetcher {
 }
 
 message ArticleRequest {
-    string articleKey = 1;
+    string ArticleKey = 1;
 }
 
 enum StatusCode {
@@ -21,29 +22,30 @@ enum StatusCode {
     Ok = 2;
 }
 
+message ProtoMinioFile {
+    string Bucket = 1;
+    string Directory = 2;
+    string FileName = 3;
+}
+
 message Status {
     string Message = 1;
     StatusCode Code = 2;
 }
 
-message ImageLocation {
-    string directory = 1;
-    string fileName = 2;
-}
-
 message Article {
-    string key = 1;
-    string title = 2;
-    int64 fetched_unix = 3;
-    int64 published_unix = 4;
-    ImageLocation imageLocation = 5;
-    string content = 6;
-    string source = 7;
+    string Key = 1;
+    string Title = 2;
+    google.protobuf.Timestamp  Fetched = 3;
+    google.protobuf.Timestamp  Published = 4;
+    ProtoMinioFile Image = 5;
+    string Content = 6;
+    string Source = 7;
 }
 
 message ArticleResponse {
     oneof response {
-        Article article = 1;
-        Status status = 2;
+        Article Article = 1;
+        Status Status = 2;
     }
 }

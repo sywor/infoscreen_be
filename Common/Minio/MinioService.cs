@@ -36,6 +36,18 @@ namespace Common.Minio
             await minioClient.PutObjectAsync(ephemeralBucketName, fullFileName, _stream, _stream.Length, _contentType);
         }
 
+        public async Task PutEphemeralObjectAsync(MinioFile _minioFile, string _fileName, string _contentType)
+        {
+            if (!await minioClient.BucketExistsAsync(ephemeralBucketName))
+            {
+                await minioClient.MakeBucketAsync(ephemeralBucketName);
+            }
+
+            var fullFileName = $"{bucketDirectory}/{_minioFile.Directory}/{_minioFile.FileName}";
+            
+            await minioClient.PutObjectAsync(ephemeralBucketName, fullFileName, _fileName, _contentType);
+        }
+
         public async Task<T> GetStaticObjectAsync<T, S>(MinioFile _minioFile) where S : IStreamReceiver<T>, new()
         {
             return await GetObjectAsync<T, S>(staticBucketName, _minioFile);
@@ -55,5 +67,6 @@ namespace Common.Minio
 
             return receiver.Get();
         }
+
     }
 }

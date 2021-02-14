@@ -3,14 +3,23 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
-
+    
     <ItemGroup>
-        <Protobuf Include="Protos\news.proto">
+        <Protobuf Include="..\FrontendAPI\**\*.proto" ProtoRoot="..">
             <GrpcServices>Client</GrpcServices>
             <Access>Public</Access>
             <ProtoCompile>True</ProtoCompile>
             <CompileOutputs>False</CompileOutputs>
-            <OutputDir>.\</OutputDir>
+            <OutputDir>.\Generated</OutputDir>
+            <Generator>MSBuild:Compile</Generator>
+            <BeforeTargets>ResolveAssemblyReferences</BeforeTargets>
+        </Protobuf>
+        <Protobuf Include="..\Common\**\*.proto" ProtoRoot="..">
+            <GrpcServices>None</GrpcServices>
+            <Access>Public</Access>
+            <ProtoCompile>True</ProtoCompile>
+            <CompileOutputs>False</CompileOutputs>
+            <OutputDir>.\Generated</OutputDir>
             <Generator>MSBuild:Compile</Generator>
             <BeforeTargets>ResolveAssemblyReferences</BeforeTargets>
         </Protobuf>
@@ -20,12 +29,22 @@
         <PackageReference Include="Grpc.AspNetCore" Version="2.34.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.2" NoWarn="NU1605" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.2" NoWarn="NU1605" />
+        <PackageReference Include="NodaTime" Version="3.0.5" />
+        <PackageReference Include="NodaTime.Serialization.Protobuf" Version="2.0.0" />
         <PackageReference Include="Serilog" Version="2.10.0" />
         <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
         <PackageReference Include="Serilog.Enrichers.AspNetCore" Version="1.0.0" />
         <PackageReference Include="Serilog.Exceptions" Version="6.0.0" />
         <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Common\Common.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Generated" />
     </ItemGroup>
 
 </Project>

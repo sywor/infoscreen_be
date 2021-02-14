@@ -7,6 +7,8 @@ using Grpc.Core;
 
 using Microsoft.Extensions.Logging;
 
+using NodaTime.Serialization.Protobuf;
+
 namespace NewsService.Services
 {
     public class NewsGrpcService : NewsFetcher.NewsFetcherBase
@@ -43,15 +45,16 @@ namespace NewsService.Services
                 {
                     Key = newsArticleResponse.Key,
                     Title = newsArticle.Title,
-                    ImageLocation = new ImageLocation()
+                    Image = new ProtoMinioFile()
                     {
+                        Bucket = fileLocation.Bucket,
                         Directory = fileLocation.Directory,
                         FileName = fileLocation.FileName
                     },
                     Content = newsArticle.Content,
                     Source = newsArticle.Source,
-                    FetchedUnix = newsArticle.FetchedAt,
-                    PublishedUnix = newsArticle.PublishedAt
+                    Fetched = newsArticle.FetchedAt.ToTimestamp(),
+                    Published = newsArticle.PublishedAt.ToTimestamp()
                 };
 
                 logger.LogInformation("Streaming article: {Title}", article.Title);
@@ -80,15 +83,16 @@ namespace NewsService.Services
                     {
                         Key = key,
                         Title = newsArticle.Title,
-                        ImageLocation = new ImageLocation()
+                        Image = new ProtoMinioFile()
                         {
+                            Bucket = fileLocation.Bucket,
                             Directory = fileLocation.Directory,
                             FileName = fileLocation.FileName
                         },
                         Content = newsArticle.Content,
                         Source = newsArticle.Source,
-                        FetchedUnix = newsArticle.FetchedAt,
-                        PublishedUnix = newsArticle.PublishedAt
+                        Fetched = newsArticle.FetchedAt.ToTimestamp(),
+                        Published = newsArticle.PublishedAt.ToTimestamp()
                     }
                 };
             }

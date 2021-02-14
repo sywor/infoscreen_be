@@ -15,6 +15,7 @@ namespace Common.File
     {
         private readonly ILogger logger;
         private readonly MinioService minioService;
+        private const string Bucket = "ephemeral";
         private const string Directory = "downloaded";
 
         public FileDownloadParser(MinioConfiguration _configuration, ILoggerFactory _loggerFactory)
@@ -36,7 +37,7 @@ namespace Common.File
 
                 var fullFileName = $"{prefix}_{Guid.NewGuid()}.{extension}";
 
-                var minioFile = MinioFile.Of(Directory, fullFileName);
+                var minioFile = MinioFile.Of(Bucket, Directory, fullFileName);
                 await minioService.PutEphemeralObjectAsync(minioFile, response, mediaType);
 
                 return new FileDownloadResponse

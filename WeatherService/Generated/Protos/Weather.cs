@@ -27,39 +27,47 @@ namespace WeatherService {
             "ChRQcm90b3Mvd2VhdGhlci5wcm90bxIHd2VhdGhlchobZ29vZ2xlL3Byb3Rv",
             "YnVmL2VtcHR5LnByb3RvGh9nb29nbGUvcHJvdG9idWYvdGltZXN0YW1wLnBy",
             "b3RvIkEKC1N0YXR1c1Byb3RvEg8KB01lc3NhZ2UYASABKAkSIQoEQ29kZRgC",
-            "IAEoDjITLndlYXRoZXIuU3RhdHVzQ29kZSJkChJQcmVjaXBpdGF0aW9uUHJv",
-            "dG8SEAoITGFzdEhvdXIYASABKAISEgoKTGFzdDNIb3VycxgCIAEoAhITCgtM",
-            "YXN0MTJIb3VycxgDIAEoAhITCgtMYXN0MjRIb3VycxgEIAEoAiJ/CghCYXJQ",
-            "cm90bxIcChRXaW5kRGlyZWN0aW9uSWNvblVybBgBIAEoCRIWCg5XZWF0aGVy",
-            "SWNvblVybBgCIAEoCRIVCg1QcmVjaXBpdGF0aW9uGAMgASgCEhMKC1RlbXBl",
-            "cmF0dXJlGAQgASgCEhEKCVdpbmRTcGVlZBgFIAEoAiLlAQoUV2VhdGhlckZv",
-            "cmVjYXN0UHJvdG8SDwoHTWluVGVtcBgBIAEoAhIPCgdNYXhUZW1wGAIgASgC",
-            "EhQKDE1pbldpbmRTcGVlZBgDIAEoAhIUCgxNYXhXaW5kU3BlZWQYBCABKAIS",
-            "LQoJc3RhcnRUaW1lGAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFt",
-            "cBIrCgdlbmRUaW1lGAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFt",
-            "cBIjCghGb3JlY2FzdBgHIAMoCzIRLndlYXRoZXIuQmFyUHJvdG8i2wIKDFdl",
-            "YXRoZXJQcm90bxIWCg5XZWF0aGVySWNvblVybBgBIAEoCRIaChJXZWF0aGVy",
-            "RGVzY3JpcHRpb24YAiABKAkSEwoLVGVtcGVyYXR1cmUYAyABKAISEQoJV2lu",
-            "ZFNwZWVkGAQgASgCEhUKDVdpbmRHdXN0U3BlZWQYBSABKAISGAoQV2luZERp",
-            "cmVjdGlvblVybBgGIAEoCRITCgtSYWRhckltZ1VybBgHIAEoCRI3ChJQcmVj",
-            "aXBpdGF0aW9uVmFsdWUYCCABKAsyGy53ZWF0aGVyLlByZWNpcGl0YXRpb25Q",
-            "cm90bxIQCghIdW1pZGl0eRgJIAEoBRISCgpWaXNpYmlsaXR5GAogASgCEhIK",
-            "CkNsb3VkQ292ZXIYCyABKAUSNgoPV2VhdGhlckZvcmVjYXN0GAwgASgLMh0u",
-            "d2VhdGhlci5XZWF0aGVyRm9yZWNhc3RQcm90byJ0ChRXZWF0aGVyUmVzcG9u",
-            "c2VQcm90bxIoCgd3ZWF0aGVyGAEgASgLMhUud2VhdGhlci5XZWF0aGVyUHJv",
-            "dG9IABImCgZzdGF0dXMYAiABKAsyFC53ZWF0aGVyLlN0YXR1c1Byb3RvSABC",
-            "CgoIcmVzcG9uc2UqLwoKU3RhdHVzQ29kZRILCgdGYWlsdXJlEAASDAoIRmV0",
-            "Y2hpbmcQARIGCgJPaxACMlsKDldlYXRoZXJGZXRjaGVyEkkKEEdldFdlYXRo",
-            "ZXJSZXBvcnQSFi5nb29nbGUucHJvdG9idWYuRW1wdHkaHS53ZWF0aGVyLldl",
-            "YXRoZXJSZXNwb25zZVByb3RvQhGqAg5XZWF0aGVyU2VydmljZWIGcHJvdG8z"));
+            "IAEoDjITLndlYXRoZXIuU3RhdHVzQ29kZSJFCg5Qcm90b01pbmlvRmlsZRIO",
+            "CgZCdWNrZXQYASABKAkSEQoJRGlyZWN0b3J5GAIgASgJEhAKCEZpbGVOYW1l",
+            "GAMgASgJImQKElByZWNpcGl0YXRpb25Qcm90bxIQCghMYXN0SG91chgBIAEo",
+            "AhISCgpMYXN0M0hvdXJzGAIgASgCEhMKC0xhc3QxMkhvdXJzGAMgASgCEhMK",
+            "C0xhc3QyNEhvdXJzGAQgASgCIqsBCghCYXJQcm90bxIyChFXaW5kRGlyZWN0",
+            "aW9uSWNvbhgBIAEoCzIXLndlYXRoZXIuUHJvdG9NaW5pb0ZpbGUSLAoLV2Vh",
+            "dGhlckljb24YAiABKAsyFy53ZWF0aGVyLlByb3RvTWluaW9GaWxlEhUKDVBy",
+            "ZWNpcGl0YXRpb24YAyABKAISEwoLVGVtcGVyYXR1cmUYBCABKAISEQoJV2lu",
+            "ZFNwZWVkGAUgASgCIuUBChRXZWF0aGVyRm9yZWNhc3RQcm90bxIPCgdNaW5U",
+            "ZW1wGAEgASgCEg8KB01heFRlbXAYAiABKAISFAoMTWluV2luZFNwZWVkGAMg",
+            "ASgCEhQKDE1heFdpbmRTcGVlZBgEIAEoAhItCglzdGFydFRpbWUYBSABKAsy",
+            "Gi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEisKB2VuZFRpbWUYBiABKAsy",
+            "Gi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEiMKCEZvcmVjYXN0GAcgAygL",
+            "MhEud2VhdGhlci5CYXJQcm90byKfAwoMV2VhdGhlclByb3RvEiwKC1dlYXRo",
+            "ZXJJY29uGAEgASgLMhcud2VhdGhlci5Qcm90b01pbmlvRmlsZRIaChJXZWF0",
+            "aGVyRGVzY3JpcHRpb24YAiABKAkSEwoLVGVtcGVyYXR1cmUYAyABKAISEQoJ",
+            "V2luZFNwZWVkGAQgASgCEhUKDVdpbmRHdXN0U3BlZWQYBSABKAISLgoNV2lu",
+            "ZERpcmVjdGlvbhgGIAEoCzIXLndlYXRoZXIuUHJvdG9NaW5pb0ZpbGUSKwoK",
+            "UmFkYXJJbWFnZRgHIAEoCzIXLndlYXRoZXIuUHJvdG9NaW5pb0ZpbGUSNwoS",
+            "UHJlY2lwaXRhdGlvblZhbHVlGAggASgLMhsud2VhdGhlci5QcmVjaXBpdGF0",
+            "aW9uUHJvdG8SEAoISHVtaWRpdHkYCSABKAUSEgoKVmlzaWJpbGl0eRgKIAEo",
+            "AhISCgpDbG91ZENvdmVyGAsgASgFEjYKD1dlYXRoZXJGb3JlY2FzdBgMIAEo",
+            "CzIdLndlYXRoZXIuV2VhdGhlckZvcmVjYXN0UHJvdG8idAoUV2VhdGhlclJl",
+            "c3BvbnNlUHJvdG8SKAoHd2VhdGhlchgBIAEoCzIVLndlYXRoZXIuV2VhdGhl",
+            "clByb3RvSAASJgoGc3RhdHVzGAIgASgLMhQud2VhdGhlci5TdGF0dXNQcm90",
+            "b0gAQgoKCHJlc3BvbnNlKi8KClN0YXR1c0NvZGUSCwoHRmFpbHVyZRAAEgwK",
+            "CEZldGNoaW5nEAESBgoCT2sQAjKyAQoOV2VhdGhlckZldGNoZXISTwoWR2V0",
+            "TGF0ZXN0V2VhdGhlclJlcG9ydBIWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eRod",
+            "LndlYXRoZXIuV2VhdGhlclJlc3BvbnNlUHJvdG8STwoUR2V0QWxsV2VhdGhl",
+            "clJlcG9ydHMSFi5nb29nbGUucHJvdG9idWYuRW1wdHkaHS53ZWF0aGVyLldl",
+            "YXRoZXJSZXNwb25zZVByb3RvMAFCEaoCDldlYXRoZXJTZXJ2aWNlYgZwcm90",
+            "bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::WeatherService.StatusCode), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.StatusProto), global::WeatherService.StatusProto.Parser, new[]{ "Message", "Code" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.ProtoMinioFile), global::WeatherService.ProtoMinioFile.Parser, new[]{ "Bucket", "Directory", "FileName" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.PrecipitationProto), global::WeatherService.PrecipitationProto.Parser, new[]{ "LastHour", "Last3Hours", "Last12Hours", "Last24Hours" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.BarProto), global::WeatherService.BarProto.Parser, new[]{ "WindDirectionIconUrl", "WeatherIconUrl", "Precipitation", "Temperature", "WindSpeed" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.BarProto), global::WeatherService.BarProto.Parser, new[]{ "WindDirectionIcon", "WeatherIcon", "Precipitation", "Temperature", "WindSpeed" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.WeatherForecastProto), global::WeatherService.WeatherForecastProto.Parser, new[]{ "MinTemp", "MaxTemp", "MinWindSpeed", "MaxWindSpeed", "StartTime", "EndTime", "Forecast" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.WeatherProto), global::WeatherService.WeatherProto.Parser, new[]{ "WeatherIconUrl", "WeatherDescription", "Temperature", "WindSpeed", "WindGustSpeed", "WindDirectionUrl", "RadarImgUrl", "PrecipitationValue", "Humidity", "Visibility", "CloudCover", "WeatherForecast" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.WeatherProto), global::WeatherService.WeatherProto.Parser, new[]{ "WeatherIcon", "WeatherDescription", "Temperature", "WindSpeed", "WindGustSpeed", "WindDirection", "RadarImage", "PrecipitationValue", "Humidity", "Visibility", "CloudCover", "WeatherForecast" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::WeatherService.WeatherResponseProto), global::WeatherService.WeatherResponseProto.Parser, new[]{ "Weather", "Status" }, new[]{ "Response" }, null, null, null)
           }));
     }
@@ -284,6 +292,250 @@ namespace WeatherService {
 
   }
 
+  public sealed partial class ProtoMinioFile : pb::IMessage<ProtoMinioFile>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<ProtoMinioFile> _parser = new pb::MessageParser<ProtoMinioFile>(() => new ProtoMinioFile());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<ProtoMinioFile> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::WeatherService.WeatherReflection.Descriptor.MessageTypes[1]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ProtoMinioFile() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ProtoMinioFile(ProtoMinioFile other) : this() {
+      bucket_ = other.bucket_;
+      directory_ = other.directory_;
+      fileName_ = other.fileName_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ProtoMinioFile Clone() {
+      return new ProtoMinioFile(this);
+    }
+
+    /// <summary>Field number for the "Bucket" field.</summary>
+    public const int BucketFieldNumber = 1;
+    private string bucket_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Bucket {
+      get { return bucket_; }
+      set {
+        bucket_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "Directory" field.</summary>
+    public const int DirectoryFieldNumber = 2;
+    private string directory_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Directory {
+      get { return directory_; }
+      set {
+        directory_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "FileName" field.</summary>
+    public const int FileNameFieldNumber = 3;
+    private string fileName_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string FileName {
+      get { return fileName_; }
+      set {
+        fileName_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as ProtoMinioFile);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(ProtoMinioFile other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Bucket != other.Bucket) return false;
+      if (Directory != other.Directory) return false;
+      if (FileName != other.FileName) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Bucket.Length != 0) hash ^= Bucket.GetHashCode();
+      if (Directory.Length != 0) hash ^= Directory.GetHashCode();
+      if (FileName.Length != 0) hash ^= FileName.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Bucket.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Bucket);
+      }
+      if (Directory.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Directory);
+      }
+      if (FileName.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(FileName);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Bucket.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Bucket);
+      }
+      if (Directory.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Directory);
+      }
+      if (FileName.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(FileName);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Bucket.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Bucket);
+      }
+      if (Directory.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Directory);
+      }
+      if (FileName.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(FileName);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(ProtoMinioFile other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Bucket.Length != 0) {
+        Bucket = other.Bucket;
+      }
+      if (other.Directory.Length != 0) {
+        Directory = other.Directory;
+      }
+      if (other.FileName.Length != 0) {
+        FileName = other.FileName;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Bucket = input.ReadString();
+            break;
+          }
+          case 18: {
+            Directory = input.ReadString();
+            break;
+          }
+          case 26: {
+            FileName = input.ReadString();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            Bucket = input.ReadString();
+            break;
+          }
+          case 18: {
+            Directory = input.ReadString();
+            break;
+          }
+          case 26: {
+            FileName = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
   public sealed partial class PrecipitationProto : pb::IMessage<PrecipitationProto>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -296,7 +548,7 @@ namespace WeatherService {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::WeatherService.WeatherReflection.Descriptor.MessageTypes[1]; }
+      get { return global::WeatherService.WeatherReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -576,7 +828,7 @@ namespace WeatherService {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::WeatherService.WeatherReflection.Descriptor.MessageTypes[2]; }
+      get { return global::WeatherService.WeatherReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -593,8 +845,8 @@ namespace WeatherService {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public BarProto(BarProto other) : this() {
-      windDirectionIconUrl_ = other.windDirectionIconUrl_;
-      weatherIconUrl_ = other.weatherIconUrl_;
+      windDirectionIcon_ = other.windDirectionIcon_ != null ? other.windDirectionIcon_.Clone() : null;
+      weatherIcon_ = other.weatherIcon_ != null ? other.weatherIcon_.Clone() : null;
       precipitation_ = other.precipitation_;
       temperature_ = other.temperature_;
       windSpeed_ = other.windSpeed_;
@@ -606,25 +858,25 @@ namespace WeatherService {
       return new BarProto(this);
     }
 
-    /// <summary>Field number for the "WindDirectionIconUrl" field.</summary>
-    public const int WindDirectionIconUrlFieldNumber = 1;
-    private string windDirectionIconUrl_ = "";
+    /// <summary>Field number for the "WindDirectionIcon" field.</summary>
+    public const int WindDirectionIconFieldNumber = 1;
+    private global::WeatherService.ProtoMinioFile windDirectionIcon_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string WindDirectionIconUrl {
-      get { return windDirectionIconUrl_; }
+    public global::WeatherService.ProtoMinioFile WindDirectionIcon {
+      get { return windDirectionIcon_; }
       set {
-        windDirectionIconUrl_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        windDirectionIcon_ = value;
       }
     }
 
-    /// <summary>Field number for the "WeatherIconUrl" field.</summary>
-    public const int WeatherIconUrlFieldNumber = 2;
-    private string weatherIconUrl_ = "";
+    /// <summary>Field number for the "WeatherIcon" field.</summary>
+    public const int WeatherIconFieldNumber = 2;
+    private global::WeatherService.ProtoMinioFile weatherIcon_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string WeatherIconUrl {
-      get { return weatherIconUrl_; }
+    public global::WeatherService.ProtoMinioFile WeatherIcon {
+      get { return weatherIcon_; }
       set {
-        weatherIconUrl_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        weatherIcon_ = value;
       }
     }
 
@@ -674,8 +926,8 @@ namespace WeatherService {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (WindDirectionIconUrl != other.WindDirectionIconUrl) return false;
-      if (WeatherIconUrl != other.WeatherIconUrl) return false;
+      if (!object.Equals(WindDirectionIcon, other.WindDirectionIcon)) return false;
+      if (!object.Equals(WeatherIcon, other.WeatherIcon)) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Precipitation, other.Precipitation)) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Temperature, other.Temperature)) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(WindSpeed, other.WindSpeed)) return false;
@@ -685,8 +937,8 @@ namespace WeatherService {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (WindDirectionIconUrl.Length != 0) hash ^= WindDirectionIconUrl.GetHashCode();
-      if (WeatherIconUrl.Length != 0) hash ^= WeatherIconUrl.GetHashCode();
+      if (windDirectionIcon_ != null) hash ^= WindDirectionIcon.GetHashCode();
+      if (weatherIcon_ != null) hash ^= WeatherIcon.GetHashCode();
       if (Precipitation != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Precipitation);
       if (Temperature != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Temperature);
       if (WindSpeed != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(WindSpeed);
@@ -706,13 +958,13 @@ namespace WeatherService {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (WindDirectionIconUrl.Length != 0) {
+      if (windDirectionIcon_ != null) {
         output.WriteRawTag(10);
-        output.WriteString(WindDirectionIconUrl);
+        output.WriteMessage(WindDirectionIcon);
       }
-      if (WeatherIconUrl.Length != 0) {
+      if (weatherIcon_ != null) {
         output.WriteRawTag(18);
-        output.WriteString(WeatherIconUrl);
+        output.WriteMessage(WeatherIcon);
       }
       if (Precipitation != 0F) {
         output.WriteRawTag(29);
@@ -735,13 +987,13 @@ namespace WeatherService {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (WindDirectionIconUrl.Length != 0) {
+      if (windDirectionIcon_ != null) {
         output.WriteRawTag(10);
-        output.WriteString(WindDirectionIconUrl);
+        output.WriteMessage(WindDirectionIcon);
       }
-      if (WeatherIconUrl.Length != 0) {
+      if (weatherIcon_ != null) {
         output.WriteRawTag(18);
-        output.WriteString(WeatherIconUrl);
+        output.WriteMessage(WeatherIcon);
       }
       if (Precipitation != 0F) {
         output.WriteRawTag(29);
@@ -764,11 +1016,11 @@ namespace WeatherService {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (WindDirectionIconUrl.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(WindDirectionIconUrl);
+      if (windDirectionIcon_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(WindDirectionIcon);
       }
-      if (WeatherIconUrl.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(WeatherIconUrl);
+      if (weatherIcon_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(WeatherIcon);
       }
       if (Precipitation != 0F) {
         size += 1 + 4;
@@ -790,11 +1042,17 @@ namespace WeatherService {
       if (other == null) {
         return;
       }
-      if (other.WindDirectionIconUrl.Length != 0) {
-        WindDirectionIconUrl = other.WindDirectionIconUrl;
+      if (other.windDirectionIcon_ != null) {
+        if (windDirectionIcon_ == null) {
+          WindDirectionIcon = new global::WeatherService.ProtoMinioFile();
+        }
+        WindDirectionIcon.MergeFrom(other.WindDirectionIcon);
       }
-      if (other.WeatherIconUrl.Length != 0) {
-        WeatherIconUrl = other.WeatherIconUrl;
+      if (other.weatherIcon_ != null) {
+        if (weatherIcon_ == null) {
+          WeatherIcon = new global::WeatherService.ProtoMinioFile();
+        }
+        WeatherIcon.MergeFrom(other.WeatherIcon);
       }
       if (other.Precipitation != 0F) {
         Precipitation = other.Precipitation;
@@ -820,11 +1078,17 @@ namespace WeatherService {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            WindDirectionIconUrl = input.ReadString();
+            if (windDirectionIcon_ == null) {
+              WindDirectionIcon = new global::WeatherService.ProtoMinioFile();
+            }
+            input.ReadMessage(WindDirectionIcon);
             break;
           }
           case 18: {
-            WeatherIconUrl = input.ReadString();
+            if (weatherIcon_ == null) {
+              WeatherIcon = new global::WeatherService.ProtoMinioFile();
+            }
+            input.ReadMessage(WeatherIcon);
             break;
           }
           case 29: {
@@ -854,11 +1118,17 @@ namespace WeatherService {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            WindDirectionIconUrl = input.ReadString();
+            if (windDirectionIcon_ == null) {
+              WindDirectionIcon = new global::WeatherService.ProtoMinioFile();
+            }
+            input.ReadMessage(WindDirectionIcon);
             break;
           }
           case 18: {
-            WeatherIconUrl = input.ReadString();
+            if (weatherIcon_ == null) {
+              WeatherIcon = new global::WeatherService.ProtoMinioFile();
+            }
+            input.ReadMessage(WeatherIcon);
             break;
           }
           case 29: {
@@ -892,7 +1162,7 @@ namespace WeatherService {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::WeatherService.WeatherReflection.Descriptor.MessageTypes[3]; }
+      get { return global::WeatherService.WeatherReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1287,7 +1557,7 @@ namespace WeatherService {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::WeatherService.WeatherReflection.Descriptor.MessageTypes[4]; }
+      get { return global::WeatherService.WeatherReflection.Descriptor.MessageTypes[5]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1304,13 +1574,13 @@ namespace WeatherService {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public WeatherProto(WeatherProto other) : this() {
-      weatherIconUrl_ = other.weatherIconUrl_;
+      weatherIcon_ = other.weatherIcon_ != null ? other.weatherIcon_.Clone() : null;
       weatherDescription_ = other.weatherDescription_;
       temperature_ = other.temperature_;
       windSpeed_ = other.windSpeed_;
       windGustSpeed_ = other.windGustSpeed_;
-      windDirectionUrl_ = other.windDirectionUrl_;
-      radarImgUrl_ = other.radarImgUrl_;
+      windDirection_ = other.windDirection_ != null ? other.windDirection_.Clone() : null;
+      radarImage_ = other.radarImage_ != null ? other.radarImage_.Clone() : null;
       precipitationValue_ = other.precipitationValue_ != null ? other.precipitationValue_.Clone() : null;
       humidity_ = other.humidity_;
       visibility_ = other.visibility_;
@@ -1324,14 +1594,14 @@ namespace WeatherService {
       return new WeatherProto(this);
     }
 
-    /// <summary>Field number for the "WeatherIconUrl" field.</summary>
-    public const int WeatherIconUrlFieldNumber = 1;
-    private string weatherIconUrl_ = "";
+    /// <summary>Field number for the "WeatherIcon" field.</summary>
+    public const int WeatherIconFieldNumber = 1;
+    private global::WeatherService.ProtoMinioFile weatherIcon_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string WeatherIconUrl {
-      get { return weatherIconUrl_; }
+    public global::WeatherService.ProtoMinioFile WeatherIcon {
+      get { return weatherIcon_; }
       set {
-        weatherIconUrl_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        weatherIcon_ = value;
       }
     }
 
@@ -1379,25 +1649,25 @@ namespace WeatherService {
       }
     }
 
-    /// <summary>Field number for the "WindDirectionUrl" field.</summary>
-    public const int WindDirectionUrlFieldNumber = 6;
-    private string windDirectionUrl_ = "";
+    /// <summary>Field number for the "WindDirection" field.</summary>
+    public const int WindDirectionFieldNumber = 6;
+    private global::WeatherService.ProtoMinioFile windDirection_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string WindDirectionUrl {
-      get { return windDirectionUrl_; }
+    public global::WeatherService.ProtoMinioFile WindDirection {
+      get { return windDirection_; }
       set {
-        windDirectionUrl_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        windDirection_ = value;
       }
     }
 
-    /// <summary>Field number for the "RadarImgUrl" field.</summary>
-    public const int RadarImgUrlFieldNumber = 7;
-    private string radarImgUrl_ = "";
+    /// <summary>Field number for the "RadarImage" field.</summary>
+    public const int RadarImageFieldNumber = 7;
+    private global::WeatherService.ProtoMinioFile radarImage_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string RadarImgUrl {
-      get { return radarImgUrl_; }
+    public global::WeatherService.ProtoMinioFile RadarImage {
+      get { return radarImage_; }
       set {
-        radarImgUrl_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        radarImage_ = value;
       }
     }
 
@@ -1469,13 +1739,13 @@ namespace WeatherService {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (WeatherIconUrl != other.WeatherIconUrl) return false;
+      if (!object.Equals(WeatherIcon, other.WeatherIcon)) return false;
       if (WeatherDescription != other.WeatherDescription) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Temperature, other.Temperature)) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(WindSpeed, other.WindSpeed)) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(WindGustSpeed, other.WindGustSpeed)) return false;
-      if (WindDirectionUrl != other.WindDirectionUrl) return false;
-      if (RadarImgUrl != other.RadarImgUrl) return false;
+      if (!object.Equals(WindDirection, other.WindDirection)) return false;
+      if (!object.Equals(RadarImage, other.RadarImage)) return false;
       if (!object.Equals(PrecipitationValue, other.PrecipitationValue)) return false;
       if (Humidity != other.Humidity) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Visibility, other.Visibility)) return false;
@@ -1487,13 +1757,13 @@ namespace WeatherService {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (WeatherIconUrl.Length != 0) hash ^= WeatherIconUrl.GetHashCode();
+      if (weatherIcon_ != null) hash ^= WeatherIcon.GetHashCode();
       if (WeatherDescription.Length != 0) hash ^= WeatherDescription.GetHashCode();
       if (Temperature != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Temperature);
       if (WindSpeed != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(WindSpeed);
       if (WindGustSpeed != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(WindGustSpeed);
-      if (WindDirectionUrl.Length != 0) hash ^= WindDirectionUrl.GetHashCode();
-      if (RadarImgUrl.Length != 0) hash ^= RadarImgUrl.GetHashCode();
+      if (windDirection_ != null) hash ^= WindDirection.GetHashCode();
+      if (radarImage_ != null) hash ^= RadarImage.GetHashCode();
       if (precipitationValue_ != null) hash ^= PrecipitationValue.GetHashCode();
       if (Humidity != 0) hash ^= Humidity.GetHashCode();
       if (Visibility != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Visibility);
@@ -1515,9 +1785,9 @@ namespace WeatherService {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (WeatherIconUrl.Length != 0) {
+      if (weatherIcon_ != null) {
         output.WriteRawTag(10);
-        output.WriteString(WeatherIconUrl);
+        output.WriteMessage(WeatherIcon);
       }
       if (WeatherDescription.Length != 0) {
         output.WriteRawTag(18);
@@ -1535,13 +1805,13 @@ namespace WeatherService {
         output.WriteRawTag(45);
         output.WriteFloat(WindGustSpeed);
       }
-      if (WindDirectionUrl.Length != 0) {
+      if (windDirection_ != null) {
         output.WriteRawTag(50);
-        output.WriteString(WindDirectionUrl);
+        output.WriteMessage(WindDirection);
       }
-      if (RadarImgUrl.Length != 0) {
+      if (radarImage_ != null) {
         output.WriteRawTag(58);
-        output.WriteString(RadarImgUrl);
+        output.WriteMessage(RadarImage);
       }
       if (precipitationValue_ != null) {
         output.WriteRawTag(66);
@@ -1572,9 +1842,9 @@ namespace WeatherService {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (WeatherIconUrl.Length != 0) {
+      if (weatherIcon_ != null) {
         output.WriteRawTag(10);
-        output.WriteString(WeatherIconUrl);
+        output.WriteMessage(WeatherIcon);
       }
       if (WeatherDescription.Length != 0) {
         output.WriteRawTag(18);
@@ -1592,13 +1862,13 @@ namespace WeatherService {
         output.WriteRawTag(45);
         output.WriteFloat(WindGustSpeed);
       }
-      if (WindDirectionUrl.Length != 0) {
+      if (windDirection_ != null) {
         output.WriteRawTag(50);
-        output.WriteString(WindDirectionUrl);
+        output.WriteMessage(WindDirection);
       }
-      if (RadarImgUrl.Length != 0) {
+      if (radarImage_ != null) {
         output.WriteRawTag(58);
-        output.WriteString(RadarImgUrl);
+        output.WriteMessage(RadarImage);
       }
       if (precipitationValue_ != null) {
         output.WriteRawTag(66);
@@ -1629,8 +1899,8 @@ namespace WeatherService {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (WeatherIconUrl.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(WeatherIconUrl);
+      if (weatherIcon_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(WeatherIcon);
       }
       if (WeatherDescription.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(WeatherDescription);
@@ -1644,11 +1914,11 @@ namespace WeatherService {
       if (WindGustSpeed != 0F) {
         size += 1 + 4;
       }
-      if (WindDirectionUrl.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(WindDirectionUrl);
+      if (windDirection_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(WindDirection);
       }
-      if (RadarImgUrl.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(RadarImgUrl);
+      if (radarImage_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(RadarImage);
       }
       if (precipitationValue_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(PrecipitationValue);
@@ -1676,8 +1946,11 @@ namespace WeatherService {
       if (other == null) {
         return;
       }
-      if (other.WeatherIconUrl.Length != 0) {
-        WeatherIconUrl = other.WeatherIconUrl;
+      if (other.weatherIcon_ != null) {
+        if (weatherIcon_ == null) {
+          WeatherIcon = new global::WeatherService.ProtoMinioFile();
+        }
+        WeatherIcon.MergeFrom(other.WeatherIcon);
       }
       if (other.WeatherDescription.Length != 0) {
         WeatherDescription = other.WeatherDescription;
@@ -1691,11 +1964,17 @@ namespace WeatherService {
       if (other.WindGustSpeed != 0F) {
         WindGustSpeed = other.WindGustSpeed;
       }
-      if (other.WindDirectionUrl.Length != 0) {
-        WindDirectionUrl = other.WindDirectionUrl;
+      if (other.windDirection_ != null) {
+        if (windDirection_ == null) {
+          WindDirection = new global::WeatherService.ProtoMinioFile();
+        }
+        WindDirection.MergeFrom(other.WindDirection);
       }
-      if (other.RadarImgUrl.Length != 0) {
-        RadarImgUrl = other.RadarImgUrl;
+      if (other.radarImage_ != null) {
+        if (radarImage_ == null) {
+          RadarImage = new global::WeatherService.ProtoMinioFile();
+        }
+        RadarImage.MergeFrom(other.RadarImage);
       }
       if (other.precipitationValue_ != null) {
         if (precipitationValue_ == null) {
@@ -1733,7 +2012,10 @@ namespace WeatherService {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            WeatherIconUrl = input.ReadString();
+            if (weatherIcon_ == null) {
+              WeatherIcon = new global::WeatherService.ProtoMinioFile();
+            }
+            input.ReadMessage(WeatherIcon);
             break;
           }
           case 18: {
@@ -1753,11 +2035,17 @@ namespace WeatherService {
             break;
           }
           case 50: {
-            WindDirectionUrl = input.ReadString();
+            if (windDirection_ == null) {
+              WindDirection = new global::WeatherService.ProtoMinioFile();
+            }
+            input.ReadMessage(WindDirection);
             break;
           }
           case 58: {
-            RadarImgUrl = input.ReadString();
+            if (radarImage_ == null) {
+              RadarImage = new global::WeatherService.ProtoMinioFile();
+            }
+            input.ReadMessage(RadarImage);
             break;
           }
           case 66: {
@@ -1801,7 +2089,10 @@ namespace WeatherService {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            WeatherIconUrl = input.ReadString();
+            if (weatherIcon_ == null) {
+              WeatherIcon = new global::WeatherService.ProtoMinioFile();
+            }
+            input.ReadMessage(WeatherIcon);
             break;
           }
           case 18: {
@@ -1821,11 +2112,17 @@ namespace WeatherService {
             break;
           }
           case 50: {
-            WindDirectionUrl = input.ReadString();
+            if (windDirection_ == null) {
+              WindDirection = new global::WeatherService.ProtoMinioFile();
+            }
+            input.ReadMessage(WindDirection);
             break;
           }
           case 58: {
-            RadarImgUrl = input.ReadString();
+            if (radarImage_ == null) {
+              RadarImage = new global::WeatherService.ProtoMinioFile();
+            }
+            input.ReadMessage(RadarImage);
             break;
           }
           case 66: {
@@ -1873,7 +2170,7 @@ namespace WeatherService {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::WeatherService.WeatherReflection.Descriptor.MessageTypes[5]; }
+      get { return global::WeatherService.WeatherReflection.Descriptor.MessageTypes[6]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option csharp_namespace = "Common";
+
+package common;
+
+enum StatusCode {
+    Failure = 0;
+    Fetching = 1;
+    Ok = 2;
+}
+
+message Status {
+    string Message = 1;
+    StatusCode Code = 2;
+}
+
+message ProtoMinioFile {
+    string Bucket = 1;
+    string Directory = 2;
+    string FileName = 3;
+}

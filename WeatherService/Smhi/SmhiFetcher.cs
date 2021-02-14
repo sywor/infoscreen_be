@@ -63,6 +63,7 @@ namespace WeatherService.Smhi
 
             var weatherReport = new WeatherReport()
             {
+                ProducedAt = nowUtc,
                 CurrentWeather = ((CurrentWeatherResponse)currentWeatherResponse).CurrentWeather,
                 WeatherForecast = ((WeatherForecastResponse)forecastResponse).WeatherForecast,
                 RadarFileLocation = radarFileLocation

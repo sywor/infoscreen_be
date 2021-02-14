@@ -45,10 +45,17 @@ namespace WeatherService {
     static readonly grpc::Marshaller<global::Google.Protobuf.WellKnownTypes.Empty> __Marshaller_google_protobuf_Empty = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Google.Protobuf.WellKnownTypes.Empty.Parser));
     static readonly grpc::Marshaller<global::WeatherService.WeatherResponseProto> __Marshaller_weather_WeatherResponseProto = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::WeatherService.WeatherResponseProto.Parser));
 
-    static readonly grpc::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::WeatherService.WeatherResponseProto> __Method_GetWeatherReport = new grpc::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::WeatherService.WeatherResponseProto>(
+    static readonly grpc::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::WeatherService.WeatherResponseProto> __Method_GetLatestWeatherReport = new grpc::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::WeatherService.WeatherResponseProto>(
         grpc::MethodType.Unary,
         __ServiceName,
-        "GetWeatherReport",
+        "GetLatestWeatherReport",
+        __Marshaller_google_protobuf_Empty,
+        __Marshaller_weather_WeatherResponseProto);
+
+    static readonly grpc::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::WeatherService.WeatherResponseProto> __Method_GetAllWeatherReports = new grpc::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::WeatherService.WeatherResponseProto>(
+        grpc::MethodType.ServerStreaming,
+        __ServiceName,
+        "GetAllWeatherReports",
         __Marshaller_google_protobuf_Empty,
         __Marshaller_weather_WeatherResponseProto);
 
@@ -62,7 +69,12 @@ namespace WeatherService {
     [grpc::BindServiceMethod(typeof(WeatherFetcher), "BindService")]
     public abstract partial class WeatherFetcherBase
     {
-      public virtual global::System.Threading.Tasks.Task<global::WeatherService.WeatherResponseProto> GetWeatherReport(global::Google.Protobuf.WellKnownTypes.Empty request, grpc::ServerCallContext context)
+      public virtual global::System.Threading.Tasks.Task<global::WeatherService.WeatherResponseProto> GetLatestWeatherReport(global::Google.Protobuf.WellKnownTypes.Empty request, grpc::ServerCallContext context)
+      {
+        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
+      }
+
+      public virtual global::System.Threading.Tasks.Task GetAllWeatherReports(global::Google.Protobuf.WellKnownTypes.Empty request, grpc::IServerStreamWriter<global::WeatherService.WeatherResponseProto> responseStream, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
@@ -74,7 +86,8 @@ namespace WeatherService {
     public static grpc::ServerServiceDefinition BindService(WeatherFetcherBase serviceImpl)
     {
       return grpc::ServerServiceDefinition.CreateBuilder()
-          .AddMethod(__Method_GetWeatherReport, serviceImpl.GetWeatherReport).Build();
+          .AddMethod(__Method_GetLatestWeatherReport, serviceImpl.GetLatestWeatherReport)
+          .AddMethod(__Method_GetAllWeatherReports, serviceImpl.GetAllWeatherReports).Build();
     }
 
     /// <summary>Register service method with a service binder with or without implementation. Useful when customizing the  service binding logic.
@@ -83,7 +96,8 @@ namespace WeatherService {
     /// <param name="serviceImpl">An object implementing the server-side handling logic.</param>
     public static void BindService(grpc::ServiceBinderBase serviceBinder, WeatherFetcherBase serviceImpl)
     {
-      serviceBinder.AddMethod(__Method_GetWeatherReport, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Google.Protobuf.WellKnownTypes.Empty, global::WeatherService.WeatherResponseProto>(serviceImpl.GetWeatherReport));
+      serviceBinder.AddMethod(__Method_GetLatestWeatherReport, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Google.Protobuf.WellKnownTypes.Empty, global::WeatherService.WeatherResponseProto>(serviceImpl.GetLatestWeatherReport));
+      serviceBinder.AddMethod(__Method_GetAllWeatherReports, serviceImpl == null ? null : new grpc::ServerStreamingServerMethod<global::Google.Protobuf.WellKnownTypes.Empty, global::WeatherService.WeatherResponseProto>(serviceImpl.GetAllWeatherReports));
     }
 
   }

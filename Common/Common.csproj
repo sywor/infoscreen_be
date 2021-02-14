@@ -12,4 +12,16 @@
       <PackageReference Include="StackExchange.Redis.Extensions.Core" Version="6.3.6" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Protobuf Include="Protos\common.proto">
+        <GrpcServices>Client</GrpcServices>
+        <Access>Public</Access>
+        <ProtoCompile>True</ProtoCompile>
+        <CompileOutputs>False</CompileOutputs>
+        <OutputDir>.\Generated</OutputDir>
+        <Generator>MSBuild:Compile</Generator>
+        <BeforeTargets>ResolveAssemblyReferences</BeforeTargets>
+      </Protobuf>
+    </ItemGroup>
+
 </Project>

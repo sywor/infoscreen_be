@@ -2,6 +2,8 @@ using Common.Minio;
 
 using Newtonsoft.Json;
 
+using NodaTime;
+
 namespace NewsService.Data
 {
     public readonly struct NewsArticle
@@ -10,8 +12,8 @@ namespace NewsService.Data
         public string Fingerprint { get; init; }
         public string Title { get; init; }
         public string Source { get; init; }
-        public long PublishedAt { get; init; }
-        public long FetchedAt { get; init; }
+        public Instant PublishedAt { get; init; }
+        public Instant FetchedAt { get; init; }
         public string Content { get; init; }
         public MinioFile FileLocation { get; init; }
         public string ArticleUrl { get; init; }
