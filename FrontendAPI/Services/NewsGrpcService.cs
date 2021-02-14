@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using FrontendAPI.Config;
+using FrontendAPI.Data;
 using FrontendAPI.Extensions;
 
 using Google.Protobuf.WellKnownTypes;

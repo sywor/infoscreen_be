@@ -2,7 +2,7 @@ using Common.Minio;
 
 using NodaTime;
 
-namespace FrontendAPI
+namespace FrontendAPI.Data
 {
     public readonly struct NewsArticleResponse
     {

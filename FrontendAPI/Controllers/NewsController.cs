@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using FrontendAPI.Data;
 using FrontendAPI.Services;
 
 using Microsoft.AspNetCore.Mvc;

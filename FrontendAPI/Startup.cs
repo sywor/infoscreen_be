@@ -23,9 +23,12 @@ namespace FrontendAPI
         public void ConfigureServices(IServiceCollection _services)
         {
             var newsGrpcServiceConfiguration = configuration.GetSection("NewsGrpcSettings").Get<NewsGrpcServiceConfiguration>();
+            var weatherServiceConfiguration = configuration.GetSection("WeatherSettings").Get<WeatherServiceConfiguration>();
 
             _services.AddSingleton(newsGrpcServiceConfiguration);
+            _services.AddSingleton(weatherServiceConfiguration);
             _services.AddSingleton<NewsGrpcService>();
+            _services.AddSingleton<WeatherGrpcService>();
 
             _services.AddControllers();
             _services.AddSwaggerGen(_c => { _c.SwaggerDoc("v1", new OpenApiInfo {Title = "FrontendAPI", Version = "v1"}); });
