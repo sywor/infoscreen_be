@@ -1,3 +1,5 @@
+using Common.Config;
+
 using FrontendAPI.Config;
 using FrontendAPI.Services;
 
@@ -24,11 +26,14 @@ namespace FrontendAPI
         {
             var newsGrpcServiceConfiguration = configuration.GetSection("NewsGrpcSettings").Get<NewsGrpcServiceConfiguration>();
             var weatherServiceConfiguration = configuration.GetSection("WeatherSettings").Get<WeatherServiceConfiguration>();
+            var minioConfiguration = configuration.GetSection("Minio").Get<MinioConfiguration>();
 
             _services.AddSingleton(newsGrpcServiceConfiguration);
             _services.AddSingleton(weatherServiceConfiguration);
+            _services.AddSingleton(minioConfiguration);
             _services.AddSingleton<NewsGrpcService>();
             _services.AddSingleton<WeatherGrpcService>();
+            _services.AddSingleton<ResourceMinioService>();
 
             _services.AddControllers();
             _services.AddSwaggerGen(_c => { _c.SwaggerDoc("v1", new OpenApiInfo {Title = "FrontendAPI", Version = "v1"}); });

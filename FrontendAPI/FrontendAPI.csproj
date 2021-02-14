@@ -29,6 +29,7 @@
         <PackageReference Include="Grpc.AspNetCore" Version="2.34.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.2" NoWarn="NU1605" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.2" NoWarn="NU1605" />
+        <PackageReference Include="Minio" Version="3.1.13" />
         <PackageReference Include="NodaTime" Version="3.0.5" />
         <PackageReference Include="NodaTime.Serialization.Protobuf" Version="2.0.0" />
         <PackageReference Include="Serilog" Version="2.10.0" />
