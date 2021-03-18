@@ -10,6 +10,15 @@
 
     <ItemGroup>
         <PackageReference Include="Grpc.AspNetCore" Version="2.32.0" />
+        <PackageReference Include="NodaTime" Version="3.0.5" />
+        <PackageReference Include="NodaTime.Serialization.JsonNet" Version="3.0.0" />
+        <PackageReference Include="NodaTime.Serialization.Protobuf" Version="2.0.0" />
+        <PackageReference Include="StackExchange.Redis.Extensions.Core" Version="6.3.6" />
+        <PackageReference Include="StackExchange.Redis.Extensions.Newtonsoft" Version="6.3.6" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Common\Common.csproj" />
     </ItemGroup>
 
 </Project>

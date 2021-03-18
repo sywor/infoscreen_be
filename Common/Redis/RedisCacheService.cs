@@ -63,9 +63,14 @@ namespace Common.Redis
 
         public Task<bool> AddValue<T>(string _key, T _value)
         {
+            return AddValue<T>(_key, _value, TimeSpan.FromDays(2));
+        }
+
+        public Task<bool> AddValue<T>(string _key, T _value, TimeSpan _expiresIn)
+        {
             logger.LogDebug("Added object to Redis with key: {Key}", _key);
 
-            return redis.Db0.AddAsync(_key, _value, TimeSpan.FromDays(2));
+            return redis.Db0.AddAsync(_key, _value, _expiresIn);
         }
 
         public async Task<List<string>> GetKeys(string _searchPattern)

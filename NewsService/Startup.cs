@@ -2,8 +2,6 @@
 using Common.Recurrence;
 using Common.Redis;
 
-using FeedlySharp.Models;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -11,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using NewsService.Config;
 using NewsService.Feedly;
 using NewsService.Services;
 
@@ -40,7 +39,7 @@ namespace NewsService
         {
             var redisConfiguration = configuration.GetSection("Redis").Get<RedisConfiguration>();
             var minioConfiguration = configuration.GetSection("Minio").Get<MinioConfiguration>();
-            var feedlyOptions = configuration.GetSection("Feedly").Get<FeedlyOptions>();
+            var feedlyOptions = configuration.GetSection("Feedly").Get<FeedlyConfiguration>();
             var recurrenceConfiguration = configuration.GetSection("Recurrence").Get<RecurrenceConfiguration>();
 
             _services.AddGrpc();
@@ -65,9 +64,10 @@ namespace NewsService
             _services.AddSingleton(minioConfiguration);
             _services.AddSingleton(feedlyOptions);
             _services.AddSingleton(recurrenceConfiguration);
-            
+
             _services.AddSingleton<FeedlyFetcher>();
             _services.AddSingleton<RecurrenceService<FeedlyFetcher>>();
+            _services.AddSingleton<FeedlyHttpClient>();
         }
 
         public void Configure(IApplicationBuilder _app, IWebHostEnvironment _env, RecurrenceService<FeedlyFetcher> _bootstrap)

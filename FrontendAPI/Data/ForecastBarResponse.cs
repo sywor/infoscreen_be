@@ -4,8 +4,8 @@ namespace FrontendAPI.Data
 {
     public readonly struct ForecastBarResponse
     {
-        public MinioFile WindDirectionIcon { get; init; }
-        public MinioFile WeatherIcon { get; init; }
+        public string WindDirectionIcon { get; init; }
+        public string WeatherIcon { get; init; }
         public float Precipitation { get; init; }
         public float Temperature { get; init; }
         public float WindSpeed { get; init; }

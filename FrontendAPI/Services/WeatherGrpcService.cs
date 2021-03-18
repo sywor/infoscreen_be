@@ -43,15 +43,15 @@ namespace FrontendAPI.Services
             return result;
         }
 
-        public List<WeatherReportResponse> GetLatestWeatherReport()
+        public WeatherReportResponse GetLatestWeatherReport()
         {
             var response = client.GetLatestWeatherReport(new Empty());
             if (response.Status == null)
             {
-                return new List<WeatherReportResponse> {response.Weather.ToResponse()};
+                return response.Weather.ToResponse();
             }
 
-            return new List<WeatherReportResponse>();
+            return default;
         }
     }
 }

@@ -10,10 +10,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
+using NodaTime;
+using NodaTime.Serialization.JsonNet;
+
 namespace FrontendAPI
 {
     public class Startup
     {
+        private const string AllowSpecificOrigins = "AllowSpecificOrigins";
         private readonly IConfiguration configuration;
 
         public Startup(IConfiguration _configuration)
@@ -35,7 +39,11 @@ namespace FrontendAPI
             _services.AddSingleton<WeatherGrpcService>();
             _services.AddSingleton<ResourceMinioService>();
 
-            _services.AddControllers();
+            _services.AddCors(_options => _options.AddPolicy(name: AllowSpecificOrigins, _builder =>
+            {
+                _builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
+            }));
+            _services.AddControllers().AddNewtonsoftJson(_s => _s.SerializerSettings.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb));
             _services.AddSwaggerGen(_c => { _c.SwaggerDoc("v1", new OpenApiInfo {Title = "FrontendAPI", Version = "v1"}); });
         }
 
@@ -52,7 +60,7 @@ namespace FrontendAPI
             _app.UseHttpsRedirection();
 
             _app.UseRouting();
-
+            _app.UseCors(AllowSpecificOrigins);
             _app.UseAuthorization();
 
             _app.UseEndpoints(_endpoints => { _endpoints.MapControllers(); });

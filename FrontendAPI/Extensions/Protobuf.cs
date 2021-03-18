@@ -1,7 +1,6 @@
 using System.Linq;
 
 using Common;
-using Common.Minio;
 
 using FrontendAPI.Data;
 
@@ -13,14 +12,9 @@ namespace FrontendAPI.Extensions
 {
     public static class Protobuf
     {
-        public static MinioFile ToMinio(this ProtoMinioFile _proto)
+        public static string ToUrlString(this ProtoMinioFile _proto)
         {
-            return new()
-            {
-                Bucket = _proto.Bucket,
-                Directory = _proto.Directory,
-                FileName = _proto.FileName
-            };
+            return $"{_proto.Bucket}/{_proto.Directory}/{_proto.FileName}";
         }
 
         public static PrecipitationResponse ToResponse(this PrecipitationProto _proto)
@@ -40,9 +34,9 @@ namespace FrontendAPI.Extensions
             {
                 Precipitation = _bar.Precipitation,
                 Temperature = _bar.Temperature,
-                WeatherIcon = _bar.WeatherIcon.ToMinio(),
+                WeatherIcon = _bar.WeatherIcon.ToUrlString(),
                 WindSpeed = _bar.WindSpeed,
-                WindDirectionIcon = _bar.WindDirectionIcon.ToMinio()
+                WindDirectionIcon = _bar.WindDirectionIcon.ToUrlString()
             }).ToList();
 
             return new WeatherForecastResponse
@@ -61,13 +55,13 @@ namespace FrontendAPI.Extensions
         {
             return new()
             {
-                WeatherIcon = _report.WeatherIcon.ToMinio(),
+                WeatherIcon = _report.WeatherIcon.ToUrlString(),
                 WeatherDescription = _report.WeatherDescription,
                 Temperature = _report.Temperature,
                 WindSpeed = _report.WindSpeed,
                 WindGustSpeed = _report.WindGustSpeed,
-                WindDirection = _report.WindDirection.ToMinio(),
-                RadarImage = _report.RadarImage.ToMinio(),
+                WindDirection = _report.WindDirection.ToUrlString(),
+                RadarImage = _report.RadarImage.ToUrlString(),
                 PrecipitationValue = _report.PrecipitationValue.ToResponse(),
                 Humidity = _report.Humidity,
                 Visibility = _report.Visibility,

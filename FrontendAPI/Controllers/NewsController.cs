@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 namespace FrontendAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
     public class NewsController : ControllerBase
     {
         private readonly ILogger<NewsController> logger;
@@ -22,15 +21,25 @@ namespace FrontendAPI.Controllers
             service = _service;
         }
 
+        [Route("/News/All")]
         [HttpGet]
-        public async Task<List<NewsArticleResponse>> Get([FromQuery(Name = "articleKey")] string _articleKey)
+        public async Task<List<NewsArticleResponse>> GetAll()
         {
-            if (string.IsNullOrEmpty(_articleKey))
-            {
-                return await service.GetAllArticles();
-            }
-
+            return await service.GetAllArticles();
+        }
+        
+        [Route("/News/Single")]
+        [HttpGet]
+        public async Task<NewsArticleResponse> GetSingle([FromQuery(Name = "articleKey")] string _articleKey)
+        {
             return await service.GetSingleArticle(_articleKey);
+        }
+        
+        [Route("/News/Next")]
+        [HttpGet]
+        public async Task<NewsArticleResponse> GetNext()
+        {
+            return await service.GetNextArticle();
         }
     }
 }
